@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace Kozmic::Core::Window {
 	struct KWindowSize {
 		unsigned int width;
@@ -13,7 +15,7 @@ namespace Kozmic::Core::Window {
 	};
 
 	class KWindow {
-	private:
+	protected:
 		std::string m_sTitle;
 		KWindowSize m_size;
 		KWindowPosition m_position;

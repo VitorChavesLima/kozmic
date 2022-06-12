@@ -1,5 +1,8 @@
-#include <iostream>
+#include <memory>
+
+#include <kozmic/window/Window.hpp>
+
+using namespace Kozmic::Core;
 
 int main() {
-	std::cout << "Hello World" << std::endl;
 }
