@@ -6,6 +6,7 @@ KWindow::KWindow(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_pos
 	this->m_sTitle = t_sTitle;
 	this->m_size = t_size;
 	this->m_position = t_position;
+	this->m_mode = t_mode;
 }
 
 std::string KWindow::getTitle()

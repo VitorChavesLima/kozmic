@@ -1,5 +1,7 @@
 #include "Win32Window.hpp"
 
+#include <iostream>
+
 using namespace Kozmic::Core::Window::Win32;
 
 LRESULT CALLBACK KWin32Window::handleMessageSetup(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
@@ -36,9 +38,22 @@ LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wPa
     return DefWindowProc(t_hWindow, t_message, t_wParam, t_lParam);
 }
 
+DWORD Kozmic::Core::Window::Win32::KWin32Window::getWindowStyle()
+{
+    return this->m_mode == KWindowMode::WINDOWED ? WS_OVERLAPPEDWINDOW : WS_POPUP;
+}
+
+void Kozmic::Core::Window::Win32::KWin32Window::checkSize()
+{
+    if (this->m_mode != KWindowMode::WINDOWED) {
+        this->m_size = { (unsigned int) GetSystemMetrics(SM_CXSCREEN), (unsigned int) GetSystemMetrics(SM_CYSCREEN) };
+    }
+}
+
 KWin32Window::KWin32Window(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode) : KWindow(t_sTitle, t_size, t_position, t_mode)
 {
     this->m_message = { };
+    this->checkSize();
 
 	HINSTANCE hInstance = GetModuleHandle(nullptr);
 
@@ -59,7 +74,7 @@ KWin32Window::KWin32Window(std::string t_sTitle, KWindowSize t_size, KWindowPosi
         0,
         this->m_sTitle.c_str(),
         this->m_sTitle.c_str(),
-        WS_OVERLAPPEDWINDOW,
+        this->getWindowStyle(),
         this->m_position.xPos, this->m_position.yPos, 
         this->m_size.width, this->m_size.height,
         NULL,  

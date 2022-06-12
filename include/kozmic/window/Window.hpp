@@ -16,7 +16,7 @@ namespace Kozmic::Core::Window {
 
 	enum KWindowMode {
 		WINDOWED,
-		FULLSCREEN,
+		BORDERLESS_FULLSCREEN,
 		EXCLUSIVE_FULLSCREEN
 	};
 

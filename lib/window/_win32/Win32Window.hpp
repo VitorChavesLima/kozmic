@@ -15,6 +15,9 @@ namespace Kozmic::Core::Window::Win32 {
 		static LRESULT CALLBACK HandleMessageThunk(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept;
 		LRESULT handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept;
 
+		DWORD getWindowStyle();
+		void checkSize();
+
 	public:
 		KWin32Window(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode);
 
