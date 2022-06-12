@@ -34,7 +34,8 @@ namespace Kozmic::Core::Window {
 		virtual void hide() = 0;
 		virtual void close() = 0;
 
-		virtual void isOpen() = 0;
+		virtual bool isOpen() = 0;
+		virtual void update() = 0;
 
 	public:
 		virtual void setTitle(std::string t_sTitle) = 0;
