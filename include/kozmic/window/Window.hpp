@@ -1,0 +1,40 @@
+#pragma once
+
+namespace Kozmic::Core::Window {
+	struct KWindowSize {
+		unsigned int width;
+		unsigned int height;
+	};
+
+	struct KWindowPosition
+	{
+		unsigned int xPos;
+		unsigned int yPos;
+	};
+
+	class KWindow {
+	private:
+		std::string m_sTitle;
+		KWindowSize m_size;
+		KWindowPosition m_position;
+
+	public:
+		KWindow(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position);
+
+		virtual void show() = 0;
+		virtual void hide() = 0;
+		virtual void close() = 0;
+
+		virtual void isOpen() = 0;
+
+	public:
+		virtual void setTitle(std::string t_sTitle) = 0;
+		virtual void setSize(KWindowSize t_size) = 0;
+		virtual void setPosition(KWindowPosition t_position) = 0;
+
+	public:
+		std::string getTitle();
+		KWindowSize getSize();
+		KWindowPosition getPosition();
+	};
+}
