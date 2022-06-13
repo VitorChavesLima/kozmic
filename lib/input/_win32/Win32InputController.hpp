@@ -14,8 +14,8 @@ namespace Kozmic::Core::Input::Win32 {
 		HWND m_hWindow;
 
 	private:
-		void keyUpEvent(UINT t_nKey);
-		void keyDownEvent(UINT t_nKey);
+		void keyUpEvent(WPARAM t_key);
+		void keyDownEvent(WPARAM t_key);
 
 		friend class Core::Window::Win32::KWin32Window;
 
