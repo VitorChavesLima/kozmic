@@ -1,8 +1,7 @@
 #include "Win32Window.hpp"
 
-#include <iostream>
-
 using namespace Kozmic::Core::Window::Win32;
+using namespace Kozmic::Core;
 
 LRESULT CALLBACK KWin32Window::handleMessageSetup(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
 {
@@ -131,7 +130,7 @@ bool KWin32Window::isOpen()
     return GetMessage(&this->m_message, NULL, 0, 0) > 0;
 }
 
-bool Kozmic::Core::Window::Win32::KWin32Window::isFocused()
+bool KWin32Window::isFocused()
 {
     return this->m_bFocused;
 }
@@ -140,6 +139,14 @@ void KWin32Window::update()
 {
     TranslateMessage(&this->m_message);
     DispatchMessage(&this->m_message);
+}
+
+std::shared_ptr <Input::K_InputController> KWin32Window::getInputController()
+{
+    if (this->m_inputController == nullptr)
+        this->m_inputController = std::make_shared<Input::Win32::K_Win32InputController>(this->m_hWindow);
+    
+    return this->m_inputController;
 }
 
 void KWin32Window::setTitle(std::string t_sTitle)

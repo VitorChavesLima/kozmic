@@ -4,6 +4,8 @@
 
 #include <kozmic/window/Window.hpp>
 
+#include "input/_win32/Win32InputController.hpp"
+
 namespace Kozmic::Core::Window::Win32 {
 	class KWin32Window : public KWindow {
 	private:
@@ -28,6 +30,8 @@ namespace Kozmic::Core::Window::Win32 {
 		virtual bool isOpen() override;
 		virtual bool isFocused() override;
 		virtual void update() override;
+
+		virtual std::shared_ptr<Input::K_InputController> getInputController() override;
 
 	public:
 		virtual void setTitle(std::string t_sTitle) override;
