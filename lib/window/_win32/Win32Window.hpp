@@ -26,6 +26,7 @@ namespace Kozmic::Core::Window::Win32 {
 		virtual void close() override;
 
 		virtual bool isOpen() override;
+		virtual bool isFocused() override;
 		virtual void update() override;
 
 	public:

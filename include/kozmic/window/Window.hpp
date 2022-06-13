@@ -26,6 +26,7 @@ namespace Kozmic::Core::Window {
 		KWindowSize m_size;
 		KWindowPosition m_position;
 		KWindowMode m_mode;
+		bool m_bFocused;
 
 	public:
 		KWindow(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode);
@@ -35,6 +36,7 @@ namespace Kozmic::Core::Window {
 		virtual void close() = 0;
 
 		virtual bool isOpen() = 0;
+		virtual bool isFocused() = 0;
 		virtual void update() = 0;
 
 	public:

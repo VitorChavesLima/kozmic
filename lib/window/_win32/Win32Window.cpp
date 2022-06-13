@@ -33,6 +33,18 @@ LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wPa
     case WM_CLOSE:
         PostQuitMessage(0);
         return 0;
+
+    case WM_KILLFOCUS:
+        this->m_bFocused = false;
+        break;
+
+    case WM_SETFOCUS:
+        this->m_bFocused = true;
+        break;
+
+    case WM_MOVE:
+        this->m_position = { (unsigned int)(short)LOWORD(t_lParam), (unsigned int)(short)HIWORD(t_lParam) };
+        break;
     }
 
     return DefWindowProc(t_hWindow, t_message, t_wParam, t_lParam);
@@ -77,10 +89,10 @@ KWin32Window::KWin32Window(std::string t_sTitle, KWindowSize t_size, KWindowPosi
         this->getWindowStyle(),
         this->m_position.xPos, this->m_position.yPos, 
         this->m_size.width, this->m_size.height,
-        NULL,  
+        NULL,
         NULL,
         hInstance,
-        NULL
+        this
     );
 
     if (this->m_hWindow == NULL)
@@ -117,6 +129,11 @@ void KWin32Window::close()
 bool KWin32Window::isOpen()
 {
     return GetMessage(&this->m_message, NULL, 0, 0) > 0;
+}
+
+bool Kozmic::Core::Window::Win32::KWin32Window::isFocused()
+{
+    return this->m_bFocused;
 }
 
 void KWin32Window::update()

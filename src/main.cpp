@@ -10,6 +10,8 @@ int main() {
 	window->show();
 
 	while (window->isOpen()) {
-		window->update();
+		if(window->isFocused()){
+			window->update();
+		}
 	}
 }
