@@ -40,7 +40,7 @@ LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wPa
 
 DWORD Kozmic::Core::Window::Win32::KWin32Window::getWindowStyle()
 {
-    return this->m_mode == KWindowMode::WINDOWED ? WS_OVERLAPPEDWINDOW : WS_POPUP;
+    return this->m_mode == KWindowMode::WINDOWED ? WS_SYSMENU : WS_POPUP;
 }
 
 void Kozmic::Core::Window::Win32::KWin32Window::checkSize()
@@ -87,6 +87,16 @@ KWin32Window::KWin32Window(std::string t_sTitle, KWindowSize t_size, KWindowPosi
     {
         return;
     }
+
+    SetWindowPos(
+        this->m_hWindow,
+        nullptr,
+        this->m_position.xPos,
+        this->m_position.yPos,
+        this->m_size.width,
+        this->m_size.height,
+        0
+    );
 }
 
 void KWin32Window::show()
