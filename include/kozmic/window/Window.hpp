@@ -31,8 +31,6 @@ namespace Kozmic::Core::Window {
 		KWindowMode m_mode;
 		bool m_bFocused;
 
-		std::shared_ptr<Input::K_InputController> m_inputController;
-
 	public:
 		KWindow(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode);
 

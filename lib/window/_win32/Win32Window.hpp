@@ -12,6 +12,8 @@ namespace Kozmic::Core::Window::Win32 {
 		HWND m_hWindow;
 		MSG m_message;
 
+		std::shared_ptr<Input::Win32::K_Win32InputController> m_inputController;
+
 	private:
 		static LRESULT CALLBACK handleMessageSetup(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept;
 		static LRESULT CALLBACK HandleMessageThunk(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept;

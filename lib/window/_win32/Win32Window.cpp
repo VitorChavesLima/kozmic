@@ -44,6 +44,14 @@ LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wPa
     case WM_MOVE:
         this->m_position = { (unsigned int)(short)LOWORD(t_lParam), (unsigned int)(short)HIWORD(t_lParam) };
         break;
+
+    case WM_KEYDOWN:
+        if(this->m_bFocused) this->m_inputController->keyDownEvent(t_wParam);
+        break;
+
+    case WM_KEYUP:
+        if(this->m_bFocused) this->m_inputController->keyUpEvent(t_wParam);
+        break;
     }
 
     return DefWindowProc(t_hWindow, t_message, t_wParam, t_lParam);

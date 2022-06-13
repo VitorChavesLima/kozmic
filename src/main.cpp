@@ -13,7 +13,6 @@ int main() {
 	while (window->isOpen()) {
 		if(window->isFocused()){
 			window->update();
-			inputController->update();
 		}
 	}
 }
