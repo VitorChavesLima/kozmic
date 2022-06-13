@@ -101,7 +101,7 @@ void KWin32Window::hide()
 
 void KWin32Window::close()
 {
-    CloseWindow(this->m_hWindow);
+    PostQuitMessage(0);
 }
 
 bool KWin32Window::isOpen()
@@ -117,16 +117,54 @@ void KWin32Window::update()
 
 void KWin32Window::setTitle(std::string t_sTitle)
 {
+    SetWindowText(this->m_hWindow, t_sTitle.c_str());
 }
 
 void KWin32Window::setSize(KWindowSize t_size)
 {
+    this->m_size = t_size;
+
+    SetWindowPos(
+        this->m_hWindow,
+        nullptr,
+        this->m_position.xPos,
+        this->m_position.yPos,
+        this->m_size.width,
+        this->m_size.height,
+        SWP_NOREPOSITION
+    );
 }
 
 void KWin32Window::setPosition(KWindowPosition t_position)
 {
+    this->m_position = t_position;
+
+    SetWindowPos(
+        this->m_hWindow,
+        nullptr,
+        this->m_position.xPos,
+        this->m_position.yPos,
+        this->m_size.width,
+        this->m_size.height,
+        SWP_NOSIZE
+    );
 }
 
 void KWin32Window::setMode(KWindowMode t_mode)
 {
+    this->m_mode = t_mode;
+    this->checkSize();
+
+    SetWindowPos(
+        this->m_hWindow,
+        nullptr,
+        this->m_position.xPos,
+        this->m_position.yPos,
+        this->m_size.width,
+        this->m_size.height,
+        0
+    );
+    
+    SetWindowLong(this->m_hWindow, GWL_STYLE, this->getWindowStyle());
+    ShowWindow(this->m_hWindow, SW_SHOW);
 }
