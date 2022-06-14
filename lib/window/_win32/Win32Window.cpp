@@ -46,11 +46,11 @@ LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wPa
         break;
 
     case WM_KEYDOWN:
-        if(this->m_bFocused) this->m_inputController->keyDownEvent(t_wParam);
+        // if(this->m_bFocused) this->m_inputController->keyDownEvent(t_wParam);
         break;
 
     case WM_KEYUP:
-        if(this->m_bFocused) this->m_inputController->keyUpEvent(t_wParam);
+        // if(this->m_bFocused) this->m_inputController->keyUpEvent(t_wParam);
         break;
     }
 
@@ -147,14 +147,6 @@ void KWin32Window::update()
 {
     TranslateMessage(&this->m_message);
     DispatchMessage(&this->m_message);
-}
-
-std::shared_ptr <Input::K_InputController> KWin32Window::getInputController()
-{
-    if (this->m_inputController == nullptr)
-        this->m_inputController = std::make_shared<Input::Win32::K_Win32InputController>(this->m_hWindow);
-    
-    return this->m_inputController;
 }
 
 void KWin32Window::setTitle(std::string t_sTitle)
