@@ -1,18 +1,22 @@
 #include "Win32Keyboard.hpp"
 #include "Win32KeyMapper.hpp"
 
-#include <iostream>
-
 using namespace Kozmic::Core::Input::Win32;
 
 void K_Win32Keyboard::notifyKeyUp(WPARAM t_wKey)
 {
-	std::cout << this->m_keyMapper->getKeyId(t_wKey) << " RELEASED" << std::endl;
+	for (int i = 0; i < this->m_listeners.size(); i++) {
+		std::string keyId = this->m_keyMapper->getKeyId(t_wKey);
+		if(keyId != "NOT_MAPPED") this->m_listeners[i]->handleKeyUp(keyId);
+	}
 }
 
 void K_Win32Keyboard::notifyKeyDown(WPARAM t_wKey)
 {
-	std::cout << this->m_keyMapper->getKeyId(t_wKey) << " PRESSED" << std::endl;
+	for (int i = 0; i < this->m_listeners.size(); i++) {
+		std::string keyId = this->m_keyMapper->getKeyId(t_wKey);
+		if (keyId != "NOT_MAPPED") this->m_listeners[i]->handleKeyDown(keyId);
+	}
 }
 
 K_Win32Keyboard::K_Win32Keyboard()

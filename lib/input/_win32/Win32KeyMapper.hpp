@@ -9,7 +9,6 @@ namespace Kozmic::Core::Input::Win32 {
 	class K_Win32KeyMapper : public K_KeyMapper {
 	private:
 		std::unordered_map<std::string, int> m_keyValues;
-		std::unordered_map<int, std::string> m_keyIds;
 
 	public:
 		K_Win32KeyMapper();

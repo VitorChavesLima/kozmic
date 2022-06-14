@@ -13,6 +13,9 @@ namespace Kozmic::Core::Input {
 		std::unique_ptr<K_KeyMapper> m_keyMapper;
 		std::vector<std::shared_ptr<K_KeyboardListener>> m_listeners;
 	
+		std::vector<bool> m_bLastKeyStates;
+		std::vector<bool> m_bCurrentKeyStates;
+
 	public:
 		void addListener(std::shared_ptr<K_KeyboardListener> t_listener);
 		void removeListener(std::shared_ptr<K_KeyboardListener> t_listener);

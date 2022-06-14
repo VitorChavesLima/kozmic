@@ -1,6 +1,8 @@
 #include "Win32Window.hpp"
 #include "input/_win32/Win32Keyboard.hpp"
 
+#include <iostream>
+
 using namespace Kozmic::Core::Window::Win32;
 
 LRESULT CALLBACK KWin32Window::handleMessageSetup(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
