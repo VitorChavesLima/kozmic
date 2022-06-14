@@ -24,6 +24,8 @@ namespace Kozmic::Core::Window::Win32 {
 		DWORD getWindowStyle();
 		void checkSize();
 
+		WPARAM checkKeys(WPARAM t_wParam, LPARAM t_lParam);
+
 	public:
 		KWin32Window(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode);
 

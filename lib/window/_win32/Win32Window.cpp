@@ -48,11 +48,13 @@ LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wPa
         break;
 
     case WM_KEYDOWN:
-        if(this->m_bFocused && this->m_keyboard) this->m_keyboard->notifyKeyDown(t_wParam);
+        if (this->m_bFocused && this->m_keyboard)
+            this->m_keyboard->notifyKeyDown(this->checkKeys(t_wParam, t_lParam));
         break;
 
     case WM_KEYUP:
-        if (this->m_bFocused && this->m_keyboard) this->m_keyboard->notifyKeyUp(t_wParam);
+        if (this->m_bFocused && this->m_keyboard)
+            this->m_keyboard->notifyKeyUp(this->checkKeys(t_wParam, t_lParam));
         break;
     }
 
@@ -69,6 +71,30 @@ void Kozmic::Core::Window::Win32::KWin32Window::checkSize()
     if (this->m_mode != KWindowMode::WINDOWED) {
         this->m_size = { (unsigned int) GetSystemMetrics(SM_CXSCREEN), (unsigned int) GetSystemMetrics(SM_CYSCREEN) };
     }
+}
+
+WPARAM Kozmic::Core::Window::Win32::KWin32Window::checkKeys(WPARAM t_wParam, LPARAM t_lParam)
+{
+    WPARAM checked_vk = t_wParam;
+    UINT scancode = (t_lParam & 0x00ff0000) >> 16;
+    int extended = (t_lParam & 0x01000000) != 0;
+
+    switch (t_wParam) {
+    case VK_SHIFT:
+        checked_vk = MapVirtualKey(scancode, MAPVK_VSC_TO_VK_EX);
+        break;
+    case VK_CONTROL:
+        checked_vk = extended ? VK_RCONTROL : VK_LCONTROL;
+        break;
+    case VK_MENU:
+        checked_vk = extended ? VK_RMENU : VK_LMENU;
+        break;
+    default:
+        checked_vk = t_wParam;
+        break;
+    }
+
+    return checked_vk;
 }
 
 KWin32Window::KWin32Window(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode) : KWindow(t_sTitle, t_size, t_position, t_mode)
