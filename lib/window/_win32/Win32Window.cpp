@@ -46,11 +46,11 @@ LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wPa
         break;
 
     case WM_KEYDOWN:
-        // if(this->m_bFocused) this->m_inputController->keyDownEvent(t_wParam);
+        if(this->m_bFocused && this->m_keyboard) this->m_keyboard->notifyKeyDown(t_wParam);
         break;
 
     case WM_KEYUP:
-        // if(this->m_bFocused) this->m_inputController->keyUpEvent(t_wParam);
+        if (this->m_bFocused && this->m_keyboard) this->m_keyboard->notifyKeyUp(t_wParam);
         break;
     }
 

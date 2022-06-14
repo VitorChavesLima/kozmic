@@ -15,10 +15,22 @@ K_Win32KeyMapper::K_Win32KeyMapper()
 
 int K_Win32KeyMapper::getKeyValue(std::string t_sKeyId)
 {
-	return this->m_keyValues.find(t_sKeyId)->second;
+	auto search = this->m_keyValues.find(t_sKeyId);
+
+	if (search != this->m_keyValues.end()) {
+		return search->second;
+	}
+
+	return -1;
 }
 
 std::string K_Win32KeyMapper::getKeyId(int t_nKeyValue)
 {
-	return this->m_keyIds.find(t_nKeyValue)->second;
+	auto search = this->m_keyIds.find(t_nKeyValue);
+
+	if (search != this->m_keyIds.end()) {
+		return search->second;
+	}
+
+	return "NOT_FOUND";
 }
