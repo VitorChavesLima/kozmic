@@ -1,7 +1,7 @@
 #include "Win32Window.hpp"
+#include "input/_win32/Win32Keyboard.hpp"
 
 using namespace Kozmic::Core::Window::Win32;
-using namespace Kozmic::Core;
 
 LRESULT CALLBACK KWin32Window::handleMessageSetup(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
 {
@@ -71,6 +71,8 @@ void Kozmic::Core::Window::Win32::KWin32Window::checkSize()
 
 KWin32Window::KWin32Window(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode) : KWindow(t_sTitle, t_size, t_position, t_mode)
 {
+    this->m_keyboard = nullptr;
+
     this->m_message = { };
     this->checkSize();
 
@@ -147,6 +149,14 @@ void KWin32Window::update()
 {
     TranslateMessage(&this->m_message);
     DispatchMessage(&this->m_message);
+}
+
+std::shared_ptr<Kozmic::Core::Input::K_Keyboard> Kozmic::Core::Window::Win32::KWin32Window::getKeyboardInput()
+{
+    if (this->m_keyboard == nullptr) 
+        this->m_keyboard = std::make_shared<Kozmic::Core::Input::Win32::K_Win32Keyboard>();
+
+    return this->m_keyboard;
 }
 
 void KWin32Window::setTitle(std::string t_sTitle)

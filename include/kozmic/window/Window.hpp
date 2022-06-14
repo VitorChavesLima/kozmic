@@ -3,6 +3,8 @@
 #include <memory>
 #include <string>
 
+#include <kozmic/input/Keyboard.hpp>
+
 namespace Kozmic::Core::Window {
 	struct KWindowSize {
 		unsigned int width;
@@ -39,6 +41,8 @@ namespace Kozmic::Core::Window {
 		virtual bool isOpen() = 0;
 		virtual bool isFocused() = 0;
 		virtual void update() = 0;
+
+		virtual std::shared_ptr<Input::K_Keyboard> getKeyboardInput() = 0;
 
 	public:
 		virtual void setTitle(std::string t_sTitle) = 0;
