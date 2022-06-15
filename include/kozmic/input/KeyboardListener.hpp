@@ -7,5 +7,6 @@ namespace Kozmic::Core::Input {
 	public:
 		virtual void handleKeyUp(std::string t_sKeyId) {};
 		virtual void handleKeyDown(std::string t_sKeyId) {};
+		virtual void handleKey(std::string t_sKeyId) {};
 	};
 }

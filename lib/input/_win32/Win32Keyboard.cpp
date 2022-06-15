@@ -21,6 +21,10 @@ void K_Win32Keyboard::notifyKeyDown(WPARAM t_wKey)
 	std::string keyId = this->m_keyMapper->getKeyId((int)t_wKey);
 	auto lastKeyState = this->m_bKeyStates.find(keyId);
 
+	for (int i = 0; i < this->m_listeners.size(); i++) {
+		if (keyId != "NOT_MAPPED") this->m_listeners[i]->handleKey(keyId);
+	}
+
 	if (lastKeyState->second == true) return;
 	lastKeyState->second = true;
 
