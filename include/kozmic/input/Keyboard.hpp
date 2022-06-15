@@ -12,8 +12,8 @@ namespace Kozmic::Core::Input {
 	{
 	protected:
 		std::unique_ptr<K_KeyMapper> m_keyMapper;
-		
 		std::unordered_map<std::string, bool> m_bKeyStates;
+
 		std::vector<std::shared_ptr<K_KeyboardListener>> m_listeners;
 
 	public:
