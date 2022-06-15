@@ -19,6 +19,16 @@ void K_Win32Mouse::notifyMove(LPARAM t_lMousePosition)
 	}
 }
 
+void K_Win32Mouse::notifyScroll(WPARAM t_wScrollState)
+{
+	int zDelta = GET_WHEEL_DELTA_WPARAM(t_wScrollState);
+	bool up = zDelta > 0 ? true : false;
+
+	for (int i = 0; i < this->m_listeners.size(); i++) {
+		this->m_listeners[i]->handleScroll(up);
+	}
+}
+
 void K_Win32Mouse::notifyButtonUp(WPARAM t_wButton)
 {
 }

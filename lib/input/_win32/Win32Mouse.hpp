@@ -15,6 +15,7 @@ namespace Kozmic::Core::Input::Win32 {
 
 	private:
 		void notifyMove(LPARAM t_lMousePosition);
+		void notifyScroll(WPARAM t_wScrollState);
 		void notifyButtonUp(WPARAM t_wButton);
 		void notifyButtonDown(WPARAM t_wButton);
 	};

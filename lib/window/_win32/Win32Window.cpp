@@ -72,6 +72,11 @@ LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wPa
         if (this->m_bFocused && this->m_mouse)
             this->m_mouse->notifyMove(t_lParam);
         break;
+
+    case WM_MOUSEWHEEL:
+        if (this->m_bFocused && this->m_mouse)
+            this->m_mouse->notifyScroll(t_wParam);
+        break;
     }
 
     return DefWindowProc(t_hWindow, t_message, t_wParam, t_lParam);

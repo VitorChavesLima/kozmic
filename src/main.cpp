@@ -17,7 +17,10 @@ private:
 	}
 
 	void handleMove(int t_nXPos, int t_nYPos){
-		std::cout << "X: " << t_nXPos << " - Y: " << t_nYPos << std::endl;
+		// std::cout << "X: " << t_nXPos << " - Y: " << t_nYPos << std::endl;
+	}
+
+	void handleScroll(bool t_bUp) {
 	}
 };
 
