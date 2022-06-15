@@ -56,6 +56,16 @@ LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wPa
         if (this->m_bFocused && this->m_keyboard)
             this->m_keyboard->notifyKeyUp(this->checkKeys(t_wParam, t_lParam));
         break;
+
+    case WM_SYSKEYDOWN:
+        if (this->m_bFocused && this->m_keyboard)
+            this->m_keyboard->notifyKeyUp(this->checkKeys(t_wParam, t_lParam));
+        break;
+
+    case WM_SYSKEYUP:
+        if (this->m_bFocused && this->m_keyboard)
+            this->m_keyboard->notifyKeyUp(this->checkKeys(t_wParam, t_lParam));
+        break;
     }
 
     return DefWindowProc(t_hWindow, t_message, t_wParam, t_lParam);
