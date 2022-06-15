@@ -1,6 +1,5 @@
 #include <kozmic/window/WindowManager.hpp>
 #include <kozmic/input/KeyboardListener.hpp>
-#include <kozmic/input/KeyMap.hpp>
 
 #include <iostream>
 
@@ -9,9 +8,11 @@ using namespace Kozmic::Core;
 class KeyboardTest : public Input::K_KeyboardListener {
 private:
 	void handleKeyDown(std::string t_sKeyId) {
+		std::cout << "KEY PRESSED: " << t_sKeyId << std::endl;
 	}
 
 	void handleKeyUp(std::string t_sKeyId) {
+		std::cout << "KEY RELEASED: " << t_sKeyId << std::endl;
 	}
 };
 
