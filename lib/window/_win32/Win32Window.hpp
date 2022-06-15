@@ -6,6 +6,7 @@
 
 namespace Kozmic::Core::Input::Win32 {
 	class K_Win32Keyboard;
+	class K_Win32Mouse;
 }
 
 namespace Kozmic::Core::Window::Win32 {
@@ -15,6 +16,7 @@ namespace Kozmic::Core::Window::Win32 {
 		MSG m_message;
 
 		std::shared_ptr<Input::Win32::K_Win32Keyboard> m_keyboard;
+		std::shared_ptr<Input::Win32::K_Win32Mouse> m_mouse;
 
 	private:
 		static LRESULT CALLBACK handleMessageSetup(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept;
@@ -24,7 +26,7 @@ namespace Kozmic::Core::Window::Win32 {
 		DWORD getWindowStyle();
 		void checkSize();
 
-		WPARAM checkKeys(WPARAM t_wParam, LPARAM t_lParam);
+		WPARAM processKeys(WPARAM t_wParam, LPARAM t_lParam);
 
 	public:
 		KWin32Window(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode);
@@ -38,6 +40,7 @@ namespace Kozmic::Core::Window::Win32 {
 		virtual void update() override;
 
 		virtual std::shared_ptr<Input::K_Keyboard> getKeyboardInput() override;
+		virtual std::shared_ptr<Input::K_Mouse> getMouseInput() override;
 
 	public:
 		virtual void setTitle(std::string t_sTitle) override;

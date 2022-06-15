@@ -4,6 +4,7 @@
 #include <string>
 
 #include <kozmic/input/Keyboard.hpp>
+#include <kozmic/input/Mouse.hpp>
 
 namespace Kozmic::Core::Window {
 	struct KWindowSize {
@@ -43,6 +44,7 @@ namespace Kozmic::Core::Window {
 		virtual void update() = 0;
 
 		virtual std::shared_ptr<Input::K_Keyboard> getKeyboardInput() = 0;
+		virtual std::shared_ptr<Input::K_Mouse> getMouseInput() = 0;
 
 	public:
 		virtual void setTitle(std::string t_sTitle) = 0;

@@ -1,5 +1,6 @@
 #include "Win32Window.hpp"
 #include "input/_win32/Win32Keyboard.hpp"
+#include "input/_win32/Win32Mouse.hpp"
 
 #include <iostream>
 
@@ -49,22 +50,27 @@ LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wPa
 
     case WM_KEYDOWN:
         if (this->m_bFocused && this->m_keyboard)
-            this->m_keyboard->notifyKeyDown(this->checkKeys(t_wParam, t_lParam));
+            this->m_keyboard->notifyKeyDown(this->processKeys(t_wParam, t_lParam));
         break;
 
     case WM_KEYUP:
         if (this->m_bFocused && this->m_keyboard)
-            this->m_keyboard->notifyKeyUp(this->checkKeys(t_wParam, t_lParam));
+            this->m_keyboard->notifyKeyUp(this->processKeys(t_wParam, t_lParam));
         break;
 
     case WM_SYSKEYDOWN:
         if (this->m_bFocused && this->m_keyboard)
-            this->m_keyboard->notifyKeyUp(this->checkKeys(t_wParam, t_lParam));
+            this->m_keyboard->notifyKeyUp(this->processKeys(t_wParam, t_lParam));
         break;
 
     case WM_SYSKEYUP:
         if (this->m_bFocused && this->m_keyboard)
-            this->m_keyboard->notifyKeyUp(this->checkKeys(t_wParam, t_lParam));
+            this->m_keyboard->notifyKeyUp(this->processKeys(t_wParam, t_lParam));
+        break;
+
+    case WM_MOUSEMOVE:
+        if (this->m_bFocused && this->m_mouse)
+            this->m_mouse->notifyMove(t_lParam);
         break;
     }
 
@@ -83,7 +89,7 @@ void Kozmic::Core::Window::Win32::KWin32Window::checkSize()
     }
 }
 
-WPARAM Kozmic::Core::Window::Win32::KWin32Window::checkKeys(WPARAM t_wParam, LPARAM t_lParam)
+WPARAM Kozmic::Core::Window::Win32::KWin32Window::processKeys(WPARAM t_wParam, LPARAM t_lParam)
 {
     WPARAM checked_vk = t_wParam;
     UINT scancode = (t_lParam & 0x00ff0000) >> 16;
@@ -189,12 +195,20 @@ void KWin32Window::update()
     DispatchMessage(&this->m_message);
 }
 
-std::shared_ptr<Kozmic::Core::Input::K_Keyboard> Kozmic::Core::Window::Win32::KWin32Window::getKeyboardInput()
+std::shared_ptr<Kozmic::Core::Input::K_Keyboard> KWin32Window::getKeyboardInput()
 {
     if (this->m_keyboard == nullptr) 
         this->m_keyboard = std::make_shared<Kozmic::Core::Input::Win32::K_Win32Keyboard>();
 
     return this->m_keyboard;
+}
+
+std::shared_ptr<Kozmic::Core::Input::K_Mouse> KWin32Window::getMouseInput()
+{
+    if (this->m_mouse == nullptr)
+        this->m_mouse = std::make_shared<Kozmic::Core::Input::Win32::K_Win32Mouse>();
+
+    return this->m_mouse;
 }
 
 void KWin32Window::setTitle(std::string t_sTitle)

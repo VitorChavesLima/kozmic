@@ -7,8 +7,9 @@
 
 namespace Kozmic::Core::Input {
 	class K_Mouse {
-	private:
-		K_MouseScreenPosition m_mousePosition;
+	protected:
+		int m_nXPos;
+		int m_nYPos;
 
 		std::vector<std::shared_ptr<K_MouseListener>> m_listeners;
 

@@ -14,7 +14,7 @@ namespace Kozmic::Core::Input::Win32 {
 		friend class Window::Win32::KWin32Window;
 
 	private:
-		void notifyMove(unsigned int t_nXPos, unsigned int t_nYPos);
+		void notifyMove(LPARAM t_lMousePosition);
 		void notifyButtonUp(WPARAM t_wButton);
 		void notifyButtonDown(WPARAM t_wButton);
 	};

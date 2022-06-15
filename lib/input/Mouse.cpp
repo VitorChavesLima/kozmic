@@ -4,7 +4,8 @@ using namespace Kozmic::Core::Input;
 
 K_Mouse::K_Mouse()
 {
-	this->m_mousePosition = { 0, 0 };
+	this->m_nXPos = 0;
+	this->m_nYPos = 0;
 }
 
 void K_Mouse::addListener(std::shared_ptr<K_MouseListener> t_listener) {

@@ -1,11 +1,12 @@
 #include <kozmic/window/WindowManager.hpp>
 #include <kozmic/input/KeyboardListener.hpp>
+#include <kozmic/input/MouseListener.hpp>
 
 #include <iostream>
 
 using namespace Kozmic::Core;
 
-class KeyboardTest : public Input::K_KeyboardListener {
+class InputTest : public Input::K_KeyboardListener, public Input::K_MouseListener {
 private:
 	void handleKeyDown(std::string t_sKeyId) {
 		std::cout << "KEY PRESSED: " << t_sKeyId << std::endl;
@@ -14,6 +15,10 @@ private:
 	void handleKeyUp(std::string t_sKeyId) {
 		std::cout << "KEY RELEASED: " << t_sKeyId << std::endl;
 	}
+
+	void handleMove(int t_nXPos, int t_nYPos){
+		std::cout << "X: " << t_nXPos << " - Y: " << t_nYPos << std::endl;
+	}
 };
 
 int main() {
@@ -21,10 +26,12 @@ int main() {
 	
 	std::unique_ptr<Window::KWindow> window = windowManager->getWindow("EXAMPLE", {800, 600}, {0, 0}, Window::KWindowMode::WINDOWED);
 	std::shared_ptr<Input::K_Keyboard> keyboardInput = window->getKeyboardInput();
+	std::shared_ptr<Input::K_Mouse> mouseInput = window->getMouseInput();
 
-	std::shared_ptr<KeyboardTest> keyboardTest = std::make_shared<KeyboardTest>();
+	std::shared_ptr<InputTest> inputTest = std::make_shared<InputTest>();
 
-	keyboardInput->addListener(keyboardTest);
+	keyboardInput->addListener(inputTest);
+	mouseInput->addListener(inputTest);
 
 	window->show();
 
