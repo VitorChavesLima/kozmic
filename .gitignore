@@ -648,4 +648,6 @@ FodyWeavers.xsd
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
+CMakeSettings.json
+
 # End of https://www.toptal.com/developers/gitignore/api/cmake,c++,visualstudio,visualstudiocode,intellij,eclipse

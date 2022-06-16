@@ -1,20 +1,23 @@
 #pragma once
 
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/stdout_sinks.h>
+
+#include <memory>
+#include <vector>
 #include <string>
 
 namespace Kozmic::Core::Logging {
 	class K_Logger {
+	private:
+		std::unique_ptr<spdlog::logger> m_logger;
+
 	public:
-		template <typename... T>
-		virtual void info(std::string t_sMessage, T &&...args) = 0;
+		K_Logger(std::string t_sName);
 
-		template <typename... T>
-		virtual void warn(std::string t_sMessage, T &&...args) = 0;
-
-		template <typename... T>
-		virtual void error(std::string t_sMessage, T &&...args) = 0;
-
-		template <typename... T>
-		virtual void critical(std::string t_sMessage, T &&...args) = 0;
+		template<typename... Args>
+		void info(spdlog::format_string_t<Args...> t_sMessage, Args &&... args) {
+			this->m_logger->info(t_sMessage, std::forward<Args>(args)...);
+		}
 	};
 }

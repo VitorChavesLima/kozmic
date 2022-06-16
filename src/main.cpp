@@ -2,6 +2,8 @@
 #include <kozmic/input/KeyboardListener.hpp>
 #include <kozmic/input/MouseListener.hpp>
 
+#include <kozmic/logging/Logger.hpp>
+
 #include <iostream>
 
 using namespace Kozmic::Core;
@@ -25,6 +27,10 @@ int main() {
 	std::shared_ptr<Input::K_Mouse> mouseInput = window->getMouseInput();
 
 	std::shared_ptr<InputTest> inputTest = std::make_shared<InputTest>();
+
+	std::unique_ptr<Logging::K_Logger> testLogger = std::make_unique<Logging::K_Logger>("Test Logger");
+
+	testLogger->info("Hello from logger");
 
 	keyboardInput->addListener(inputTest);
 	mouseInput->addListener(inputTest);
