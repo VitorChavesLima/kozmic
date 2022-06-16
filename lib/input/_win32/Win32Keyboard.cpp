@@ -12,7 +12,7 @@ void K_Win32Keyboard::notifyKeyUp(WPARAM t_wKey)
 	lastKeyState->second = false;
 
 	for (int i = 0; i < this->m_listeners.size(); i++) {
-		if(keyId != "NOT_MAPPED") this->m_listeners[i]->handleKeyUp(keyId);
+		if(keyId != "NOT_MAPPED") this->m_listeners[i]->handleKeyboardKeyUp(keyId);
 	}
 }
 
@@ -22,14 +22,14 @@ void K_Win32Keyboard::notifyKeyDown(WPARAM t_wKey)
 	auto lastKeyState = this->m_bKeyStates.find(keyId);
 
 	for (int i = 0; i < this->m_listeners.size(); i++) {
-		if (keyId != "NOT_MAPPED") this->m_listeners[i]->handleKey(keyId);
+		if (keyId != "NOT_MAPPED") this->m_listeners[i]->handleKeyboardKey(keyId);
 	}
 
 	if (lastKeyState->second == true) return;
 	lastKeyState->second = true;
 
 	for (int i = 0; i < this->m_listeners.size(); i++) {
-		if (keyId != "NOT_MAPPED") this->m_listeners[i]->handleKeyDown(keyId);
+		if (keyId != "NOT_MAPPED") this->m_listeners[i]->handleKeyboardKeyDown(keyId);
 	}
 }
 

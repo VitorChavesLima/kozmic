@@ -5,8 +5,8 @@
 namespace Kozmic::Core::Input {
 	class K_KeyboardListener {
 	public:
-		virtual void handleKeyUp(std::string t_sKeyId) {};
-		virtual void handleKeyDown(std::string t_sKeyId) {};
-		virtual void handleKey(std::string t_sKeyId) {};
+		virtual void handleKeyboardKeyUp(std::string t_sKeyId) {};
+		virtual void handleKeyboardKeyDown(std::string t_sKeyId) {};
+		virtual void handleKeyboardKey(std::string t_sKeyId) {};
 	};
 }

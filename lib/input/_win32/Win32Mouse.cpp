@@ -22,7 +22,7 @@ void K_Win32Mouse::notifyMove(LPARAM t_lMousePosition)
 	this->m_nYPos = yPos;
 
 	for (int i = 0; i < this->m_listeners.size(); i++) {
-		this->m_listeners[i]->handleMove(this->m_nXPos, this->m_nYPos);
+		this->m_listeners[i]->handleMouseMove(this->m_nXPos, this->m_nYPos);
 	}
 }
 
@@ -32,7 +32,7 @@ void K_Win32Mouse::notifyScroll(WPARAM t_wScrollState)
 	bool up = zDelta > 0 ? true : false;
 
 	for (int i = 0; i < this->m_listeners.size(); i++) {
-		this->m_listeners[i]->handleScroll(up);
+		this->m_listeners[i]->handleMouseScroll(up);
 	}
 }
 
@@ -59,7 +59,7 @@ void K_Win32Mouse::notifyButtonUp(UINT t_message, WPARAM t_wButton)
 	}
 
 	for (int i = 0; i < this->m_listeners.size(); i++) {
-		this->m_listeners[i]->handleButtonUp(buttonId);
+		this->m_listeners[i]->handleMouseButtonUp(buttonId);
 	}
 }
 
@@ -86,6 +86,6 @@ void K_Win32Mouse::notifyButtonDown(UINT t_message, WPARAM t_wButton)
 	}
 
 	for (int i = 0; i < this->m_listeners.size(); i++) {
-		this->m_listeners[i]->handleButtonDown(buttonId);
+		this->m_listeners[i]->handleMouseButtonDown(buttonId);
 	}
 }

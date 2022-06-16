@@ -8,23 +8,12 @@ using namespace Kozmic::Core;
 
 class InputTest : public Input::K_KeyboardListener, public Input::K_MouseListener {
 private:
-	void handleKeyDown(std::string t_sKeyId) {
+	void handleKeyboardKeyDown(std::string t_sKeyId) {
 		std::cout << "KEY PRESSED: " << t_sKeyId << std::endl;
 	}
 
-	void handleKeyUp(std::string t_sKeyId) {
+	void handleKeyboardKeyUp(std::string t_sKeyId) {
 		std::cout << "KEY RELEASED: " << t_sKeyId << std::endl;
-	}
-
-	void handleMove(int t_nXPos, int t_nYPos){
-		// std::cout << "X: " << t_nXPos << " - Y: " << t_nYPos << std::endl;
-	}
-
-	void handleScroll(bool t_bUp) {
-	}
-
-	void handleButtonUp(unsigned int t_nButtonId) {
-		std::cout << t_nButtonId << std::endl;
 	}
 };
 
