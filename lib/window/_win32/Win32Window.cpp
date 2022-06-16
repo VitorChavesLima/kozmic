@@ -77,6 +77,16 @@ LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wPa
         if (this->m_bFocused && this->m_mouse)
             this->m_mouse->notifyScroll(t_wParam);
         break;
+    
+    case WM_LBUTTONDOWN: case WM_MBUTTONDOWN: case WM_RBUTTONDOWN: case WM_XBUTTONDOWN:
+        if (this->m_bFocused && this->m_mouse)
+            this->m_mouse->notifyButtonDown(t_message, t_wParam);
+        break;
+
+    case WM_LBUTTONUP: case WM_MBUTTONUP: case WM_RBUTTONUP: case WM_XBUTTONUP:
+        if (this->m_bFocused && this->m_mouse)
+            this->m_mouse->notifyButtonUp(t_message, t_wParam);
+        break;
     }
 
     return DefWindowProc(t_hWindow, t_message, t_wParam, t_lParam);

@@ -22,6 +22,10 @@ private:
 
 	void handleScroll(bool t_bUp) {
 	}
+
+	void handleButtonUp(unsigned int t_nButtonId) {
+		std::cout << t_nButtonId << std::endl;
+	}
 };
 
 int main() {
