@@ -8,7 +8,7 @@ K_Game::K_Game() : K_Application()
 	this->m_logger->info("Starting game");
 
 	this->m_logger->info("Initializing window");
-	this->m_window = this->m_windowManager->getWindow("GAME", {800, 600}, {0, 0}, Kozmic::Core::Window::KWindowMode::WINDOWED);
+	this->m_window = this->m_windowManager->getWindow(this->m_loggingManager->getLogger("Window"), "GAME", {800, 600}, {0, 0}, Kozmic::Core::Window::KWindowMode::WINDOWED);
 
 	this->m_window->show();
 

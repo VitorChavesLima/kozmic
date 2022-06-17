@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 
+#include <kozmic/logging/Logger.hpp>
 #include <kozmic/input/Keyboard.hpp>
 #include <kozmic/input/Mouse.hpp>
 

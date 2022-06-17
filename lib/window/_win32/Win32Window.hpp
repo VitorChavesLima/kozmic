@@ -15,6 +15,7 @@ namespace Kozmic::Core::Window::Win32 {
 		HWND m_hWindow;
 		MSG m_message;
 
+		std::unique_ptr<Logging::K_Logger> m_logger;
 		std::shared_ptr<Input::Win32::K_Win32Keyboard> m_keyboard;
 		std::shared_ptr<Input::Win32::K_Win32Mouse> m_mouse;
 
@@ -29,7 +30,7 @@ namespace Kozmic::Core::Window::Win32 {
 		WPARAM processKeys(WPARAM t_wParam, LPARAM t_lParam);
 
 	public:
-		KWin32Window(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode);
+		KWin32Window(std::unique_ptr<Logging::K_Logger> t_logger, std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode);
 
 		virtual void show() override;
 		virtual void hide() override;

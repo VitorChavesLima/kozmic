@@ -131,12 +131,15 @@ WPARAM Kozmic::Core::Window::Win32::KWin32Window::processKeys(WPARAM t_wParam, L
     return checked_vk;
 }
 
-KWin32Window::KWin32Window(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode) : KWindow(t_sTitle, t_size, t_position, t_mode)
+KWin32Window::KWin32Window(std::unique_ptr<Logging::K_Logger> t_logger, std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode) : KWindow(t_sTitle, t_size, t_position, t_mode)
 {
+    this->m_logger = std::move(t_logger);
     this->m_keyboard = nullptr;
-
     this->m_message = { };
+
     this->checkSize();
+
+    this->m_logger->info("Creating WIN32 Window");
 
 	HINSTANCE hInstance = GetModuleHandle(nullptr);
 
@@ -184,16 +187,19 @@ KWin32Window::KWin32Window(std::string t_sTitle, KWindowSize t_size, KWindowPosi
 
 void KWin32Window::show()
 {
+    this->m_logger->info("Showing window");
     ShowWindow(this->m_hWindow, 1);
 }
 
 void KWin32Window::hide()
 {
+    this->m_logger->info("Hiding window");
     ShowWindow(this->m_hWindow, 0);
 }
 
 void KWin32Window::close()
 {
+    this->m_logger->info("Closing window");
     PostQuitMessage(0);
 }
 
@@ -215,6 +221,8 @@ void KWin32Window::update()
 
 std::shared_ptr<Kozmic::Core::Input::K_Keyboard> KWin32Window::getKeyboardInput()
 {
+    this->m_logger->info("Returning a keyboard input access");
+
     if (this->m_keyboard == nullptr) 
         this->m_keyboard = std::make_shared<Kozmic::Core::Input::Win32::K_Win32Keyboard>();
 
@@ -223,6 +231,8 @@ std::shared_ptr<Kozmic::Core::Input::K_Keyboard> KWin32Window::getKeyboardInput(
 
 std::shared_ptr<Kozmic::Core::Input::K_Mouse> KWin32Window::getMouseInput()
 {
+    this->m_logger->info("Returning a mouse input access");
+
     if (this->m_mouse == nullptr)
         this->m_mouse = std::make_shared<Kozmic::Core::Input::Win32::K_Win32Mouse>();
 
@@ -231,11 +241,15 @@ std::shared_ptr<Kozmic::Core::Input::K_Mouse> KWin32Window::getMouseInput()
 
 void KWin32Window::setTitle(std::string t_sTitle)
 {
+    this->m_logger->info("Changing window title");
+
     SetWindowText(this->m_hWindow, t_sTitle.c_str());
 }
 
 void KWin32Window::setSize(KWindowSize t_size)
 {
+    this->m_logger->info("Changing size");
+
     this->m_size = t_size;
 
     SetWindowPos(
@@ -251,6 +265,8 @@ void KWin32Window::setSize(KWindowSize t_size)
 
 void KWin32Window::setPosition(KWindowPosition t_position)
 {
+    this->m_logger->info("Changing position");
+
     this->m_position = t_position;
 
     SetWindowPos(
@@ -266,6 +282,8 @@ void KWin32Window::setPosition(KWindowPosition t_position)
 
 void KWin32Window::setMode(KWindowMode t_mode)
 {
+    this->m_logger->info("Changing window mode");
+
     this->m_mode = t_mode;
     this->checkSize();
 
