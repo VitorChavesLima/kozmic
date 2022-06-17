@@ -1,11 +1,9 @@
 #include <kozmic/logging/Logger.hpp>
-#include "spdlog/sinks/stdout_color_sinks.h"
 
 using namespace Kozmic::Core::Logging;
 
-K_Logger::K_Logger(std::string t_sName) {
-	auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-	spdlog::sinks_init_list sink_list = { console_sink };
+K_Logger::K_Logger(std::string t_sName, std::shared_ptr<spdlog::sinks::stdout_color_sink_mt> t_consoleSink, std::shared_ptr<spdlog::sinks::basic_file_sink_mt> t_fileSink) {
+	spdlog::sinks_init_list sinkList = { t_consoleSink, t_fileSink };
 
-	this->m_logger = std::make_unique<spdlog::logger>(t_sName , sink_list.begin(), sink_list.end());
+	this->m_logger = std::make_unique<spdlog::logger>(t_sName, sinkList.begin(), sinkList.end());
 }
