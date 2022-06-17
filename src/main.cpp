@@ -2,7 +2,7 @@
 #include <kozmic/input/KeyboardListener.hpp>
 #include <kozmic/input/MouseListener.hpp>
 
-#include <kozmic/logging/LoggerGenerator.hpp>
+#include <kozmic/logging/LoggingManager.hpp>
 
 #include <iostream>
 
@@ -25,10 +25,7 @@ int main() {
 	std::unique_ptr<Window::KWindow> window = windowManager->getWindow("EXAMPLE", {800, 600}, {0, 0}, Window::KWindowMode::WINDOWED);
 	std::shared_ptr<Input::K_Keyboard> keyboardInput = window->getKeyboardInput();
 	std::shared_ptr<Input::K_Mouse> mouseInput = window->getMouseInput();
-	std::shared_ptr<Logging::K_LoggerGenerator> loggerGenerator = std::make_shared<Logging::K_LoggerGenerator>("E://PROJETOS//Cpp//kozmic//out//build//x64-debug//src//aa.txt");
-
-	std::shared_ptr<Logging::K_Logger> logger = loggerGenerator->getLogger("Example");
-	logger->info("Hello World");
+	std::unique_ptr<K_LoggingManager> loggerManager = std::make_unique<K_LoggingManager>();
 
 	std::shared_ptr<InputTest> inputTest = std::make_shared<InputTest>();
 
