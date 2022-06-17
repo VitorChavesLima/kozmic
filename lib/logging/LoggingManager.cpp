@@ -22,3 +22,7 @@ K_LoggingManager::K_LoggingManager()
 
 	this->m_loggerGenerator = std::make_unique<Logging::K_LoggerGenerator>(completePath.string());
 }
+
+std::unique_ptr<Logging::K_Logger> K_LoggingManager::getLogger(std::string t_sName) {
+	return this->m_loggerGenerator->getLogger(t_sName);
+}

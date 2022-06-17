@@ -11,5 +11,7 @@ namespace Kozmic::Core {
 
 	public:
 		K_LoggingManager();
+
+		std::unique_ptr<Logging::K_Logger> getLogger(std::string t_sName);
 	};
 }
