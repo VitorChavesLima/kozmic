@@ -1,7 +1,7 @@
-#include <kozmic/Application.hpp>
+#include "Game.hpp"
 
-using namespace Kozmic::Core;
+using namespace Game;
 
 int main() {
-
+	std::shared_ptr<K_Game> game = std::make_unique<K_Game>();
 }

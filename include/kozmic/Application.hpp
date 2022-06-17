@@ -7,7 +7,7 @@
 
 namespace Kozmic::Core {
 	class K_Application {
-	private:
+	protected:
 		std::unique_ptr<K_LoggingManager> m_loggingManager;
 		std::unique_ptr<KWindowManager> m_windowManager;
 
