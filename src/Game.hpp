@@ -8,5 +8,6 @@ namespace Game {
 
 	public:
 		K_Game();
+		~K_Game();
 	};
 }

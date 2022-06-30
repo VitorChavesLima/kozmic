@@ -35,6 +35,7 @@ namespace Kozmic::Core::Window {
 
 	public:
 		KWindow(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode);
+		virtual ~KWindow() = default;
 
 		virtual void show() = 0;
 		virtual void hide() = 0;

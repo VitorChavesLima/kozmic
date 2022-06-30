@@ -185,6 +185,11 @@ KWin32Window::KWin32Window(std::unique_ptr<Logging::K_Logger> t_logger, std::str
     );
 }
 
+KWin32Window::~KWin32Window()
+{
+    this->m_logger->info("Finishing window");
+}
+
 void KWin32Window::show()
 {
     this->m_logger->info("Showing window");

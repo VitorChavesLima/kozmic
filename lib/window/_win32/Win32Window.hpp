@@ -31,6 +31,7 @@ namespace Kozmic::Core::Window::Win32 {
 
 	public:
 		KWin32Window(std::unique_ptr<Logging::K_Logger> t_logger, std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode);
+		virtual ~KWin32Window() override;
 
 		virtual void show() override;
 		virtual void hide() override;
