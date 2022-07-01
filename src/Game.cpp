@@ -16,8 +16,6 @@ K_Game::K_Game() : K_Application()
 
 		this->m_window->show();
 
-		throw Kozmic::Utils::K_Exception(__FILE__, __LINE__, __FUNCTION__, "Test");
-
 		this->m_logger->info("Running game loop");
 		while (this->m_window->isOpen()) {
 			this->m_window->update();
