@@ -6,6 +6,7 @@
 #include <kozmic/logging/Logger.hpp>
 #include <kozmic/input/Keyboard.hpp>
 #include <kozmic/input/Mouse.hpp>
+#include <kozmic/graphics/Graphics.hpp>
 
 namespace Kozmic::Core::Window {
 	struct KWindowSize {
@@ -32,9 +33,10 @@ namespace Kozmic::Core::Window {
 		KWindowPosition m_position;
 		KWindowMode m_mode;
 		bool m_bFocused;
+		std::string m_sGraphicsType;
 
 	public:
-		KWindow(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode);
+		KWindow(std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode, std::string t_sGraphicsType);
 		virtual ~KWindow() = default;
 
 		virtual void show() = 0;
@@ -47,6 +49,7 @@ namespace Kozmic::Core::Window {
 
 		virtual std::shared_ptr<Input::K_Keyboard> getKeyboardInput() = 0;
 		virtual std::shared_ptr<Input::K_Mouse> getMouseInput() = 0;
+		virtual std::shared_ptr<Graphics::K_Graphics> getGraphics() = 0;
 
 	public:
 		virtual void setTitle(std::string t_sTitle) = 0;

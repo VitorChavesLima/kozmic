@@ -5,6 +5,7 @@
 #include <iostream>
 
 using namespace Kozmic::Core::Window::Win32;
+using namespace Kozmic::Core::Graphics;
 
 LRESULT CALLBACK KWin32Window::handleMessageSetup(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
 {
@@ -131,7 +132,7 @@ WPARAM Kozmic::Core::Window::Win32::KWin32Window::processKeys(WPARAM t_wParam, L
     return checked_vk;
 }
 
-KWin32Window::KWin32Window(std::unique_ptr<Logging::K_Logger> t_logger, std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode) : KWindow(t_sTitle, t_size, t_position, t_mode)
+KWin32Window::KWin32Window(std::unique_ptr<Logging::K_Logger> t_logger, std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode, std::string t_sGraphicsType) : KWindow(t_sTitle, t_size, t_position, t_mode, t_sGraphicsType)
 {
     this->m_logger = std::move(t_logger);
     this->m_keyboard = nullptr;
@@ -242,6 +243,14 @@ std::shared_ptr<Kozmic::Core::Input::K_Mouse> KWin32Window::getMouseInput()
         this->m_mouse = std::make_shared<Kozmic::Core::Input::Win32::K_Win32Mouse>();
 
     return this->m_mouse;
+}
+
+std::shared_ptr<K_Graphics> Kozmic::Core::Window::Win32::KWin32Window::getGraphics()
+{
+    if(this->m_graphics == nullptr) {
+    }
+
+    return this->m_graphics;
 }
 
 void KWin32Window::setTitle(std::string t_sTitle)
