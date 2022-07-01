@@ -1,8 +1,9 @@
 #include "Win32Window.hpp"
+
 #include "input/_win32/Win32Keyboard.hpp"
 #include "input/_win32/Win32Mouse.hpp"
 
-#include <iostream>
+#include "graphics/_directx11/DX11Graphics.hpp"
 
 using namespace Kozmic::Core::Window::Win32;
 using namespace Kozmic::Core::Graphics;
@@ -245,9 +246,10 @@ std::shared_ptr<Kozmic::Core::Input::K_Mouse> KWin32Window::getMouseInput()
     return this->m_mouse;
 }
 
-std::shared_ptr<K_Graphics> Kozmic::Core::Window::Win32::KWin32Window::getGraphics()
+std::shared_ptr<K_Graphics> KWin32Window::getGraphics()
 {
     if(this->m_graphics == nullptr) {
+        if (this->m_sGraphicsType == "DX11") this->m_graphics = std::make_shared<K_DX11Graphics>(this->m_hWindow);
     }
 
     return this->m_graphics;

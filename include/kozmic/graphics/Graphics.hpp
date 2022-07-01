@@ -4,7 +4,7 @@
 
 namespace Kozmic::Core::Graphics {
 	class K_Graphics {
-	private:
+	protected:
 		std::unique_ptr<Logging::K_Logger> m_logger;
 	};
 }
