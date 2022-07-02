@@ -249,7 +249,7 @@ std::shared_ptr<Kozmic::Core::Input::K_Mouse> KWin32Window::getMouseInput()
 std::shared_ptr<K_Graphics> KWin32Window::getGraphics()
 {
     if(this->m_graphics == nullptr) {
-        if (this->m_sGraphicsType == "DX11") this->m_graphics = std::make_shared<K_DX11Graphics>(this->m_hWindow);
+        if (this->m_sGraphicsType == "DX11") this->m_graphics = std::make_shared<K_DX11Graphics>(this->m_hWindow, this->m_mode == KWindowMode::WINDOWED ? false : true);
     }
 
     return this->m_graphics;
