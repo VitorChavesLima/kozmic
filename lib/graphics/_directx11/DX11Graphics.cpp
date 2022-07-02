@@ -12,11 +12,18 @@ void K_DX11Graphics::createDevice()
 {
 	HRESULT result;
 
+	unsigned int createDeviceFlags = 0;
+
+#ifdef _DEBUG
+	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif // DEBUG
+
+
 	result = D3D11CreateDevice(
 		NULL,
 		D3D_DRIVER_TYPE_HARDWARE,
 		NULL,
-		D3D11_CREATE_DEVICE_DEBUG,
+		createDeviceFlags,
 		NULL,
 		0,
 		D3D11_SDK_VERSION,

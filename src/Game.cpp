@@ -13,17 +13,17 @@ K_Game::K_Game() : K_Application()
 		this->m_logger->info("Starting game");
 
 		this->m_window = this->m_windowManager->getWindow(std::move(windowLogger), "GAME", { 800, 600 }, { 0, 0 }, Kozmic::Core::Window::KWindowMode::WINDOWED, "DX11");
-		auto graphics = this->m_window->getGraphics();
+		this->m_graphics = this->m_window->getGraphics();
 
 		this->m_window->show();
 
 		this->m_logger->info("Running game loop");
 		while (this->m_window->isOpen()) {
 			this->m_window->update();
-			graphics->clear();
-			graphics->startDraw();
-			graphics->finishDraw();
-			graphics->show();
+			this->m_graphics->clear();
+			this->m_graphics->startDraw();
+			this->m_graphics->finishDraw();
+			this->m_graphics->show();
 		}
 	}
 	catch (Kozmic::Utils::K_Exception e) {
