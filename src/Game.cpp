@@ -20,6 +20,10 @@ K_Game::K_Game() : K_Application()
 		this->m_logger->info("Running game loop");
 		while (this->m_window->isOpen()) {
 			this->m_window->update();
+			graphics->clear();
+			graphics->startDraw();
+			graphics->finishDraw();
+			graphics->show();
 		}
 	}
 	catch (Kozmic::Utils::K_Exception e) {

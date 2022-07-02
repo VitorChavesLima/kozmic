@@ -12,10 +12,17 @@ namespace Kozmic::Core::Graphics {
 	};
 
 	struct K_Viewport {
-		unsigned int left;
-		unsigned int top;
-		unsigned int right;
-		unsigned int bottom;
+		float left;
+		float top;
+		float right;
+		float bottom;
+	};
+
+	struct K_ClearColor {
+		float red;
+		float green;
+		float blue;
+		float alpha;
 	};
 	
 	class K_DX11Graphics : public K_Graphics {
@@ -30,7 +37,10 @@ namespace Kozmic::Core::Graphics {
 
 		K_BufferSize m_bufferSize;
 		K_Viewport m_viewportConfig;
+		K_ClearColor m_clearColor;
+
 		bool m_bFullscreen;
+		bool m_bVSync;
 
 		HWND m_hWindow;
 
@@ -43,5 +53,10 @@ namespace Kozmic::Core::Graphics {
 	public:
 		K_DX11Graphics(HWND t_hWindow, bool t_bFullscreen);
 		~K_DX11Graphics();
+
+		virtual void clear() override;
+		virtual void startDraw() override;
+		virtual void finishDraw() override;
+		virtual void show() override;
 	};
 }

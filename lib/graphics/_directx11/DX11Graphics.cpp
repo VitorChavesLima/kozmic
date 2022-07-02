@@ -100,6 +100,8 @@ void K_DX11Graphics::setViewport()
 
 K_DX11Graphics::K_DX11Graphics(HWND t_hWindow, bool t_bFullscreen)
 {
+	this->m_clearColor = { 0.0f, 0.0f, 0.3f, 1.0f };
+	this->m_bVSync = true;
 	this->m_hWindow = t_hWindow;
 
 	RECT rect;
@@ -110,7 +112,7 @@ K_DX11Graphics::K_DX11Graphics(HWND t_hWindow, bool t_bFullscreen)
 
 	this->m_bFullscreen = t_bFullscreen;
 
-	this->m_viewportConfig = { 0, 0, this->m_bufferSize.width, this->m_bufferSize.height };
+	this->m_viewportConfig = { 0.0f, 0.0f, (float) this->m_bufferSize.width, (float) this->m_bufferSize.height };
 
 	this->createDevice();
 	this->createSwapChain();
@@ -125,4 +127,24 @@ K_DX11Graphics::~K_DX11Graphics()
 	this->m_swapChain->Release();
 	this->m_device->Release();
 	this->m_context->Release();
+}
+
+void K_DX11Graphics::clear()
+{
+	const float clearColor[4] = { this->m_clearColor.red, this->m_clearColor.green, this->m_clearColor.blue, this->m_clearColor.alpha };
+	this->m_context->ClearRenderTargetView(this->m_renderTargetView, clearColor);
+}
+
+void K_DX11Graphics::startDraw()
+{
+}
+
+void K_DX11Graphics::finishDraw()
+{
+}
+
+void K_DX11Graphics::show()
+{
+	this->m_swapChain->Present(this->m_bVSync, NULL);
+	this->m_context->OMSetRenderTargets(1, &this->m_renderTargetView, nullptr);
 }

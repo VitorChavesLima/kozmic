@@ -7,7 +7,7 @@ namespace Kozmic::Core::Graphics {
 	protected:
 		std::unique_ptr<Logging::K_Logger> m_logger;
 	
-	private:
+	public:
 		virtual void clear() = 0;
 		virtual void startDraw() = 0;
 		virtual void finishDraw() = 0;
