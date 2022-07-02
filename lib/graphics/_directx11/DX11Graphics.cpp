@@ -71,6 +71,33 @@ void K_DX11Graphics::createSwapChain()
 	dxgiFactory->Release();
 }
 
+void K_DX11Graphics::createRenderTargetView()
+{
+	HRESULT result;
+	result = this->m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**) &m_backBuffer);
+	if (FAILED(result)) EXCEPT("Could not get the Back Buffer");
+
+	result = this->m_device->CreateRenderTargetView(this->m_backBuffer, NULL, &this->m_renderTargetView);
+	if (FAILED(result)) EXCEPT("Could not create the Render Target View");
+
+	this->m_context->OMSetRenderTargets(1, &this->m_renderTargetView, nullptr);
+}
+
+void K_DX11Graphics::setViewport()
+{
+	D3D11_VIEWPORT viewport = {};
+
+	viewport.TopLeftX = this->m_viewportConfig.left;
+	viewport.TopLeftY = this->m_viewportConfig.top;
+	viewport.Width = this->m_viewportConfig.right;
+	viewport.Height = this->m_viewportConfig.bottom;
+
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0;
+
+	this->m_context->RSSetViewports(1, &viewport);
+}
+
 K_DX11Graphics::K_DX11Graphics(HWND t_hWindow, bool t_bFullscreen)
 {
 	this->m_hWindow = t_hWindow;
@@ -83,12 +110,18 @@ K_DX11Graphics::K_DX11Graphics(HWND t_hWindow, bool t_bFullscreen)
 
 	this->m_bFullscreen = t_bFullscreen;
 
+	this->m_viewportConfig = { 0, 0, this->m_bufferSize.width, this->m_bufferSize.height };
+
 	this->createDevice();
 	this->createSwapChain();
+	this->createRenderTargetView();
+	this->setViewport();
 }
 
 K_DX11Graphics::~K_DX11Graphics()
 {
+	this->m_renderTargetView->Release();
+	this->m_backBuffer->Release();
 	this->m_swapChain->Release();
 	this->m_device->Release();
 	this->m_context->Release();
