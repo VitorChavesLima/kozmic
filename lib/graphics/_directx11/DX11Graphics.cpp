@@ -108,6 +108,40 @@ void K_DX11Graphics::setViewport()
 	this->m_context->RSSetViewports(1, &viewport);
 }
 
+void K_DX11Graphics::setBufferSize(K_BufferSize t_bufferSize)
+{
+	HRESULT result;
+
+	this->m_bufferSize = t_bufferSize;
+
+	ID3D11RenderTargetView* nullViews[] = { nullptr };
+	this->m_context->OMSetRenderTargets(ARRAYSIZE(nullViews), nullViews, nullptr);
+	
+	this->m_backBuffer->Release();
+	this->m_renderTargetView->Release();
+
+	this->m_context->ClearState();
+	this->m_context->Flush();
+
+	result = m_swapChain->ResizeBuffers(2, this->m_bufferSize.width, this->m_bufferSize.height, DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
+	if (result == DXGI_ERROR_DEVICE_REMOVED || result == DXGI_ERROR_DEVICE_RESET) {
+		
+		this->m_swapChain->Release();
+		this->m_device->Release();
+		this->m_context->Release();
+		
+		this->createDevice();
+		this->createSwapChain();
+	}
+
+	this->createRenderTargetView();
+	this->setViewport();
+}
+
+void K_DX11Graphics::setFullscreen(bool t_bFullscreen)
+{
+}
+
 K_DX11Graphics::K_DX11Graphics(HWND t_hWindow, bool t_bFullscreen)
 {
 	this->m_clearColor = { 0.0f, 0.0f, 0.3f, 1.0f };

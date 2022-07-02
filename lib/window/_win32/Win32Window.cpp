@@ -249,7 +249,7 @@ std::shared_ptr<Kozmic::Core::Input::K_Mouse> KWin32Window::getMouseInput()
 std::shared_ptr<K_Graphics> KWin32Window::getGraphics()
 {
     if(this->m_graphics == nullptr) {
-        if (this->m_sGraphicsType == "DX11") this->m_graphics = std::make_shared<K_DX11Graphics>(this->m_hWindow, this->m_mode == KWindowMode::WINDOWED ? false : true);
+        if (this->m_sGraphicsType == "DX11") this->m_graphics = std::make_shared<K_DX11Graphics>(this->m_hWindow, this->m_mode == KWindowMode::EXCLUSIVE_FULLSCREEN ? true: false);
     }
 
     return this->m_graphics;
@@ -277,6 +277,10 @@ void KWin32Window::setSize(KWindowSize t_size)
         this->m_size.height,
         SWP_NOREPOSITION
     );
+
+    if (this->m_graphics) {
+        if (this->m_sGraphicsType == "DX11") dynamic_cast<K_DX11Graphics*>(this->m_graphics.get())->setBufferSize({this->m_size.width, this->m_size.height});
+    }
 }
 
 void KWin32Window::setPosition(KWindowPosition t_position)

@@ -5,6 +5,10 @@
 
 #include <kozmic/graphics/Graphics.hpp>
 
+namespace Kozmic::Core::Window::Win32 {
+	class KWin32Window;
+}
+
 namespace Kozmic::Core::Graphics {
 	struct K_BufferSize {
 		unsigned int width;
@@ -44,11 +48,16 @@ namespace Kozmic::Core::Graphics {
 
 		HWND m_hWindow;
 
+		friend class Window::Win32::KWin32Window;
+
 	private:
 		void createDevice();
 		void createSwapChain();
 		void createRenderTargetView();
 		void setViewport();
+
+		void setBufferSize(K_BufferSize t_bufferSize);
+		void setFullscreen(bool t_bFullscreen);
 
 	public:
 		K_DX11Graphics(HWND t_hWindow, bool t_bFullscreen);
