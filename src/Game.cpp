@@ -40,3 +40,18 @@ Game::K_Game::~K_Game()
 	this->m_window.reset();
 	this->m_logger->info("Finishing game");
 }
+
+void Game::K_Game::handleKeyboardKeyDown(std::string t_sKeyId) {
+	if (t_sKeyId == Kozmic::Core::Input::K_KeyMap::T) {
+		this->m_window->setSize({ 1280, 720 });
+	}
+
+	if (t_sKeyId == Kozmic::Core::Input::K_KeyMap::F) {
+		if (this->m_window->getMode() == Kozmic::Core::Window::WINDOWED) { 
+			this->m_window->setMode(Kozmic::Core::Window::EXCLUSIVE_FULLSCREEN); 
+		}
+		else if (this->m_window->getMode() == Kozmic::Core::Window::EXCLUSIVE_FULLSCREEN) { 
+			this->m_window->setMode(Kozmic::Core::Window::WINDOWED); 
+		}
+	}
+}

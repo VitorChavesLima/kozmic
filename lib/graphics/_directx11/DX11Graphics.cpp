@@ -140,6 +140,31 @@ void K_DX11Graphics::setBufferSize(K_BufferSize t_bufferSize)
 
 void K_DX11Graphics::setFullscreen(bool t_bFullscreen)
 {
+	HRESULT result;
+	this->m_bFullscreen = t_bFullscreen;
+
+	ID3D11RenderTargetView* nullViews[] = { nullptr };
+	this->m_context->OMSetRenderTargets(ARRAYSIZE(nullViews), nullViews, nullptr);
+
+	this->m_backBuffer->Release();
+	this->m_renderTargetView->Release();
+
+	this->m_context->ClearState();
+	this->m_context->Flush();
+
+	result = m_swapChain->ResizeBuffers(2, this->m_bufferSize.width, this->m_bufferSize.height, DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
+	if (result == DXGI_ERROR_DEVICE_REMOVED || result == DXGI_ERROR_DEVICE_RESET) {
+
+		this->m_swapChain->Release();
+		this->m_device->Release();
+		this->m_context->Release();
+
+		this->createDevice();
+		this->createSwapChain();
+	}
+
+	this->createRenderTargetView();
+	this->setViewport();
 }
 
 K_DX11Graphics::K_DX11Graphics(HWND t_hWindow, bool t_bFullscreen)

@@ -99,7 +99,7 @@ LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wPa
 
 DWORD Kozmic::Core::Window::Win32::KWin32Window::getWindowStyle()
 {
-    return this->m_mode == KWindowMode::WINDOWED ? WS_SYSMENU : WS_POPUP;
+    return this->m_mode == KWindowMode::WINDOWED ? WS_SYSMENU | WS_CAPTION : WS_POPUP;
 }
 
 void Kozmic::Core::Window::Win32::KWin32Window::checkSize()
@@ -307,6 +307,15 @@ void KWin32Window::setMode(KWindowMode t_mode)
     this->m_mode = t_mode;
     this->checkSize();
 
+    if(this->m_mode != KWindowMode::WINDOWED) {
+        this->m_position.xPos = 0;
+        this->m_position.yPos = 0;
+    }
+    else {
+        this->m_size.width = 800;
+        this->m_size.height = 600;
+    }
+
     SetWindowPos(
         this->m_hWindow,
         nullptr,
@@ -318,5 +327,13 @@ void KWin32Window::setMode(KWindowMode t_mode)
     );
     
     SetWindowLong(this->m_hWindow, GWL_STYLE, this->getWindowStyle());
+
+    bool fullscreen = true;
+    if (this->m_mode == KWindowMode::WINDOWED) fullscreen = false;
+
+    if (this->m_graphics) {
+        if (this->m_sGraphicsType == "DX11") dynamic_cast<K_DX11Graphics*>(this->m_graphics.get())->setFullscreen(fullscreen);
+    }
+
     ShowWindow(this->m_hWindow, SW_SHOW);
 }

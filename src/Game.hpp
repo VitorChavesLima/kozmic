@@ -12,10 +12,6 @@ namespace Game {
 		K_Game();
 		~K_Game();
 
-		void handleKeyboardKeyDown(std::string t_sKeyId) {
-			if (t_sKeyId == Kozmic::Core::Input::K_KeyMap::F) {
-				this->m_window->setSize({ 1280, 720 });
-			}
-		}
+		void handleKeyboardKeyDown(std::string t_sKeyId);
 	};
 }
