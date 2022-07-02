@@ -13,6 +13,7 @@ K_Game::K_Game() : K_Application()
 		this->m_logger->info("Starting game");
 
 		this->m_window = this->m_windowManager->getWindow(std::move(windowLogger), "GAME", { 800, 600 }, { 0, 0 }, Kozmic::Core::Window::KWindowMode::WINDOWED, "DX11");
+		auto graphics = this->m_window->getGraphics();
 
 		this->m_window->show();
 
