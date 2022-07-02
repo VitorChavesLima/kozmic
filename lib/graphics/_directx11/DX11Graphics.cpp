@@ -66,6 +66,9 @@ void K_DX11Graphics::createSwapChain()
 	result = dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**) &dxgiFactory);
 	if (FAILED(result)) EXCEPT("Could not get DxgiFactory");
 
+	result = dxgiFactory->MakeWindowAssociation(this->m_hWindow, DXGI_MWA_NO_ALT_ENTER);
+	if (FAILED(result)) EXCEPT("Could not make window association");
+
 	result = dxgiFactory->CreateSwapChain(
 		this->m_device,
 		&swapChainDesc,
