@@ -21,13 +21,6 @@ namespace Kozmic::Core::Graphics {
 		float right;
 		float bottom;
 	};
-
-	struct K_ClearColor {
-		float red;
-		float green;
-		float blue;
-		float alpha;
-	};
 	
 	class K_DX11Graphics : public K_Graphics {
 	private:
@@ -41,7 +34,6 @@ namespace Kozmic::Core::Graphics {
 
 		K_BufferSize m_bufferSize;
 		K_Viewport m_viewportConfig;
-		K_ClearColor m_clearColor;
 
 		bool m_bFullscreen;
 		bool m_bVSync;
@@ -62,6 +54,8 @@ namespace Kozmic::Core::Graphics {
 	public:
 		K_DX11Graphics(HWND t_hWindow, bool t_bFullscreen);
 		~K_DX11Graphics();
+
+		virtual void setClearColor(K_ClearColor t_clearColor) override;
 
 		virtual void clear() override;
 		virtual void startDraw() override;

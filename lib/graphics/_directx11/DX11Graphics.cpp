@@ -198,6 +198,11 @@ K_DX11Graphics::~K_DX11Graphics()
 	this->m_context->Release();
 }
 
+void Kozmic::Core::Graphics::K_DX11Graphics::setClearColor(K_ClearColor t_clearColor)
+{
+	this->m_clearColor = t_clearColor;
+}
+
 void K_DX11Graphics::clear()
 {
 	const float clearColor[4] = { this->m_clearColor.red, this->m_clearColor.green, this->m_clearColor.blue, this->m_clearColor.alpha };

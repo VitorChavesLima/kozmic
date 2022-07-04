@@ -42,16 +42,6 @@ Game::K_Game::~K_Game()
 }
 
 void Game::K_Game::handleKeyboardKeyDown(std::string t_sKeyId) {
-	if (t_sKeyId == Kozmic::Core::Input::K_KeyMap::T) {
-		this->m_window->setSize({ 1280, 720 });
-	}
-
-	if (t_sKeyId == Kozmic::Core::Input::K_KeyMap::F) {
-		if (this->m_window->getMode() == Kozmic::Core::Window::WINDOWED) { 
-			this->m_window->setMode(Kozmic::Core::Window::EXCLUSIVE_FULLSCREEN); 
-		}
-		else if (this->m_window->getMode() == Kozmic::Core::Window::EXCLUSIVE_FULLSCREEN) { 
-			this->m_window->setMode(Kozmic::Core::Window::WINDOWED); 
-		}
-	}
+	if (t_sKeyId == Kozmic::Core::Input::K_KeyMap::A) this->m_graphics->setClearColor({ 0.5f, 0.0f, 0.0f, 1.0f });
+	if (t_sKeyId == Kozmic::Core::Input::K_KeyMap::S) this->m_graphics->setClearColor({ 0.0f, 0.5f, 0.0f, 1.0f });
 }
