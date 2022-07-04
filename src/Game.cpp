@@ -17,7 +17,7 @@ K_Game::K_Game() : K_Application()
 
 		keyboardInput->addListener(this);
 
-		this->m_graphics = this->m_window->getGraphics();
+		this->m_graphics = this->m_window->getGraphicsController();
 
 		this->m_window->show();
 
@@ -30,7 +30,7 @@ K_Game::K_Game() : K_Application()
 			this->m_graphics->show();
 		}
 	}
-	catch (Kozmic::Utils::K_Exception e) {
+	catch (Kozmic::Core::Utils::K_Exception e) {
 		this->m_logger->critical("{}\n", e.what());
 	}
 }

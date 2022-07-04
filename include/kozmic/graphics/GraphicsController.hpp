@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kozmic/logging/Logger.hpp>
+#include <kozmic/utils/Controller.hpp>
 
 namespace Kozmic::Core::Graphics {
 	struct K_ClearColor {
@@ -10,11 +10,13 @@ namespace Kozmic::Core::Graphics {
 		float alpha;
 	};
 	
-	class K_Graphics {
+	class K_GraphicsController : public Utils::K_Controller {
 	protected:
 		K_ClearColor m_clearColor;
 
 	public:
+		K_GraphicsController(std::string t_loggerName) : K_Controller(t_loggerName) { }
+
 		virtual void setClearColor(K_ClearColor t_clearColor) = 0;
 
 		virtual void clear() = 0;

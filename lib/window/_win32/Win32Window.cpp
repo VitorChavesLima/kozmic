@@ -133,7 +133,7 @@ WPARAM Kozmic::Core::Window::Win32::KWin32Window::processKeys(WPARAM t_wParam, L
     return checked_vk;
 }
 
-KWin32Window::KWin32Window(std::unique_ptr<Logging::K_Logger> t_logger, std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode, std::string t_sGraphicsType) : KWindow(t_sTitle, t_size, t_position, t_mode, t_sGraphicsType)
+KWin32Window::KWin32Window(std::unique_ptr<Logging::K_Logger> t_logger, std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode, std::string t_sGraphicsControllerType) : KWindow(t_sTitle, t_size, t_position, t_mode, t_sGraphicsControllerType)
 {
     this->m_logger = std::move(t_logger);
     this->m_keyboard = nullptr;
@@ -246,13 +246,13 @@ std::shared_ptr<Kozmic::Core::Input::K_Mouse> KWin32Window::getMouseInput()
     return this->m_mouse;
 }
 
-std::shared_ptr<K_Graphics> KWin32Window::getGraphics()
+std::shared_ptr<K_GraphicsController> KWin32Window::getGraphicsController()
 {
-    if(this->m_graphics == nullptr) {
-        if (this->m_sGraphicsType == "DX11") this->m_graphics = std::make_shared<K_DX11Graphics>(this->m_hWindow, this->m_mode == KWindowMode::EXCLUSIVE_FULLSCREEN ? true: false);
+    if(this->m_graphicsController == nullptr) {
+        if (this->m_sGraphicsControllerType == "DX11") this->m_graphicsController = std::make_shared<K_DX11Graphics>(this->m_hWindow, this->m_mode == KWindowMode::EXCLUSIVE_FULLSCREEN ? true: false);
     }
 
-    return this->m_graphics;
+    return this->m_graphicsController;
 }
 
 void KWin32Window::setTitle(std::string t_sTitle)
@@ -278,8 +278,8 @@ void KWin32Window::setSize(KWindowSize t_size)
         SWP_NOREPOSITION
     );
 
-    if (this->m_graphics) {
-        if (this->m_sGraphicsType == "DX11") dynamic_cast<K_DX11Graphics*>(this->m_graphics.get())->setBufferSize({this->m_size.width, this->m_size.height});
+    if (this->m_graphicsController) {
+        if (this->m_sGraphicsControllerType == "DX11") dynamic_cast<K_DX11Graphics*>(this->m_graphicsController.get())->setBufferSize({this->m_size.width, this->m_size.height});
     }
 }
 
@@ -331,8 +331,8 @@ void KWin32Window::setMode(KWindowMode t_mode)
     bool fullscreen = true;
     if (this->m_mode == KWindowMode::WINDOWED) fullscreen = false;
 
-    if (this->m_graphics) {
-        if (this->m_sGraphicsType == "DX11") dynamic_cast<K_DX11Graphics*>(this->m_graphics.get())->setFullscreen(fullscreen);
+    if (this->m_graphicsController) {
+        if (this->m_sGraphicsControllerType == "DX11") dynamic_cast<K_DX11Graphics*>(this->m_graphicsController.get())->setFullscreen(fullscreen);
     }
 
     ShowWindow(this->m_hWindow, SW_SHOW);

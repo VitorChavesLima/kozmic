@@ -3,7 +3,7 @@
 #include <exception>
 #include <string>
 
-namespace Kozmic::Utils {
+namespace Kozmic::Core::Utils {
 	class K_Exception : public std::exception {
 	private:
 		std::string m_sFile;

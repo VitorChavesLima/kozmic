@@ -167,7 +167,7 @@ void K_DX11Graphics::setFullscreen(bool t_bFullscreen)
 	this->setViewport();
 }
 
-K_DX11Graphics::K_DX11Graphics(HWND t_hWindow, bool t_bFullscreen)
+K_DX11Graphics::K_DX11Graphics(HWND t_hWindow, bool t_bFullscreen) : K_GraphicsController("DX11GraphicsController")
 {
 	this->m_clearColor = { 0.0f, 0.0f, 0.3f, 1.0f };
 	this->m_bVSync = true;

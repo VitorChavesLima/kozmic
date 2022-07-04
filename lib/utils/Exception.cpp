@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-using namespace Kozmic::Utils;
+using namespace Kozmic::Core::Utils;
 
 K_Exception::K_Exception(std::string t_sFile, int t_nLine, std::string t_sFunction, std::string t_sMessage) {
 	this->m_sFile = t_sFile;
