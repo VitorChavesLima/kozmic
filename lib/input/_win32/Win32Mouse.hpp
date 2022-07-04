@@ -5,13 +5,13 @@
 #include <kozmic/input/Mouse.hpp>
 
 namespace Kozmic::Core::Window::Win32 {
-	class KWin32Window;
+	class K_Win32WindowController;
 }
 
 namespace Kozmic::Core::Input::Win32 {
 	class K_Win32Mouse : public K_Mouse {
 	private:
-		friend class Window::Win32::KWin32Window;
+		friend class Window::Win32::K_Win32WindowController;
 
 		unsigned int getMouseXButtonId(WPARAM t_wButton);
 

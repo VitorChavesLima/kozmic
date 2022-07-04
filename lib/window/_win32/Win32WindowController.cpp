@@ -1,4 +1,4 @@
-#include "Win32Window.hpp"
+#include "Win32WindowController.hpp"
 
 #include "input/_win32/Win32Keyboard.hpp"
 #include "input/_win32/Win32Mouse.hpp"
@@ -8,15 +8,15 @@
 using namespace Kozmic::Core::Window::Win32;
 using namespace Kozmic::Core::Graphics;
 
-LRESULT CALLBACK KWin32Window::handleMessageSetup(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
+LRESULT CALLBACK K_Win32WindowController::handleMessageSetup(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
 {
     if (t_message == WM_NCCREATE)
     {
         const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>(t_lParam);
-        KWin32Window* const pWindow = static_cast<KWin32Window*>(pCreate->lpCreateParams);
+        K_Win32WindowController* const pWindow = static_cast<K_Win32WindowController*>(pCreate->lpCreateParams);
         
         SetWindowLongPtr(t_hWindow, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWindow));
-        SetWindowLongPtr(t_hWindow, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&KWin32Window::HandleMessageThunk));
+        SetWindowLongPtr(t_hWindow, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&K_Win32WindowController::HandleMessageThunk));
 
         return pWindow->handleMessage(t_hWindow, t_message, t_wParam, t_lParam);
     }
@@ -24,13 +24,13 @@ LRESULT CALLBACK KWin32Window::handleMessageSetup(HWND t_hWindow, UINT t_message
     return DefWindowProc(t_hWindow, t_message, t_wParam, t_lParam);
 }
 
-LRESULT KWin32Window::HandleMessageThunk(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
+LRESULT K_Win32WindowController::HandleMessageThunk(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
 {
-    KWin32Window* const pWnd = reinterpret_cast<KWin32Window*>(GetWindowLongPtr(t_hWindow, GWLP_USERDATA));
+    K_Win32WindowController* const pWnd = reinterpret_cast<K_Win32WindowController*>(GetWindowLongPtr(t_hWindow, GWLP_USERDATA));
     return pWnd->handleMessage(t_hWindow, t_message, t_wParam, t_lParam);
 }
 
-LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
+LRESULT K_Win32WindowController::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
 {
     switch (t_message)
     {
@@ -97,19 +97,19 @@ LRESULT KWin32Window::handleMessage(HWND t_hWindow, UINT t_message, WPARAM t_wPa
     return DefWindowProc(t_hWindow, t_message, t_wParam, t_lParam);
 }
 
-DWORD Kozmic::Core::Window::Win32::KWin32Window::getWindowStyle()
+DWORD K_Win32WindowController::getWindowStyle()
 {
-    return this->m_mode == KWindowMode::WINDOWED ? WS_SYSMENU | WS_CAPTION : WS_POPUP;
+    return this->m_mode == K_WindowMode::WINDOWED ? WS_SYSMENU | WS_CAPTION : WS_POPUP;
 }
 
-void Kozmic::Core::Window::Win32::KWin32Window::checkSize()
+void K_Win32WindowController::checkSize()
 {
-    if (this->m_mode != KWindowMode::WINDOWED) {
+    if (this->m_mode != K_WindowMode::WINDOWED) {
         this->m_size = { (unsigned int) GetSystemMetrics(SM_CXSCREEN), (unsigned int) GetSystemMetrics(SM_CYSCREEN) };
     }
 }
 
-WPARAM Kozmic::Core::Window::Win32::KWin32Window::processKeys(WPARAM t_wParam, LPARAM t_lParam)
+WPARAM K_Win32WindowController::processKeys(WPARAM t_wParam, LPARAM t_lParam)
 {
     WPARAM checked_vk = t_wParam;
     UINT scancode = (t_lParam & 0x00ff0000) >> 16;
@@ -133,7 +133,7 @@ WPARAM Kozmic::Core::Window::Win32::KWin32Window::processKeys(WPARAM t_wParam, L
     return checked_vk;
 }
 
-KWin32Window::KWin32Window(std::unique_ptr<Logging::K_Logger> t_logger, std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode, std::string t_sGraphicsControllerType) : KWindow(t_sTitle, t_size, t_position, t_mode, t_sGraphicsControllerType)
+K_Win32WindowController::K_Win32WindowController(std::unique_ptr<Logging::K_Logger> t_logger, std::string t_sTitle, K_WindowSize t_size, K_WindowPosition t_position, K_WindowMode t_mode, std::string t_sGraphicsControllerType) : K_WindowController(t_sTitle, t_size, t_position, t_mode, t_sGraphicsControllerType)
 {
     this->m_logger = std::move(t_logger);
     this->m_keyboard = nullptr;
@@ -187,46 +187,46 @@ KWin32Window::KWin32Window(std::unique_ptr<Logging::K_Logger> t_logger, std::str
     );
 }
 
-KWin32Window::~KWin32Window()
+K_Win32WindowController::~K_Win32WindowController()
 {
     this->m_logger->info("Finishing window");
 }
 
-void KWin32Window::show()
+void K_Win32WindowController::show()
 {
     this->m_logger->info("Showing window");
     ShowWindow(this->m_hWindow, 1);
 }
 
-void KWin32Window::hide()
+void K_Win32WindowController::hide()
 {
     this->m_logger->info("Hiding window");
     ShowWindow(this->m_hWindow, 0);
 }
 
-void KWin32Window::close()
+void K_Win32WindowController::close()
 {
     this->m_logger->info("Closing window");
     PostQuitMessage(0);
 }
 
-bool KWin32Window::isOpen()
+bool K_Win32WindowController::isOpen()
 {
     return GetMessage(&this->m_message, NULL, 0, 0) > 0;
 }
 
-bool KWin32Window::isFocused()
+bool K_Win32WindowController::isFocused()
 {
     return this->m_bFocused;
 }
 
-void KWin32Window::update()
+void K_Win32WindowController::update()
 {
     TranslateMessage(&this->m_message);
     DispatchMessage(&this->m_message);
 }
 
-std::shared_ptr<Kozmic::Core::Input::K_Keyboard> KWin32Window::getKeyboardInput()
+std::shared_ptr<Kozmic::Core::Input::K_Keyboard> K_Win32WindowController::getKeyboardInput()
 {
     this->m_logger->info("Returning a keyboard input access");
 
@@ -236,7 +236,7 @@ std::shared_ptr<Kozmic::Core::Input::K_Keyboard> KWin32Window::getKeyboardInput(
     return this->m_keyboard;
 }
 
-std::shared_ptr<Kozmic::Core::Input::K_Mouse> KWin32Window::getMouseInput()
+std::shared_ptr<Kozmic::Core::Input::K_Mouse> K_Win32WindowController::getMouseInput()
 {
     this->m_logger->info("Returning a mouse input access");
 
@@ -246,23 +246,23 @@ std::shared_ptr<Kozmic::Core::Input::K_Mouse> KWin32Window::getMouseInput()
     return this->m_mouse;
 }
 
-std::shared_ptr<K_GraphicsController> KWin32Window::getGraphicsController()
+std::shared_ptr<K_GraphicsController> K_Win32WindowController::getGraphicsController()
 {
     if(this->m_graphicsController == nullptr) {
-        if (this->m_sGraphicsControllerType == "DX11") this->m_graphicsController = std::make_shared<K_DX11Graphics>(this->m_hWindow, this->m_mode == KWindowMode::EXCLUSIVE_FULLSCREEN ? true: false);
+        if (this->m_sGraphicsControllerType == "DX11") this->m_graphicsController = std::make_shared<K_DX11Graphics>(this->m_hWindow, this->m_mode == K_WindowMode::EXCLUSIVE_FULLSCREEN ? true: false);
     }
 
     return this->m_graphicsController;
 }
 
-void KWin32Window::setTitle(std::string t_sTitle)
+void K_Win32WindowController::setTitle(std::string t_sTitle)
 {
     this->m_logger->info("Changing window title");
 
     SetWindowText(this->m_hWindow, t_sTitle.c_str());
 }
 
-void KWin32Window::setSize(KWindowSize t_size)
+void K_Win32WindowController::setSize(K_WindowSize t_size)
 {
     this->m_logger->info("Changing size");
 
@@ -283,7 +283,7 @@ void KWin32Window::setSize(KWindowSize t_size)
     }
 }
 
-void KWin32Window::setPosition(KWindowPosition t_position)
+void K_Win32WindowController::setPosition(K_WindowPosition t_position)
 {
     this->m_logger->info("Changing position");
 
@@ -300,14 +300,14 @@ void KWin32Window::setPosition(KWindowPosition t_position)
     );
 }
 
-void KWin32Window::setMode(KWindowMode t_mode)
+void K_Win32WindowController::setMode(K_WindowMode t_mode)
 {
     this->m_logger->info("Changing window mode");
 
     this->m_mode = t_mode;
     this->checkSize();
 
-    if(this->m_mode != KWindowMode::WINDOWED) {
+    if(this->m_mode != K_WindowMode::WINDOWED) {
         this->m_position.xPos = 0;
         this->m_position.yPos = 0;
     }
@@ -329,7 +329,7 @@ void KWin32Window::setMode(KWindowMode t_mode)
     SetWindowLong(this->m_hWindow, GWL_STYLE, this->getWindowStyle());
 
     bool fullscreen = true;
-    if (this->m_mode == KWindowMode::WINDOWED) fullscreen = false;
+    if (this->m_mode == K_WindowMode::WINDOWED) fullscreen = false;
 
     if (this->m_graphicsController) {
         if (this->m_sGraphicsControllerType == "DX11") dynamic_cast<K_DX11Graphics*>(this->m_graphicsController.get())->setFullscreen(fullscreen);

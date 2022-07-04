@@ -6,7 +6,7 @@
 #include <kozmic/graphics/GraphicsController.hpp>
 
 namespace Kozmic::Core::Window::Win32 {
-	class KWin32Window;
+	class K_Win32WindowController;
 }
 
 namespace Kozmic::Core::Graphics {
@@ -40,7 +40,7 @@ namespace Kozmic::Core::Graphics {
 
 		HWND m_hWindow;
 
-		friend class Window::Win32::KWin32Window;
+		friend class Window::Win32::K_Win32WindowController;
 
 	private:
 		void createDevice();

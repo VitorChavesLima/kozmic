@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-#include <kozmic/window/Window.hpp>
+#include <kozmic/window/WindowController.hpp>
 
 namespace Kozmic::Core::Input::Win32 {
 	class K_Win32Keyboard;
@@ -10,7 +10,7 @@ namespace Kozmic::Core::Input::Win32 {
 }
 
 namespace Kozmic::Core::Window::Win32 {
-	class KWin32Window : public KWindow {
+	class K_Win32WindowController : public K_WindowController {
 	private:
 		HWND m_hWindow;
 		MSG m_message;
@@ -31,8 +31,8 @@ namespace Kozmic::Core::Window::Win32 {
 		WPARAM processKeys(WPARAM t_wParam, LPARAM t_lParam);
 
 	public:
-		KWin32Window(std::unique_ptr<Logging::K_Logger> t_logger, std::string t_sTitle, KWindowSize t_size, KWindowPosition t_position, KWindowMode t_mode, std::string t_sGraphicsControllerType);
-		virtual ~KWin32Window() override;
+		K_Win32WindowController(std::unique_ptr<Logging::K_Logger> t_logger, std::string t_sTitle, K_WindowSize t_size, K_WindowPosition t_position, K_WindowMode t_mode, std::string t_sGraphicsControllerType);
+		virtual ~K_Win32WindowController() override;
 
 		virtual void show() override;
 		virtual void hide() override;
@@ -48,8 +48,8 @@ namespace Kozmic::Core::Window::Win32 {
 
 	public:
 		virtual void setTitle(std::string t_sTitle) override;
-		virtual void setSize(KWindowSize t_size) override;
-		virtual void setPosition(KWindowPosition t_position) override;
-		virtual void setMode(KWindowMode t_mode) override;
+		virtual void setSize(K_WindowSize t_size) override;
+		virtual void setPosition(K_WindowPosition t_position) override;
+		virtual void setMode(K_WindowMode t_mode) override;
 	};
 }
