@@ -12,8 +12,6 @@ namespace Kozmic::Core::Graphics {
 	
 	class K_Graphics {
 	protected:
-		std::unique_ptr<Logging::K_Logger> m_logger;
-	
 		K_ClearColor m_clearColor;
 
 	public:
