@@ -14,9 +14,8 @@ namespace Kozmic::Core::Utils {
 	protected:
 		K_Controller(std::string t_loggerName) : m_loggerName(t_loggerName) { }
 
-	// PRE INITIALIZATION ALLOWED METHODS
-	// POST INITIALIZATION ALLOWED METHODS
-	// GETTERS
-	// SETTERS
+	public:
+		virtual void initialize() = 0;
+		virtual void shutdown() = 0;
 	};
 }

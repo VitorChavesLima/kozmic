@@ -133,9 +133,8 @@ WPARAM K_Win32WindowController::processKeys(WPARAM t_wParam, LPARAM t_lParam)
     return checked_vk;
 }
 
-K_Win32WindowController::K_Win32WindowController(std::unique_ptr<Logging::K_Logger> t_logger, std::string t_sTitle, K_WindowSize t_size, K_WindowPosition t_position, K_WindowMode t_mode, std::string t_sGraphicsControllerType) : K_WindowController(t_sTitle, t_size, t_position, t_mode, t_sGraphicsControllerType)
+K_Win32WindowController::K_Win32WindowController(std::string t_sTitle) : K_WindowController(t_sTitle)
 {
-    this->m_logger = std::move(t_logger);
     this->m_keyboard = nullptr;
     this->m_message = { };
 

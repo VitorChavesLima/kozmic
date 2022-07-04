@@ -31,7 +31,7 @@ namespace Kozmic::Core::Window::Win32 {
 		WPARAM processKeys(WPARAM t_wParam, LPARAM t_lParam);
 
 	public:
-		K_Win32WindowController(std::unique_ptr<Logging::K_Logger> t_logger, std::string t_sTitle, K_WindowSize t_size, K_WindowPosition t_position, K_WindowMode t_mode, std::string t_sGraphicsControllerType);
+		K_Win32WindowController(std::string t_sTitle);
 		virtual ~K_Win32WindowController() override;
 
 		virtual void show() override;

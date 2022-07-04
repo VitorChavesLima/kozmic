@@ -2,12 +2,12 @@
 
 using namespace Kozmic::Core::Window;
 
-K_WindowController::K_WindowController(std::string t_sTitle, K_WindowSize t_size, K_WindowPosition t_position, K_WindowMode t_mode, std::string t_sGraphicsControllerType) {
+K_WindowController::K_WindowController(std::string t_sTitle) : Utils::K_Controller("WINDOW") {
 	this->m_sTitle = t_sTitle;
-	this->m_size = t_size;
-	this->m_position = t_position;
-	this->m_mode = t_mode;
-	this->m_sGraphicsControllerType = t_sGraphicsControllerType;
+	this->m_size = { 800, 600 };
+	this->m_position = { 0, 0 };
+	this->m_mode = K_WindowMode::WINDOWED;
+	this->m_sGraphicsControllerType = "DX11";
 }
 
 std::string K_WindowController::getTitle()

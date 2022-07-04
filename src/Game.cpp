@@ -7,12 +7,9 @@ using namespace Game;
 K_Game::K_Game() : K_Application()
 {
 	try {
-		this->m_logger = this->m_loggingManager->getLogger("Game");
-		auto windowLogger = this->m_loggingManager->getLogger("Window");
-
 		this->m_logger->info("Starting game");
 
-		this->m_window = this->m_windowManager->getWindow(std::move(windowLogger), "GAME", { 800, 600 }, { 0, 0 }, Kozmic::Core::Window::K_WindowMode::WINDOWED, "DX11");
+		this->m_window = this->m_windowManager->getWindow("GAME");
 		auto keyboardInput = this->m_window->getKeyboardInput();
 
 		keyboardInput->addListener(this);

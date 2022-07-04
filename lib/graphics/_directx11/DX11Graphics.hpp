@@ -55,6 +55,9 @@ namespace Kozmic::Core::Graphics {
 		K_DX11Graphics(HWND t_hWindow, bool t_bFullscreen);
 		~K_DX11Graphics();
 
+		virtual void initialize() override {}
+		virtual void shutdown() override {}
+
 		virtual void setClearColor(K_ClearColor t_clearColor) override;
 
 		virtual void clear() override;

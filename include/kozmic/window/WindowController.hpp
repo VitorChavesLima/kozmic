@@ -26,7 +26,7 @@ namespace Kozmic::Core::Window {
 		EXCLUSIVE_FULLSCREEN
 	};
 
-	class K_WindowController {
+	class K_WindowController : public Utils::K_Controller {
 	protected:
 		std::string m_sTitle;
 		K_WindowSize m_size;
@@ -36,8 +36,11 @@ namespace Kozmic::Core::Window {
 		std::string m_sGraphicsControllerType;
 
 	public:
-		K_WindowController(std::string t_sTitle, K_WindowSize t_size, K_WindowPosition t_position, K_WindowMode t_mode, std::string t_sGraphicsControllerType);
+		K_WindowController(std::string t_sTitle);
 		virtual ~K_WindowController() = default;
+
+		virtual void initialize() override {}
+		virtual void shutdown() override {}
 
 		virtual void show() = 0;
 		virtual void hide() = 0;
