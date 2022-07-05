@@ -1,6 +1,7 @@
 #include "Game.hpp"
 
 #include <kozmic/logging/LoggingManager.hpp>
+#include <kozmic/window/WindowManager.hpp>
 
 #include <iostream>
 
@@ -13,7 +14,7 @@ K_Game::K_Game() : K_Application()
 	try {
 		this->m_logger->info("Starting game");
 
-		//this->m_window = this->m_windowManager->getWindow("GAME");
+		this->m_window = Kozmic::Core::KWindowManager::getInstance()->getWindow("GAME");
 		/*auto keyboardInput = this->m_window->getKeyboardInput();
 
 		keyboardInput->addListener(this);
@@ -38,7 +39,7 @@ K_Game::K_Game() : K_Application()
 
 Game::K_Game::~K_Game()
 {
-	// this->m_window.reset();
+	this->m_window.reset();
 	this->m_logger->info("Finishing game");
 }
 

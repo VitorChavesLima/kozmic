@@ -15,7 +15,6 @@ namespace Kozmic::Core::Window::Win32 {
 		HWND m_hWindow;
 		MSG m_message;
 
-		std::unique_ptr<Logging::K_Logger> m_logger;
 		std::shared_ptr<Input::Win32::K_Win32Keyboard> m_keyboard;
 		std::shared_ptr<Input::Win32::K_Win32Mouse> m_mouse;
 		std::shared_ptr<Graphics::K_GraphicsController> m_graphicsController;
