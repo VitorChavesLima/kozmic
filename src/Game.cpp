@@ -15,22 +15,24 @@ K_Game::K_Game() : K_Application()
 		this->m_logger->info("Starting game");
 
 		this->m_window = Kozmic::Core::KWindowManager::getInstance()->getWindow("GAME");
+		this->m_graphics = this->m_window->getGraphicsController();
+
 		//auto keyboardInput = this->m_window->getKeyboardInput();
 
 		//keyboardInput->addListener(this);
 
-		//this->m_graphics = this->m_window->getGraphicsController();
 
 		this->m_window->show();
 
-		this->m_logger->info("Running game loop");
+		this->m_logger->info("Starting game loop");
 		while (this->m_window->isOpen()) {
 			this->m_window->update();
-			//this->m_graphics->clear();
-			//this->m_graphics->startDraw();
-			//this->m_graphics->finishDraw();
-			//this->m_graphics->show();
+			this->m_graphics->clear();
+			this->m_graphics->startDraw();
+			this->m_graphics->finishDraw();
+			this->m_graphics->show();
 		}
+		this->m_logger->info("Exiting game loop");
 	}
 	catch (Kozmic::Core::Utils::K_Exception e) {
 		this->m_logger->critical("{}\n", e.what());
@@ -39,6 +41,7 @@ K_Game::K_Game() : K_Application()
 
 Game::K_Game::~K_Game()
 {
+	this->m_graphics.reset();
 	this->m_window.reset();
 	this->m_logger->info("Finishing game");
 }

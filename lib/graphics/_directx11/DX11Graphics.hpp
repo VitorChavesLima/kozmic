@@ -52,7 +52,7 @@ namespace Kozmic::Core::Graphics {
 		void setFullscreen(bool t_bFullscreen);
 
 	public:
-		K_DX11Graphics(HWND t_hWindow, bool t_bFullscreen);
+		K_DX11Graphics(std::string t_sWindowName, HWND t_hWindow, bool t_bFullscreen);
 		~K_DX11Graphics();
 
 		virtual void initialize() override {}

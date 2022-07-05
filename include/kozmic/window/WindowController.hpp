@@ -36,7 +36,7 @@ namespace Kozmic::Core::Window {
 		std::string m_sGraphicsControllerType;
 
 	public:
-		K_WindowController(std::string t_sTitle);
+		K_WindowController(std::string t_sTitle, std::string t_sLoggerName);
 		virtual ~K_WindowController() = default;
 
 		virtual void initialize() override {}

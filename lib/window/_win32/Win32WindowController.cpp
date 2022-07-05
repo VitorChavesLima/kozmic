@@ -133,14 +133,12 @@ WPARAM K_Win32WindowController::processKeys(WPARAM t_wParam, LPARAM t_lParam)
     return checked_vk;
 }
 
-K_Win32WindowController::K_Win32WindowController(std::string t_sTitle) : K_WindowController(t_sTitle + "_WIN32")
+K_Win32WindowController::K_Win32WindowController(std::string t_sTitle) : K_WindowController(t_sTitle, t_sTitle + "_WIN32")
 {
     this->m_keyboard = nullptr;
     this->m_message = { };
 
     this->checkSize();
-
-    this->m_logger->info("Creating Window");
 
 	HINSTANCE hInstance = GetModuleHandle(nullptr);
 
@@ -188,7 +186,8 @@ K_Win32WindowController::K_Win32WindowController(std::string t_sTitle) : K_Windo
 
 K_Win32WindowController::~K_Win32WindowController()
 {
-    this->m_logger->info("Finishing window");
+    this->m_graphicsController.reset();
+    this->m_logger->info("Cleaning window");
 }
 
 void K_Win32WindowController::show()
@@ -248,7 +247,10 @@ std::shared_ptr<Kozmic::Core::Input::K_Mouse> K_Win32WindowController::getMouseI
 std::shared_ptr<K_GraphicsController> K_Win32WindowController::getGraphicsController()
 {
     if(this->m_graphicsController == nullptr) {
-        if (this->m_sGraphicsControllerType == "DX11") this->m_graphicsController = std::make_shared<K_DX11Graphics>(this->m_hWindow, this->m_mode == K_WindowMode::EXCLUSIVE_FULLSCREEN ? true: false);
+        if (this->m_sGraphicsControllerType == "DX11") { 
+            this->m_logger->info("Generating DirectX11 Graphics Controller");
+            this->m_graphicsController = std::make_shared<K_DX11Graphics>(this->m_sTitle, this->m_hWindow, this->m_mode == K_WindowMode::EXCLUSIVE_FULLSCREEN ? true : false); 
+        }
     }
 
     return this->m_graphicsController;
