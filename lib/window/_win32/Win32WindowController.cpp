@@ -133,14 +133,14 @@ WPARAM K_Win32WindowController::processKeys(WPARAM t_wParam, LPARAM t_lParam)
     return checked_vk;
 }
 
-K_Win32WindowController::K_Win32WindowController(std::string t_sTitle) : K_WindowController(t_sTitle)
+K_Win32WindowController::K_Win32WindowController(std::string t_sTitle) : K_WindowController(t_sTitle + "_WIN32")
 {
     this->m_keyboard = nullptr;
     this->m_message = { };
 
     this->checkSize();
 
-    this->m_logger->info("Creating WIN32 Window");
+    this->m_logger->info("Creating Window");
 
 	HINSTANCE hInstance = GetModuleHandle(nullptr);
 

@@ -10,6 +10,8 @@ namespace Kozmic::Core {
 	private:
 		static KWindowManager* m_instance;
 
+		std::unique_ptr<Logging::K_Logger> m_logger;
+
 	private:
 		KWindowManager();
 
