@@ -7,10 +7,15 @@
 namespace Kozmic::Core {
 	class K_LoggingManager {
 	private:
+		static K_LoggingManager* m_instance;
+
 		std::unique_ptr<Logging::K_LoggerGenerator> m_loggerGenerator;
 
-	public:
+	private:
 		K_LoggingManager();
+
+	public:
+		static K_LoggingManager* getInstance();
 
 		std::unique_ptr<Logging::K_Logger> getLogger(std::string t_sName);
 	};

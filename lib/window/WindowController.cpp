@@ -2,7 +2,7 @@
 
 using namespace Kozmic::Core::Window;
 
-K_WindowController::K_WindowController(std::string t_sTitle) : Utils::K_Controller("WINDOW") {
+K_WindowController::K_WindowController(std::string t_sTitle) : Utils::K_Controller(t_sTitle + "_WINDOW") {
 	this->m_sTitle = t_sTitle;
 	this->m_size = { 800, 600 };
 	this->m_position = { 0, 0 };

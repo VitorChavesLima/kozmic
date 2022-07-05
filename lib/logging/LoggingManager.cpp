@@ -6,6 +6,8 @@
 
 using namespace Kozmic::Core;
 
+K_LoggingManager* K_LoggingManager::m_instance = 0;
+
 K_LoggingManager::K_LoggingManager()
 {
 	std::filesystem::path directory = std::filesystem::current_path();
@@ -21,6 +23,16 @@ K_LoggingManager::K_LoggingManager()
 	completePath.replace_extension(".txt");
 
 	this->m_loggerGenerator = std::make_unique<Logging::K_LoggerGenerator>(completePath.string());
+}
+
+K_LoggingManager* K_LoggingManager::getInstance()
+{
+	if (m_instance == 0)
+	{
+		m_instance = new K_LoggingManager();
+	}
+
+	return m_instance;
 }
 
 std::unique_ptr<Logging::K_Logger> K_LoggingManager::getLogger(std::string t_sName) {

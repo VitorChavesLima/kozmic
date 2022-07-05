@@ -1,16 +1,20 @@
 #include "Game.hpp"
 
+#include <kozmic/logging/LoggingManager.hpp>
+
 #include <iostream>
 
 using namespace Game;
 
 K_Game::K_Game() : K_Application()
 {
+	this->m_logger = Kozmic::Core::K_LoggingManager::getInstance()->getLogger("GAME");
+
 	try {
 		this->m_logger->info("Starting game");
 
-		this->m_window = this->m_windowManager->getWindow("GAME");
-		auto keyboardInput = this->m_window->getKeyboardInput();
+		//this->m_window = this->m_windowManager->getWindow("GAME");
+		/*auto keyboardInput = this->m_window->getKeyboardInput();
 
 		keyboardInput->addListener(this);
 
@@ -25,7 +29,7 @@ K_Game::K_Game() : K_Application()
 			this->m_graphics->startDraw();
 			this->m_graphics->finishDraw();
 			this->m_graphics->show();
-		}
+		}*/
 	}
 	catch (Kozmic::Core::Utils::K_Exception e) {
 		this->m_logger->critical("{}\n", e.what());
@@ -34,7 +38,7 @@ K_Game::K_Game() : K_Application()
 
 Game::K_Game::~K_Game()
 {
-	this->m_window.reset();
+	// this->m_window.reset();
 	this->m_logger->info("Finishing game");
 }
 
