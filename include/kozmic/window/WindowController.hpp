@@ -1,5 +1,5 @@
 //
-// Created by vitor on 06/07/2022.
+// Created by Vitor Chaves on 06/07/2022.
 //
 
 #ifndef KOZMIC_WINDOWCONTROLLER_HPP

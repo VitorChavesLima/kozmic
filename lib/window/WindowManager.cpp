@@ -7,25 +7,37 @@
 
 using namespace Kozmic::Core;
 
-KWindowManager* KWindowManager::m_instance = 0;
+//<editor-fold desc="Constructors and Destructors">
 
-KWindowManager::KWindowManager() {
+K_WindowManager::K_WindowManager() {
 	this->m_logger = K_LoggingManager::getInstance()->getLogger("WINDOW_MANAGER");
 }
 
-KWindowManager* KWindowManager::getInstance()
+//</editor-fold>
+
+//<editor-fold desc="Manager related">
+
+K_WindowManager* K_WindowManager::m_instance = nullptr;
+
+K_WindowManager* K_WindowManager::getInstance()
 {
-	if (m_instance == 0)
+	if (m_instance == nullptr)
 	{
-		m_instance = new KWindowManager();
+		m_instance = new K_WindowManager();
 	}
 
 	return m_instance;
 }
 
-std::unique_ptr<Window::K_WindowController> KWindowManager::getWindow(std::string t_sTitle) {
+//</editor-fold>
+
+//<editor-fold desc="Generators">
+
+std::unique_ptr<Window::K_WindowController> K_WindowManager::getWindow(const std::string& t_sTitle) {
 #ifdef WIN32
 	this->m_logger->info("Generating WIN32 Window");
 	return std::make_unique<Window::Win32::K_Win32WindowController>(t_sTitle);
 #endif
 }
+
+//</editor-fold>

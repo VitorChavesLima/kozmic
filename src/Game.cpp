@@ -14,7 +14,7 @@ K_Game::K_Game() : K_Application()
 	try {
 		this->m_logger->info("Starting game");
 
-		this->m_window = Kozmic::Core::KWindowManager::getInstance()->getWindow("GAME");
+		this->m_window = Kozmic::Core::K_WindowManager::getInstance()->getWindow("GAME");
 		this->m_graphics = this->m_window->getGraphicsController();
 
 		//auto keyboardInput = this->m_window->getKeyboardInput();
