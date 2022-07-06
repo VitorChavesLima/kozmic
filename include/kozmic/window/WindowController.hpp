@@ -1,4 +1,9 @@
-#pragma once
+//
+// Created by vitor on 06/07/2022.
+//
+
+#ifndef KOZMIC_WINDOWCONTROLLER_HPP
+#define KOZMIC_WINDOWCONTROLLER_HPP
 
 #include <memory>
 #include <string>
@@ -9,46 +14,46 @@
 #include <kozmic/input/Mouse.hpp>
 #include <kozmic/graphics/GraphicsController.hpp>
 
-namespace Kozmic { namespace Core { namespace Window {
-	struct K_WindowSize {
-		unsigned int width;
-		unsigned int height;
-	};
+namespace Kozmic::Core::Window {
+    struct K_WindowSize {
+        unsigned int width;
+        unsigned int height;
+    };
 
-	struct K_WindowPosition
-	{
-		unsigned int xPos;
-		unsigned int yPos;
-	};
+    struct K_WindowPosition
+    {
+        unsigned int xPos;
+        unsigned int yPos;
+    };
 
-	enum K_WindowMode {
-		WINDOWED [[maybe_unused]],
-		BORDERLESS_FULLSCREEN [[maybe_unused]],
-		EXCLUSIVE_FULLSCREEN [[maybe_unused]]
-	};
+    enum K_WindowMode {
+        WINDOWED [[maybe_unused]],
+        BORDERLESS_FULLSCREEN [[maybe_unused]],
+        EXCLUSIVE_FULLSCREEN [[maybe_unused]]
+    };
 
-	class K_WindowController : public Utils::K_Controller {
-	protected:
-		std::string m_sTitle;
-		K_WindowSize m_size;
-		K_WindowPosition m_position;
-		K_WindowMode m_mode;
-		bool m_bFocused;
-		std::string m_sGraphicsControllerType;
+    class K_WindowController : public Utils::K_Controller {
+    protected:
+        std::string m_sTitle;
+        K_WindowSize m_size = {800, 600};
+        K_WindowPosition m_position = {0, 0};
+        K_WindowMode m_mode;
+        bool m_bFocused;
+        std::string m_sGraphicsControllerType;
 
         //<editor-fold desc="Constructors and Destructors">
 
     public:
-		K_WindowController(std::string t_sTitle, std::string t_sLoggerName);
-		virtual ~K_WindowController() = default;
+        K_WindowController(std::string t_sTitle, const std::string& t_sLoggerName);
+        virtual ~K_WindowController() = default;
 
         //</editor-fold>
 
         //<editor-fold desc="Controller Specific">
 
     public:
-		void initialize() override = 0;
-		void shutdown() override = 0;
+        void initialize() override = 0;
+        void shutdown() override = 0;
 
         //</editor-fold>
 
@@ -85,13 +90,14 @@ namespace Kozmic { namespace Core { namespace Window {
 
         //<editor-fold desc="Getters">
 
-	public:
-        [[maybe_unused]] std::string getTitle();
-        [[maybe_unused]] K_WindowSize getSize();
+    public:
+        [[maybe_unused]] [[maybe_unused]] std::string getTitle();
+        [[maybe_unused]] [[maybe_unused]] K_WindowSize getSize();
         [[maybe_unused]] K_WindowPosition getPosition();
         [[maybe_unused]] K_WindowMode getMode();
 
         //</editor-fold>
     };
+}
 
-} } }
+#endif//KOZMIC_WINDOWCONTROLLER_HPP
