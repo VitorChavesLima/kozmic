@@ -28,7 +28,7 @@ namespace Kozmic::Core::Logging {
 
 		template<typename... Args>
 		void warning(spdlog::format_string_t<Args...> t_sMessage, Args &&... args) {
-			this->m_logger->warning(t_sMessage, std::forward<Args>(args)...);
+			this->m_logger->warn(t_sMessage, std::forward<Args>(args)...);
 		}
 
 		template<typename... Args>

@@ -33,6 +33,9 @@ namespace Kozmic::Core::Window::Win32 {
 		K_Win32WindowController(std::string t_sTitle);
 		virtual ~K_Win32WindowController() override;
 
+        virtual void initialize() override;
+        virtual void shutdown() override;
+
 		virtual void show() override;
 		virtual void hide() override;
 		virtual void close() override;

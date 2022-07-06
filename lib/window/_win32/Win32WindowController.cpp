@@ -338,3 +338,11 @@ void K_Win32WindowController::setMode(K_WindowMode t_mode)
 
     ShowWindow(this->m_hWindow, SW_SHOW);
 }
+
+void K_Win32WindowController::initialize() {
+
+}
+
+void K_Win32WindowController::shutdown() {
+
+}
