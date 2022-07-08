@@ -1,4 +1,9 @@
-#pragma once
+//
+// Created by vitor on 07/07/2022.
+//
+
+#ifndef KOZMIC_APPLICATION_HPP
+#define KOZMIC_APPLICATION_HPP
 
 #include <memory>
 
@@ -6,6 +11,8 @@
 #include <kozmic/window/WindowManager.hpp>
 
 namespace Kozmic::Core {
-	class K_Application {
-	};
+    class K_Application {
+    };
 }
+
+#endif //KOZMIC_APPLICATION_HPP

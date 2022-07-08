@@ -19,5 +19,6 @@ namespace Kozmic::Core::Input::Win32 {
 
 	public:
 		K_Win32Keyboard();
+        ~K_Win32Keyboard() = default;
 	};
 }

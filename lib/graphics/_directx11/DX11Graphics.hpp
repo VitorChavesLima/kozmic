@@ -11,8 +11,8 @@ namespace Kozmic::Core::Window::Win32 {
 
 namespace Kozmic::Core::Graphics {
 	struct K_BufferSize {
-		unsigned int width;
-		unsigned int height;
+		int width;
+		int height;
 	};
 
 	struct K_Viewport {

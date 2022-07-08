@@ -13,10 +13,10 @@ LRESULT CALLBACK K_Win32WindowController::handleMessageSetup(HWND t_hWindow, UIN
     if (t_message == WM_NCCREATE)
     {
         const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>(t_lParam);
-        K_Win32WindowController* const pWindow = static_cast<K_Win32WindowController*>(pCreate->lpCreateParams);
+        auto* const pWindow = static_cast<K_Win32WindowController*>(pCreate->lpCreateParams);
         
         SetWindowLongPtr(t_hWindow, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWindow));
-        SetWindowLongPtr(t_hWindow, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&K_Win32WindowController::HandleMessageThunk));
+        SetWindowLongPtr(t_hWindow, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&K_Win32WindowController::handleMessageThunk));
 
         return pWindow->handleMessage(t_hWindow, t_message, t_wParam, t_lParam);
     }
@@ -24,9 +24,9 @@ LRESULT CALLBACK K_Win32WindowController::handleMessageSetup(HWND t_hWindow, UIN
     return DefWindowProc(t_hWindow, t_message, t_wParam, t_lParam);
 }
 
-LRESULT K_Win32WindowController::HandleMessageThunk(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
+LRESULT K_Win32WindowController::handleMessageThunk(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
 {
-    K_Win32WindowController* const pWnd = reinterpret_cast<K_Win32WindowController*>(GetWindowLongPtr(t_hWindow, GWLP_USERDATA));
+    auto* const pWnd = reinterpret_cast<K_Win32WindowController*>(GetWindowLongPtr(t_hWindow, GWLP_USERDATA));
     return pWnd->handleMessage(t_hWindow, t_message, t_wParam, t_lParam);
 }
 
@@ -47,27 +47,27 @@ LRESULT K_Win32WindowController::handleMessage(HWND t_hWindow, UINT t_message, W
         break;
 
     case WM_MOVE:
-        this->m_position = { (unsigned int)(short)LOWORD(t_lParam), (unsigned int)(short)HIWORD(t_lParam) };
+        this->m_position = { LOWORD(t_lParam), HIWORD(t_lParam) };
         break;
 
     case WM_KEYDOWN:
         if (this->m_bFocused && this->m_keyboard)
-            this->m_keyboard->notifyKeyDown(this->processKeys(t_wParam, t_lParam));
+            this->m_keyboard->notifyKeyDown(K_Win32WindowController::processKeys(t_wParam, t_lParam));
         break;
 
     case WM_KEYUP:
         if (this->m_bFocused && this->m_keyboard)
-            this->m_keyboard->notifyKeyUp(this->processKeys(t_wParam, t_lParam));
+            this->m_keyboard->notifyKeyUp(K_Win32WindowController::processKeys(t_wParam, t_lParam));
         break;
 
     case WM_SYSKEYDOWN:
         if (this->m_bFocused && this->m_keyboard)
-            this->m_keyboard->notifyKeyUp(this->processKeys(t_wParam, t_lParam));
+            this->m_keyboard->notifyKeyDown(K_Win32WindowController::processKeys(t_wParam, t_lParam));
         break;
 
     case WM_SYSKEYUP:
         if (this->m_bFocused && this->m_keyboard)
-            this->m_keyboard->notifyKeyUp(this->processKeys(t_wParam, t_lParam));
+            this->m_keyboard->notifyKeyUp(K_Win32WindowController::processKeys(t_wParam, t_lParam));
         break;
 
     case WM_MOUSEMOVE:
@@ -92,12 +92,15 @@ LRESULT K_Win32WindowController::handleMessage(HWND t_hWindow, UINT t_message, W
 
     case WM_LBUTTONDBLCLK: case WM_MBUTTONDBLCLK: case WM_RBUTTONDBLCLK: case WM_XBUTTONDBLCLK:
         break;
+
+    default:
+        return DefWindowProc(t_hWindow, t_message, t_wParam, t_lParam);
     }
 
     return DefWindowProc(t_hWindow, t_message, t_wParam, t_lParam);
 }
 
-DWORD K_Win32WindowController::getWindowStyle()
+unsigned long K_Win32WindowController::getWindowStyle()
 {
     return this->m_mode == K_WindowMode::WINDOWED ? WS_SYSMENU | WS_CAPTION : WS_POPUP;
 }
@@ -105,38 +108,39 @@ DWORD K_Win32WindowController::getWindowStyle()
 void K_Win32WindowController::checkSize()
 {
     if (this->m_mode != K_WindowMode::WINDOWED) {
-        this->m_size = { (unsigned int) GetSystemMetrics(SM_CXSCREEN), (unsigned int) GetSystemMetrics(SM_CYSCREEN) };
+        this->m_size = { GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) };
     }
 }
 
 WPARAM K_Win32WindowController::processKeys(WPARAM t_wParam, LPARAM t_lParam)
 {
-    WPARAM checked_vk = t_wParam;
-    UINT scancode = (t_lParam & 0x00ff0000) >> 16;
+    WPARAM checkedVk;
+    UINT scanCode = (t_lParam & 0x00ff0000) >> 16;
     int extended = (t_lParam & 0x01000000) != 0;
 
     switch (t_wParam) {
     case VK_SHIFT:
-        checked_vk = MapVirtualKey(scancode, MAPVK_VSC_TO_VK_EX);
+        checkedVk = MapVirtualKey(scanCode, MAPVK_VSC_TO_VK_EX);
         break;
     case VK_CONTROL:
-        checked_vk = extended ? VK_RCONTROL : VK_LCONTROL;
+        checkedVk = extended ? VK_RCONTROL : VK_LCONTROL;
         break;
     case VK_MENU:
-        checked_vk = extended ? VK_RMENU : VK_LMENU;
+        checkedVk = extended ? VK_RMENU : VK_LMENU;
         break;
     default:
-        checked_vk = t_wParam;
+        checkedVk = t_wParam;
         break;
     }
 
-    return checked_vk;
+    return checkedVk;
 }
 
-K_Win32WindowController::K_Win32WindowController(std::string t_sTitle) : K_WindowController(t_sTitle, t_sTitle + "_WIN32")
+//<editor-fold desc="Constructors and Destructors">
+
+K_Win32WindowController::K_Win32WindowController(const std::string& t_sTitle) : K_WindowController(t_sTitle, t_sTitle + "_WIN32")
 {
     this->m_keyboard = nullptr;
-    this->m_message = { };
 
     this->checkSize();
 
@@ -150,7 +154,7 @@ K_Win32WindowController::K_Win32WindowController(std::string t_sTitle) : K_Windo
     windowClass.cbWndExtra = 0;
     windowClass.hInstance = hInstance;
     windowClass.hbrBackground = (HBRUSH) CreateSolidBrush(RGB(0,0,0));
-    windowClass.lpszMenuName = NULL;
+    windowClass.lpszMenuName = nullptr;
     windowClass.lpszClassName = this->m_sTitle.c_str();
 
     RegisterClassEx(&windowClass);
@@ -162,13 +166,13 @@ K_Win32WindowController::K_Win32WindowController(std::string t_sTitle) : K_Windo
         this->getWindowStyle(),
         this->m_position.xPos, this->m_position.yPos, 
         this->m_size.width, this->m_size.height,
-        NULL,
-        NULL,
+        nullptr,
+        nullptr,
         hInstance,
         this
     );
 
-    if (this->m_hWindow == NULL)
+    if (this->m_hWindow == nullptr)
     {
         return;
     }
@@ -190,39 +194,19 @@ K_Win32WindowController::~K_Win32WindowController()
     this->m_logger->info("Cleaning window");
 }
 
-void K_Win32WindowController::show()
-{
-    this->m_logger->info("Showing window");
-    ShowWindow(this->m_hWindow, 1);
+//</editor-folder>
+
+//<editor-fold desc="Constructors and Destructors">
+
+void K_Win32WindowController::initialize() {
 }
 
-void K_Win32WindowController::hide()
-{
-    this->m_logger->info("Hiding window");
-    ShowWindow(this->m_hWindow, 0);
+void K_Win32WindowController::shutdown() {
 }
 
-void K_Win32WindowController::close()
-{
-    this->m_logger->info("Closing window");
-    PostQuitMessage(0);
-}
+//</editor-fold>
 
-bool K_Win32WindowController::isOpen()
-{
-    return GetMessage(&this->m_message, NULL, 0, 0) > 0;
-}
-
-bool K_Win32WindowController::isFocused()
-{
-    return this->m_bFocused;
-}
-
-void K_Win32WindowController::update()
-{
-    TranslateMessage(&this->m_message);
-    DispatchMessage(&this->m_message);
-}
+//<editor-fold desc="Available throughout the life cycle">
 
 std::shared_ptr<Kozmic::Core::Input::K_Keyboard> K_Win32WindowController::getKeyboardInput()
 {
@@ -249,12 +233,56 @@ std::shared_ptr<K_GraphicsController> K_Win32WindowController::getGraphicsContro
     if(this->m_graphicsController == nullptr) {
         if (this->m_sGraphicsControllerType == "DX11") { 
             this->m_logger->info("Generating DirectX11 Graphics Controller");
-            this->m_graphicsController = std::make_shared<K_DX11Graphics>(this->m_sTitle, this->m_hWindow, this->m_mode == K_WindowMode::EXCLUSIVE_FULLSCREEN ? true : false); 
+            this->m_graphicsController = std::make_shared<K_DX11Graphics>(this->m_sTitle, this->m_hWindow,
+                                                                          this->m_mode ==
+                                                                          K_WindowMode::EXCLUSIVE_FULLSCREEN);
         }
     }
 
     return this->m_graphicsController;
 }
+
+//</editor-fold>
+
+//<editor-fold desc="Available after initialization and before shutdown">
+
+void K_Win32WindowController::show()
+{
+    this->m_logger->info("Showing window");
+    ShowWindow(this->m_hWindow, 1);
+}
+
+void K_Win32WindowController::hide()
+{
+    this->m_logger->info("Hiding window");
+    ShowWindow(this->m_hWindow, 0);
+}
+
+void K_Win32WindowController::close()
+{
+    this->m_logger->info("Closing window");
+    PostQuitMessage(0);
+}
+
+bool K_Win32WindowController::isOpen()
+{
+    return GetMessage(&this->m_message, nullptr, 0, 0) > 0;
+}
+
+bool K_Win32WindowController::isFocused()
+{
+    return this->m_bFocused;
+}
+
+void K_Win32WindowController::update()
+{
+    TranslateMessage(&this->m_message);
+    DispatchMessage(&this->m_message);
+}
+
+//</editor-fold>
+
+//<editor-fold desc="Setters">
 
 void K_Win32WindowController::setTitle(std::string t_sTitle)
 {
@@ -327,7 +355,7 @@ void K_Win32WindowController::setMode(K_WindowMode t_mode)
         0
     );
     
-    SetWindowLong(this->m_hWindow, GWL_STYLE, this->getWindowStyle());
+    SetWindowLong(this->m_hWindow, GWL_STYLE, (long) this->getWindowStyle());
 
     bool fullscreen = true;
     if (this->m_mode == K_WindowMode::WINDOWED) fullscreen = false;
@@ -339,10 +367,4 @@ void K_Win32WindowController::setMode(K_WindowMode t_mode)
     ShowWindow(this->m_hWindow, SW_SHOW);
 }
 
-void K_Win32WindowController::initialize() {
-
-}
-
-void K_Win32WindowController::shutdown() {
-
-}
+//</editor-fold>

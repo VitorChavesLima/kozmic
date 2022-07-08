@@ -18,6 +18,7 @@ namespace Kozmic::Core::Input {
 
 	public:
 		K_Keyboard();
+        ~K_Keyboard() = default;
 
 		void addListener(K_KeyboardListener* t_listener);
 		void removeListener(K_KeyboardListener* t_listener);

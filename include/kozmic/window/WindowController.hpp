@@ -16,14 +16,14 @@
 
 namespace Kozmic::Core::Window {
     struct K_WindowSize {
-        unsigned int width;
-        unsigned int height;
+        int width;
+        int height;
     };
 
     struct K_WindowPosition
     {
-        unsigned int xPos;
-        unsigned int yPos;
+        int xPos;
+        int yPos;
     };
 
     enum K_WindowMode {
@@ -72,6 +72,7 @@ namespace Kozmic::Core::Window {
         [[maybe_unused]] virtual void show() = 0;
         [[maybe_unused]] virtual void hide() = 0;
         [[maybe_unused]] virtual void close() = 0;
+
         [[maybe_unused]] virtual bool isOpen() = 0;
         [[maybe_unused]] virtual bool isFocused() = 0;
         [[maybe_unused]] virtual void update() = 0;

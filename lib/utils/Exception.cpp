@@ -26,7 +26,7 @@ const char* K_Exception::what() const noexcept
 	return this->m_sWhatBuffer.c_str();
 }
 
-std::string K_Exception::getType()
+[[maybe_unused]] std::string K_Exception::getType()
 {
 	return this->m_sType;
 }
