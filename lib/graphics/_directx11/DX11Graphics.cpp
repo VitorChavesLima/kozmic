@@ -8,7 +8,7 @@
 
 using namespace Kozmic::Core::Graphics;
 
-void K_DX11Graphics::createDevice()
+void K_Dx11GraphicsController::createDevice()
 {
 	HRESULT result;
 
@@ -16,7 +16,7 @@ void K_DX11Graphics::createDevice()
 
 #ifdef _DEBUG
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif // DEBUG
+#endif // _DEBUG
 
 
 	result = D3D11CreateDevice(
@@ -35,7 +35,7 @@ void K_DX11Graphics::createDevice()
 	if (FAILED(result)) EXCEPT("Could not create D3D11Device");
 }
 
-void K_DX11Graphics::createSwapChain()
+void K_Dx11GraphicsController::createSwapChain()
 {
 	HRESULT result;
 	DXGI_SWAP_CHAIN_DESC swapChainDesc = { 0 };
@@ -81,7 +81,7 @@ void K_DX11Graphics::createSwapChain()
 	dxgiFactory->Release();
 }
 
-void K_DX11Graphics::createRenderTargetView()
+void K_Dx11GraphicsController::createRenderTargetView()
 {
 	HRESULT result;
 	result = this->m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**) &m_backBuffer);
@@ -93,7 +93,7 @@ void K_DX11Graphics::createRenderTargetView()
 	this->m_context->OMSetRenderTargets(1, &this->m_renderTargetView, nullptr);
 }
 
-void K_DX11Graphics::setViewport()
+void K_Dx11GraphicsController::setViewport()
 {
 	D3D11_VIEWPORT viewport = {};
 
@@ -108,7 +108,7 @@ void K_DX11Graphics::setViewport()
 	this->m_context->RSSetViewports(1, &viewport);
 }
 
-void K_DX11Graphics::setBufferSize(K_BufferSize t_bufferSize)
+void K_Dx11GraphicsController::setBufferSize(K_BufferSize t_bufferSize)
 {
 	HRESULT result;
 
@@ -138,7 +138,7 @@ void K_DX11Graphics::setBufferSize(K_BufferSize t_bufferSize)
 	this->setViewport();
 }
 
-void K_DX11Graphics::setFullscreen(bool t_bFullscreen)
+void K_Dx11GraphicsController::setFullscreen(bool t_bFullscreen)
 {
 	HRESULT result;
 	this->m_bFullscreen = t_bFullscreen;
@@ -167,7 +167,7 @@ void K_DX11Graphics::setFullscreen(bool t_bFullscreen)
 	this->setViewport();
 }
 
-K_DX11Graphics::K_DX11Graphics(std::string t_sWindowName, HWND t_hWindow, bool t_bFullscreen) : K_GraphicsController(t_sWindowName + "_DX11")
+K_Dx11GraphicsController::K_Dx11GraphicsController(const std::string& t_sWindowName, HWND t_hWindow, bool t_bFullscreen) : K_GraphicsController(t_sWindowName + "_DX11")
 {
 	this->m_clearColor = { 0.0f, 0.0f, 0.3f, 1.0f };
 	this->m_bVSync = true;
@@ -182,14 +182,9 @@ K_DX11Graphics::K_DX11Graphics(std::string t_sWindowName, HWND t_hWindow, bool t
 	this->m_bFullscreen = t_bFullscreen;
 
 	this->m_viewportConfig = { 0.0f, 0.0f, (float) this->m_bufferSize.width, (float) this->m_bufferSize.height };
-
-	this->createDevice();
-	this->createSwapChain();
-	this->createRenderTargetView();
-	this->setViewport();
 }
 
-K_DX11Graphics::~K_DX11Graphics()
+K_Dx11GraphicsController::~K_Dx11GraphicsController()
 {
 	this->m_renderTargetView->Release();
 	this->m_backBuffer->Release();
@@ -198,27 +193,38 @@ K_DX11Graphics::~K_DX11Graphics()
 	this->m_context->Release();
 }
 
-void Kozmic::Core::Graphics::K_DX11Graphics::setClearColor(K_ClearColor t_clearColor)
+void K_Dx11GraphicsController::setClearColor(K_ClearColor t_clearColor)
 {
 	this->m_clearColor = t_clearColor;
 }
 
-void K_DX11Graphics::clear()
+void K_Dx11GraphicsController::clear()
 {
 	const float clearColor[4] = { this->m_clearColor.red, this->m_clearColor.green, this->m_clearColor.blue, this->m_clearColor.alpha };
 	this->m_context->ClearRenderTargetView(this->m_renderTargetView, clearColor);
 }
 
-void K_DX11Graphics::startDraw()
+void K_Dx11GraphicsController::startDraw()
 {
 }
 
-void K_DX11Graphics::finishDraw()
+void K_Dx11GraphicsController::finishDraw()
 {
 }
 
-void K_DX11Graphics::show()
+void K_Dx11GraphicsController::show()
 {
 	this->m_swapChain->Present(this->m_bVSync, NULL);
 	this->m_context->OMSetRenderTargets(1, &this->m_renderTargetView, nullptr);
+}
+
+void K_Dx11GraphicsController::initialize() {
+    this->createDevice();
+    this->createSwapChain();
+    this->createRenderTargetView();
+    this->setViewport();
+}
+
+void K_Dx11GraphicsController::shutdown() {
+
 }

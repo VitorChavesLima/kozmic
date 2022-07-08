@@ -22,18 +22,18 @@ namespace Kozmic::Core::Graphics {
 		float bottom;
 	};
 	
-	class K_DX11Graphics : public K_GraphicsController {
+	class K_Dx11GraphicsController : public K_GraphicsController {
 	private:
 		ID3D11Device* m_device = nullptr;
 		ID3D11DeviceContext* m_context = nullptr;
-		IDXGISwapChain* m_swapChain;
-		ID3D11Texture2D* m_backBuffer;
-		ID3D11RenderTargetView* m_renderTargetView;
+		IDXGISwapChain* m_swapChain{};
+		ID3D11Texture2D* m_backBuffer{};
+		ID3D11RenderTargetView* m_renderTargetView{};
 
 		D3D_FEATURE_LEVEL m_featureLevel = {};
 
-		K_BufferSize m_bufferSize;
-		K_Viewport m_viewportConfig;
+		K_BufferSize m_bufferSize{};
+		K_Viewport m_viewportConfig{};
 
 		bool m_bFullscreen;
 		bool m_bVSync;
@@ -52,17 +52,17 @@ namespace Kozmic::Core::Graphics {
 		void setFullscreen(bool t_bFullscreen);
 
 	public:
-		K_DX11Graphics(std::string t_sWindowName, HWND t_hWindow, bool t_bFullscreen);
-		~K_DX11Graphics();
+        K_Dx11GraphicsController(const std::string& t_sWindowName, HWND t_hWindow, bool t_bFullscreen);
+		~K_Dx11GraphicsController();
 
-		virtual void initialize() override {}
-		virtual void shutdown() override {}
+		void initialize() override;
+		void shutdown() override;
 
-		virtual void setClearColor(K_ClearColor t_clearColor) override;
+		void setClearColor(K_ClearColor t_clearColor) override;
 
-		virtual void clear() override;
-		virtual void startDraw() override;
-		virtual void finishDraw() override;
-		virtual void show() override;
+		void clear() override;
+		void startDraw() override;
+		void finishDraw() override;
+		void show() override;
 	};
 }

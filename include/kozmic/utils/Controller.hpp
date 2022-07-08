@@ -14,6 +14,7 @@ namespace Kozmic::Core::Utils {
     class K_Controller {
     protected:
         std::unique_ptr<Logging::K_Logger> m_logger;
+        bool m_bInitialized = false;
 
     protected:
         explicit K_Controller(std::string t_loggerName);

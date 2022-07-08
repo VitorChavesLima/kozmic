@@ -10,6 +10,8 @@
 
 #include <kozmic/logging/Logger.hpp>
 
+#include <kozmic/utils/Exception.hpp>
+
 #include <kozmic/input/Keyboard.hpp>
 #include <kozmic/input/Mouse.hpp>
 #include <kozmic/graphics/GraphicsController.hpp>
