@@ -16,13 +16,18 @@ namespace Kozmic::Core::Input::Win32 {
 
 namespace Kozmic::Core::Window::Win32 {
     class K_Win32WindowController : public K_WindowController {
+        //<editor-fold desc="Properties">
+
     private:
         HWND m_hWindow;
         MSG m_message = { };
 
         std::shared_ptr<Input::Win32::K_Win32Keyboard> m_keyboard;
         std::shared_ptr<Input::Win32::K_Win32Mouse> m_mouse;
-        std::shared_ptr<Graphics::K_GraphicsController> m_graphicsController;
+
+        //</editor-fold>
+
+        //<editor-fold desc="Internal methods">
 
     private:
         static LRESULT CALLBACK handleMessageSetup(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept;
@@ -34,6 +39,8 @@ namespace Kozmic::Core::Window::Win32 {
 
         static WPARAM processKeys(WPARAM t_wParam, LPARAM t_lParam);
 
+        //</editor-fold>
+
         //<editor-fold desc="Constructors and Destructors">
 
     public:
@@ -42,19 +49,11 @@ namespace Kozmic::Core::Window::Win32 {
 
         //</editor-fold>
 
-        //<editor-fold desc="Controller Specific">
-
-    public:
-        void initialize() override;
-        void shutdown() override;
-
-        //</editor-fold>
-
         //<editor-fold desc="Available throughout the life cycle">
 
         std::shared_ptr<Input::K_Keyboard> getKeyboardInput() override;
         std::shared_ptr<Input::K_Mouse> getMouseInput() override;
-        std::shared_ptr<Graphics::K_GraphicsController> getGraphicsController() override;
+        std::unique_ptr<Graphics::K_GraphicsController> getGraphicsController() override;
 
         //</editor-fold>
 

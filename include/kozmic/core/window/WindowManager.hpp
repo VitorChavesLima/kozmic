@@ -12,9 +12,13 @@
 
 namespace Kozmic::Core {
     class K_WindowManager {
+        //<editor-fold desc="Properties">
+
     private:
         static K_WindowManager* m_instance;
         std::unique_ptr<Logging::K_Logger> m_logger;
+
+        //</editor-fold>
 
         //<editor-fold desc="Constructors and Destructors">
 

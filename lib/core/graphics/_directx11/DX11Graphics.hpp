@@ -10,18 +10,6 @@ namespace Kozmic::Core::Window::Win32 {
 }
 
 namespace Kozmic::Core::Graphics {
-	struct K_BufferSize {
-		int width;
-		int height;
-	};
-
-	struct K_Viewport {
-		float left;
-		float top;
-		float right;
-		float bottom;
-	};
-	
 	class K_Dx11GraphicsController : public K_GraphicsController {
 	private:
 		ID3D11Device* m_device = nullptr;
@@ -46,17 +34,13 @@ namespace Kozmic::Core::Graphics {
 		void createDevice();
 		void createSwapChain();
 		void createRenderTargetView();
-		void setViewport();
-
-		void setBufferSize(K_BufferSize t_bufferSize);
-		void setFullscreen(bool t_bFullscreen);
 
 	public:
         K_Dx11GraphicsController(const std::string& t_sWindowName, HWND t_hWindow, bool t_bFullscreen);
 		~K_Dx11GraphicsController();
 
-		void initialize() override;
-		void shutdown() override;
+		void initialize();
+		void shutdown();
 
 		void setClearColor(K_ClearColor t_clearColor) override;
 
@@ -64,5 +48,9 @@ namespace Kozmic::Core::Graphics {
 		void startDraw() override;
 		void finishDraw() override;
 		void show() override;
-	};
+
+        void setViewport() override;
+        void setBufferSize(K_BufferSize t_bufferSize) override;
+        void setFullscreen(bool t_bFullscreen) override;
+    };
 }

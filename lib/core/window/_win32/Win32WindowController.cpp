@@ -10,6 +10,8 @@
 using namespace Kozmic::Core::Window::Win32;
 using namespace Kozmic::Core::Graphics;
 
+//<editor-fold desc="Internal methods">
+
 LRESULT CALLBACK K_Win32WindowController::handleMessageSetup(HWND t_hWindow, UINT t_message, WPARAM t_wParam, LPARAM t_lParam) noexcept
 {
     if (t_message == WM_NCCREATE)
@@ -139,6 +141,8 @@ WPARAM K_Win32WindowController::processKeys(WPARAM t_wParam, LPARAM t_lParam)
     return checkedVk;
 }
 
+//</editor-fold>
+
 //<editor-fold desc="Constructors and Destructors">
 
 K_Win32WindowController::K_Win32WindowController(const std::string& t_sTitle) : K_WindowController(t_sTitle, t_sTitle + "_WIN32")
@@ -177,52 +181,22 @@ K_Win32WindowController::K_Win32WindowController(const std::string& t_sTitle) : 
             this
     );
 
-    if (this->m_hWindow == nullptr)
-    {
-        return;
-    }
+    if (this->m_hWindow == nullptr) EXCEPT("Could not create the window");
 }
 
 K_Win32WindowController::~K_Win32WindowController()
 {
-    this->m_graphicsController.reset();
     this->m_logger->info("Cleaning window");
+    this->m_hWindow = nullptr;
 }
 
 //</editor-folder>
-
-//<editor-fold desc="Controller Specific">
-
-void K_Win32WindowController::initialize() {
-    SetWindowPos(
-            this->m_hWindow,
-            nullptr,
-            this->m_position.xPos,
-            this->m_position.yPos,
-            this->m_size.width,
-            this->m_size.height,
-            0
-    );
-
-    if(this->m_graphicsController != nullptr) this->m_graphicsController->initialize();
-
-    this->m_bInitialized = true;
-}
-
-void K_Win32WindowController::shutdown() {
-    this->close();
-
-    this->m_hWindow = nullptr;
-    this->m_bInitialized = false;
-}
-
-//</editor-fold>
 
 //<editor-fold desc="Available throughout the life cycle">
 
 std::shared_ptr<Kozmic::Core::Input::K_Keyboard> K_Win32WindowController::getKeyboardInput()
 {
-    this->m_logger->info("Returning a keyboard input access");
+    this->m_logger->info("Generating a keyboard input access");
 
     if (this->m_keyboard == nullptr) 
         this->m_keyboard = std::make_shared<Kozmic::Core::Input::Win32::K_Win32Keyboard>();
@@ -232,7 +206,7 @@ std::shared_ptr<Kozmic::Core::Input::K_Keyboard> K_Win32WindowController::getKey
 
 std::shared_ptr<Kozmic::Core::Input::K_Mouse> K_Win32WindowController::getMouseInput()
 {
-    this->m_logger->info("Returning a mouse input access");
+    this->m_logger->info("Generating a mouse input access");
 
     if (this->m_mouse == nullptr)
         this->m_mouse = std::make_shared<Kozmic::Core::Input::Win32::K_Win32Mouse>();
@@ -240,18 +214,17 @@ std::shared_ptr<Kozmic::Core::Input::K_Mouse> K_Win32WindowController::getMouseI
     return this->m_mouse;
 }
 
-std::shared_ptr<K_GraphicsController> K_Win32WindowController::getGraphicsController()
+std::unique_ptr<K_GraphicsController> K_Win32WindowController::getGraphicsController()
 {
-    if(this->m_graphicsController == nullptr) {
-        if (this->m_sGraphicsControllerType == "DX11") { 
-            this->m_logger->info("Generating DirectX11 Graphics Controller");
-            this->m_graphicsController = std::make_shared<K_Dx11GraphicsController>(this->m_sTitle, this->m_hWindow,
-                                                                          this->m_mode ==
-                                                                          K_WindowMode::EXCLUSIVE_FULLSCREEN);
-        }
+    std::unique_ptr<K_GraphicsController> graphicsController = nullptr;
+
+    if (this->m_sGraphicsControllerType == "DX11") {
+        this->m_logger->info("Generating DirectX11 Graphics Controller");
+        graphicsController = std::make_unique<K_Dx11GraphicsController>(this->m_sTitle, this->m_hWindow,this->m_mode ==
+        K_WindowMode::EXCLUSIVE_FULLSCREEN);
     }
 
-    return this->m_graphicsController;
+    return graphicsController;
 }
 
 //</editor-fold>
@@ -260,8 +233,6 @@ std::shared_ptr<K_GraphicsController> K_Win32WindowController::getGraphicsContro
 
 void K_Win32WindowController::show()
 {
-    if(!this->m_bInitialized) EXCEPT("Window is not initialized");
-
     this->m_logger->info("Showing window");
     ShowWindow(this->m_hWindow, 1);
 }
@@ -303,13 +274,13 @@ void K_Win32WindowController::update()
 
 void K_Win32WindowController::setTitle(std::string t_sTitle)
 {
+    this->m_sTitle = t_sTitle;
+
     SetWindowText(this->m_hWindow, t_sTitle.c_str());
 }
 
 void K_Win32WindowController::setSize(K_WindowSize t_size)
 {
-    this->m_logger->info("Changing size");
-
     this->m_size = t_size;
 
     SetWindowPos(
@@ -321,16 +292,10 @@ void K_Win32WindowController::setSize(K_WindowSize t_size)
         this->m_size.height,
         SWP_NOREPOSITION
     );
-
-    if (this->m_graphicsController) {
-        if (this->m_sGraphicsControllerType == "DX11") dynamic_cast<K_Dx11GraphicsController*>(this->m_graphicsController.get())->setBufferSize({this->m_size.width, this->m_size.height});
-    }
 }
 
 void K_Win32WindowController::setPosition(K_WindowPosition t_position)
 {
-    this->m_logger->info("Changing position");
-
     this->m_position = t_position;
 
     SetWindowPos(
@@ -346,8 +311,6 @@ void K_Win32WindowController::setPosition(K_WindowPosition t_position)
 
 void K_Win32WindowController::setMode(K_WindowMode t_mode)
 {
-    this->m_logger->info("Changing window mode");
-
     this->m_mode = t_mode;
     this->checkSize();
 
@@ -374,10 +337,6 @@ void K_Win32WindowController::setMode(K_WindowMode t_mode)
 
     bool fullscreen = true;
     if (this->m_mode == K_WindowMode::WINDOWED) fullscreen = false;
-
-    if (this->m_graphicsController) {
-        if (this->m_sGraphicsControllerType == "DX11") dynamic_cast<K_Dx11GraphicsController*>(this->m_graphicsController.get())->setFullscreen(fullscreen);
-    }
 
     ShowWindow(this->m_hWindow, SW_SHOW);
 }

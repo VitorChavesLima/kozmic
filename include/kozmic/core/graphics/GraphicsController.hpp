@@ -9,8 +9,20 @@ namespace Kozmic::Core::Graphics {
 		float blue;
 		float alpha;
 	};
-	
-	class K_GraphicsController : public Utils::K_Controller {
+
+    struct K_BufferSize {
+        int width;
+        int height;
+    };
+
+    struct K_Viewport {
+        float left;
+        float top;
+        float right;
+        float bottom;
+    };
+
+    class K_GraphicsController : public Utils::K_Controller {
 	protected:
 		K_ClearColor m_clearColor;
 
@@ -20,9 +32,9 @@ namespace Kozmic::Core::Graphics {
 			this->m_logger->info("Constructing Graphics Controller");
 		}
 
-		~K_GraphicsController() {
+		virtual ~K_GraphicsController() {
 			this->m_logger->info("Cleaning Graphics Controller");
-		};
+		}
 
 		virtual void setClearColor(K_ClearColor t_clearColor) = 0;
 
@@ -30,5 +42,9 @@ namespace Kozmic::Core::Graphics {
 		virtual void startDraw() = 0;
 		virtual void finishDraw() = 0;
 		virtual void show() = 0;
+
+        [[maybe_unused]] virtual void setViewport() = 0;
+        [[maybe_unused]] virtual void setBufferSize(K_BufferSize t_bufferSize) = 0;
+        [[maybe_unused]] virtual void setFullscreen(bool t_bFullscreen) = 0;
 	};
 }

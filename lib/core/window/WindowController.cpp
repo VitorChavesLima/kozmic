@@ -5,6 +5,8 @@ using namespace Kozmic::Core::Window;
 //<editor-fold desc="Constructors and Destructors">
 
 K_WindowController::K_WindowController(std::string t_sTitle, const std::string& t_sLoggerName) : Utils::K_Controller(t_sLoggerName + "_WINDOW") {
+    this->m_bOpen = false;
+
 	this->m_logger->info("Constructing Window");
 
 	this->m_sTitle = std::move(t_sTitle);

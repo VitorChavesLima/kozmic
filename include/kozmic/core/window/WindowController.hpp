@@ -35,6 +35,8 @@ namespace Kozmic::Core::Window {
     };
 
     class K_WindowController : public Utils::K_Controller {
+        //<editor-fold desc="Properties">
+
     protected:
         std::string m_sTitle;
         K_WindowSize m_size = {800, 600};
@@ -44,6 +46,8 @@ namespace Kozmic::Core::Window {
         bool m_bOpen;
         std::string m_sGraphicsControllerType;
 
+        //</editor-fold>
+
         //<editor-fold desc="Constructors and Destructors">
 
     public:
@@ -52,26 +56,13 @@ namespace Kozmic::Core::Window {
 
         //</editor-fold>
 
-        //<editor-fold desc="Controller Specific">
-
-    public:
-        void initialize() override = 0;
-        void shutdown() override = 0;
-
-        //</editor-fold>
-
         //<editor-fold desc="Available throughout the life cycle">
 
     public:
         [[maybe_unused]] virtual std::shared_ptr<Input::K_Keyboard> getKeyboardInput() = 0;
         [[maybe_unused]] virtual std::shared_ptr<Input::K_Mouse> getMouseInput() = 0;
-        [[maybe_unused]] virtual std::shared_ptr<Graphics::K_GraphicsController> getGraphicsController() = 0;
+        [[maybe_unused]] virtual std::unique_ptr<Graphics::K_GraphicsController> getGraphicsController() = 0;
 
-        //</editor-fold>
-
-        //<editor-fold desc="Available after initialization and before shutdown">
-
-    public:
         [[maybe_unused]] virtual void show() = 0;
         [[maybe_unused]] virtual void hide() = 0;
         [[maybe_unused]] virtual void close() = 0;
@@ -104,4 +95,4 @@ namespace Kozmic::Core::Window {
     };
 }
 
-#endif//KOZMIC_WINDOWCONTROLLER_HPP
+#endif // KOZMIC_WINDOWCONTROLLER_HPP
