@@ -41,6 +41,7 @@ namespace Kozmic::Core::Window {
         K_WindowPosition m_position = {0, 0};
         K_WindowMode m_mode;
         bool m_bFocused;
+        bool m_bOpen;
         std::string m_sGraphicsControllerType;
 
         //<editor-fold desc="Constructors and Destructors">

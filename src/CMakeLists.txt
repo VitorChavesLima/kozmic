@@ -1,4 +1,4 @@
-add_executable(demo "main.cpp" "Game.cpp")
+add_executable(demo "main.cpp" "Game.cpp" ../lib/timing/ApplicationTimer.cpp)
 set_property(TARGET demo PROPERTY CXX_STANDARD 17)
 
 target_include_directories(demo PUBLIC "${CMAKE_SOURCE_DIR}/include")

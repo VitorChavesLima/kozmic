@@ -170,7 +170,7 @@ void K_Dx11GraphicsController::setFullscreen(bool t_bFullscreen)
 K_Dx11GraphicsController::K_Dx11GraphicsController(const std::string& t_sWindowName, HWND t_hWindow, bool t_bFullscreen) : K_GraphicsController(t_sWindowName + "_DX11")
 {
 	this->m_clearColor = { 0.0f, 0.0f, 0.3f, 1.0f };
-	this->m_bVSync = true;
+	this->m_bVSync = false;
 	this->m_hWindow = t_hWindow;
 
 	RECT rect;

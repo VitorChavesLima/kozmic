@@ -38,6 +38,7 @@ LRESULT K_Win32WindowController::handleMessage(HWND t_hWindow, UINT t_message, W
     {
     case WM_CLOSE:
         PostQuitMessage(0);
+        this->m_bOpen = false;
         return 0;
 
     case WM_KILLFOCUS:
@@ -144,6 +145,7 @@ K_Win32WindowController::K_Win32WindowController(const std::string& t_sTitle) : 
 {
     this->m_sTitle = t_sTitle;
     this->m_keyboard = nullptr;
+    this->m_bOpen = true;
 
     this->checkSize();
 
@@ -278,7 +280,7 @@ void K_Win32WindowController::close()
 
 bool K_Win32WindowController::isOpen()
 {
-    return GetMessage(&this->m_message, nullptr, 0, 0) > 0;
+    return this->m_bOpen;
 }
 
 bool K_Win32WindowController::isFocused()
@@ -288,8 +290,11 @@ bool K_Win32WindowController::isFocused()
 
 void K_Win32WindowController::update()
 {
-    TranslateMessage(&this->m_message);
-    DispatchMessage(&this->m_message);
+    while (PeekMessage(&this->m_message, this->m_hWindow, 0, 0, PM_REMOVE))
+    {
+        TranslateMessage(&this->m_message);
+        DispatchMessage(&this->m_message);
+    }
 }
 
 //</editor-fold>
@@ -298,8 +303,6 @@ void K_Win32WindowController::update()
 
 void K_Win32WindowController::setTitle(std::string t_sTitle)
 {
-    this->m_logger->info("Changing window title");
-
     SetWindowText(this->m_hWindow, t_sTitle.c_str());
 }
 

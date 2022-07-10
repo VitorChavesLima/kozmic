@@ -9,6 +9,7 @@
 
 #include <kozmic/logging/LoggingManager.hpp>
 #include <kozmic/window/WindowManager.hpp>
+#include <kozmic/timing/ApplicationTimer.h>
 
 namespace Kozmic::Core {
     class K_Application {

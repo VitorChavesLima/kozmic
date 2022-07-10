@@ -3,13 +3,18 @@
 #include <kozmic/logging/LoggingManager.hpp>
 #include <kozmic/window/WindowManager.hpp>
 
+#include <chrono>
 #include <iostream>
+#include <sstream>
 
 using namespace Game;
 
 K_Game::K_Game() : K_Application()
 {
 	this->m_logger = Kozmic::Core::K_LoggingManager::getInstance()->getLogger("GAME");
+
+    this->m_applicationTimer = std::make_unique<Kozmic::Core::Timing::K_ApplicationTimer>();
+    this->m_applicationTimer->setFramesPerSecond(60);
 
 	try {
 		this->m_logger->info("Starting game");
@@ -18,21 +23,41 @@ K_Game::K_Game() : K_Application()
 		this->m_graphics = this->m_window->getGraphicsController();
 
         this->m_window->initialize();
-
-		//auto keyboardInput = this->m_window->getKeyboardInput();
-
-		//keyboardInput->addListener(this);
-
-
 		this->m_window->show();
 
 		this->m_logger->info("Starting game loop");
+
+        auto accumulator = 0.0;
+        auto second = 0.0;
+
+        this->m_applicationTimer->markCurrentFrameTime();
 		while (this->m_window->isOpen()) {
-			this->m_window->update();
-			this->m_graphics->clear();
-			this->m_graphics->startDraw();
-			this->m_graphics->finishDraw();
-			this->m_graphics->show();
+            this->m_window->update();
+
+            if(this->m_window->isFocused()) {
+                this->m_applicationTimer->markLastFrameTime();
+                auto deltaTime = this->m_applicationTimer->deltaTime();
+                accumulator += deltaTime;
+
+                if(second >= 1000000000) {
+                    updateWindowTitle();
+                    second = 0.0;
+                    this->m_nFramesPerSeconds = 0;
+                }
+
+                while(accumulator >= this->m_applicationTimer->getIdealFrameTime()) {
+                    // UPDATE STATE
+                    accumulator -= deltaTime;
+                    second += deltaTime;
+                }
+
+                this->m_graphics->clear();
+                this->m_graphics->startDraw();
+                this->m_graphics->finishDraw();
+                this->m_graphics->show();
+
+                this->m_nFramesPerSeconds++;
+            }
 		}
 		this->m_logger->info("Exiting game loop");
 	}
@@ -48,7 +73,8 @@ Game::K_Game::~K_Game()
 	this->m_logger->info("Finishing game");
 }
 
-void Game::K_Game::handleKeyboardKeyDown(std::string t_sKeyId) {
-	if (t_sKeyId == Kozmic::Core::Input::K_KeyMap::A) this->m_graphics->setClearColor({ 0.5f, 0.0f, 0.0f, 1.0f });
-	if (t_sKeyId == Kozmic::Core::Input::K_KeyMap::S) this->m_graphics->setClearColor({ 0.0f, 0.5f, 0.0f, 1.0f });
+void K_Game::updateWindowTitle() {
+    std::stringstream windowTitle;
+    windowTitle << this->m_window->getTitle() << " - FPS: " << this->m_nFramesPerSeconds;
+    this->m_window->setTitle(windowTitle.str());
 }
