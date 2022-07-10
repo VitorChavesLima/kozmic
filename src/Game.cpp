@@ -21,7 +21,7 @@ K_Game::K_Game() : K_Application()
 		this->m_logger->info("Starting game");
 
 		this->m_window = Kozmic::Core::K_WindowManager::getInstance()->getWindow(this->m_nName);
-		// this->m_graphics = this->m_window->getGraphicsController();
+		this->m_graphics = this->m_window->getGraphicsController();
 
 		this->m_window->show();
 
@@ -51,10 +51,10 @@ K_Game::K_Game() : K_Application()
                     second += deltaTime;
                 }
 
-                // this->m_graphics->clear();
-                // this->m_graphics->startDraw();
-                // this->m_graphics->finishDraw();
-                // this->m_graphics->show();
+                this->m_graphics->clear();
+                this->m_graphics->startDraw();
+                this->m_graphics->finishDraw();
+                this->m_graphics->show();
 
                 this->m_nFramesPerSeconds++;
             }

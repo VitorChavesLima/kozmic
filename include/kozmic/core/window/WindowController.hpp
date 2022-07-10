@@ -86,8 +86,8 @@ namespace Kozmic::Core::Window {
         //<editor-fold desc="Getters">
 
     public:
-        [[maybe_unused]] [[maybe_unused]] std::string getTitle();
-        [[maybe_unused]] [[maybe_unused]] K_WindowSize getSize();
+        [[maybe_unused]] std::string getTitle();
+        [[maybe_unused]] K_WindowSize getSize();
         [[maybe_unused]] K_WindowPosition getPosition();
         [[maybe_unused]] K_WindowMode getMode();
 

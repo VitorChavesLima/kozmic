@@ -3,7 +3,7 @@
 #include "core/input/_win32/Win32Keyboard.hpp"
 #include "core/input/_win32/Win32Mouse.hpp"
 
-#include "core/graphics/_directx11/DX11Graphics.hpp"
+#include "core/graphics/_directx11/DX11GraphicsController.hpp"
 
 #define EXCEPT(message) throw Utils::K_Exception(__FILE__, __LINE__, __FUNCTION__, message)
 
