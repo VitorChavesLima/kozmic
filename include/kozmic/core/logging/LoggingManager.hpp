@@ -1,0 +1,28 @@
+//
+// Created by vitor on 07/07/2022.
+//
+
+#ifndef KOZMIC_LOGGINGMANAGER_HPP
+#define KOZMIC_LOGGINGMANAGER_HPP
+
+#include <memory>
+
+#include "LoggerGenerator.hpp"
+
+namespace Kozmic::Core {
+    class K_LoggingManager {
+    private:
+        static K_LoggingManager* m_instance;
+
+        std::unique_ptr<Logging::K_LoggerGenerator> m_loggerGenerator;
+
+    private:
+        K_LoggingManager();
+
+    public:
+        static K_LoggingManager* getInstance();
+        std::unique_ptr<Logging::K_Logger> getLogger(std::string t_sName);
+    };
+}
+
+#endif //KOZMIC_LOGGINGMANAGER_HPP

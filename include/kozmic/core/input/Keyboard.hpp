@@ -1,0 +1,26 @@
+#pragma once
+
+#include <memory>
+#include <unordered_map>
+#include <vector>
+
+#include "KeyMapper.hpp"
+#include "KeyboardListener.hpp"
+
+namespace Kozmic::Core::Input {
+	class K_Keyboard
+	{
+	protected:
+		std::unique_ptr<K_KeyMapper> m_keyMapper;
+		std::unordered_map<std::string, bool> m_bKeyStates;
+
+		std::vector<K_KeyboardListener*> m_listeners;
+
+	public:
+		K_Keyboard();
+        ~K_Keyboard() = default;
+
+		void addListener(K_KeyboardListener* t_listener);
+		void removeListener(K_KeyboardListener* t_listener);
+	};
+}

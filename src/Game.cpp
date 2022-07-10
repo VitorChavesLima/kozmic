@@ -1,9 +1,8 @@
 #include "Game.hpp"
 
-#include <kozmic/logging/LoggingManager.hpp>
-#include <kozmic/window/WindowManager.hpp>
+#include <kozmic/core/logging/LoggingManager.hpp>
+#include <kozmic/core/window/WindowManager.hpp>
 
-#include <chrono>
 #include <iostream>
 #include <sstream>
 
@@ -11,6 +10,7 @@ using namespace Game;
 
 K_Game::K_Game() : K_Application()
 {
+    this->m_nFramesPerSeconds = 0;
 	this->m_logger = Kozmic::Core::K_LoggingManager::getInstance()->getLogger("GAME");
 
     this->m_applicationTimer = std::make_unique<Kozmic::Core::Timing::K_ApplicationTimer>();

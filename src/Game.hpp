@@ -1,5 +1,5 @@
-#include <kozmic/Application.hpp>
-#include <kozmic/utils/Exception.hpp>
+#include <kozmic/core/Application.hpp>
+#include <kozmic/core/utils/Exception.hpp>
 
 namespace Game {
 	class K_Game : public Kozmic::Core::K_Application {
