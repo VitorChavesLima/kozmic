@@ -24,8 +24,11 @@ K_Game::K_Game() : K_Application()
 		this->m_graphics = this->m_window->getGraphicsController();
         auto shaderController = this->m_graphics->getShaderController();
 
-        auto vertexShaderData = shaderController->compileShader("VERTEX_SHADER", "test.shader", "VShader");
+        auto vertexShaderData = shaderController->compileShader("VERTEX_SHADER", "TEST VERTEX SHADER", "test.shader", "VShader");
         auto vertexShader = shaderController->addShader(vertexShaderData);
+
+        auto pixelShaderData = shaderController->compileShader("PIXEL_SHADER", "TEST PIXEL SHADER", "test.shader", "PShader");
+        auto pixelShader = shaderController->addShader(pixelShaderData);
 
 		this->m_window->show();
 

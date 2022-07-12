@@ -48,7 +48,7 @@ K_Dx11ShaderController::~K_Dx11ShaderController() = default;
 
 //</editor-fold>
 
-std::shared_ptr<K_CompiledShaderData> K_Dx11ShaderController::compileShader(std::string t_sType, std::string t_sSourceFile, std::string t_sEntryPoint) {
+std::shared_ptr<K_CompiledShaderData> K_Dx11ShaderController::compileShader(std::string t_sType, std::string t_sName, std::string t_sSourceFile, std::string t_sEntryPoint) {
     this->m_logger->info("Compiling shader located at: {}", t_sSourceFile.c_str());
 
     HRESULT result;
@@ -75,10 +75,12 @@ std::shared_ptr<K_CompiledShaderData> K_Dx11ShaderController::compileShader(std:
     if(FAILED(result) || pCompilationErrors != nullptr) EXCEPT((char*) pCompilationErrors->GetBufferPointer());
     if(pCompilationErrors != nullptr) pCompilationErrors->Release();
 
-    return std::make_shared<K_Dx11CompiledShaderData>(shaderType, pShader);
+    return std::make_shared<K_Dx11CompiledShaderData>(shaderType, t_sName, pShader);
 }
 
 std::shared_ptr<K_Shader> K_Dx11ShaderController::addShader(std::shared_ptr<K_CompiledShaderData> t_compiledShaderData) {
+    this->m_logger->info("Adding shader: {}", t_compiledShaderData->getShaderName());
+
     auto compiledShaderData = std::reinterpret_pointer_cast<K_Dx11CompiledShaderData>(t_compiledShaderData);
     auto shaderType = compiledShaderData->getShaderType();
 

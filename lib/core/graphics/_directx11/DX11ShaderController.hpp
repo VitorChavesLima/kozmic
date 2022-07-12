@@ -37,7 +37,7 @@ namespace Kozmic::Core::Graphics {
         //</editor-fold>
 
     public:
-        std::shared_ptr<K_CompiledShaderData> compileShader(std::string t_sType, std::string t_sSourceFile, std::string t_sEntryPoint) override;
+        std::shared_ptr<K_CompiledShaderData> compileShader(std::string t_sType, std::string t_sName, std::string t_sSourceFile, std::string t_sEntryPoint) override;
         std::shared_ptr<K_Shader> addShader(std::shared_ptr<K_CompiledShaderData> t_compiledShaderData) override;
         void useShader(std::shared_ptr<K_CompiledShaderData> t_shader) override;
 

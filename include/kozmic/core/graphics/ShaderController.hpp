@@ -6,6 +6,7 @@
 #define KOZMIC_SHADERCONTROLLER_HPP
 
 #include <kozmic/core/utils/Controller.hpp>
+#include <utility>
 
 namespace Kozmic::Core::Graphics {
     class K_ShaderInputLayout {
@@ -20,7 +21,24 @@ namespace Kozmic::Core::Graphics {
     };
 
     class K_CompiledShaderData {
+        //<editor-fold desc="Properties">
 
+    protected:
+        std::string m_sName;
+
+        //</editor-fold>
+
+        //<editor-fold desc="Constructors and Destructors">
+
+    public:
+        K_CompiledShaderData(std::string t_sName) {
+            this->m_sName = std::move(t_sName);
+        }
+
+        //</editor-fold>
+
+    public:
+        std::string getShaderName() { return this->m_sName; };
     };
 
     class K_Shader {
@@ -43,7 +61,7 @@ namespace Kozmic::Core::Graphics {
     //</editor-fold>
 
     public:
-        [[maybe_unused]] virtual std::shared_ptr<K_CompiledShaderData> compileShader(std::string t_sType, std::string t_sSourceFile, std::string t_sEntryPoint) = 0;
+        [[maybe_unused]] virtual std::shared_ptr<K_CompiledShaderData> compileShader(std::string t_sType, std::string t_sName, std::string t_sSourceFile, std::string t_sEntryPoint) = 0;
         [[maybe_unused]] virtual std::shared_ptr<K_Shader> addShader(std::shared_ptr<K_CompiledShaderData> t_shader) = 0;
         [[maybe_unused]] virtual void useShader(std::shared_ptr<K_CompiledShaderData> t_shader) = 0;
 

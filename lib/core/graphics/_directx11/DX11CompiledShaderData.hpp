@@ -25,7 +25,7 @@ namespace Kozmic::Core::Graphics {
         //<editor-fold desc="Constructors and Destructors">
 
     public:
-        explicit K_Dx11CompiledShaderData(K_ShaderType t_shaderType, ID3DBlob* t_pShaderBlob);
+        explicit K_Dx11CompiledShaderData(K_ShaderType t_shaderType, std::string t_shaderName, ID3DBlob* t_pShaderBlob);
         ~K_Dx11CompiledShaderData();
 
         //</editor-fold>

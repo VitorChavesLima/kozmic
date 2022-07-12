@@ -4,11 +4,13 @@
 
 #include "DX11CompiledShaderData.hpp"
 
+#include <utility>
+
 using namespace Kozmic::Core::Graphics;
 
 //<editor-fold desc="Constructors and Destructors">
 
-K_Dx11CompiledShaderData::K_Dx11CompiledShaderData(K_ShaderType t_shaderType, ID3DBlob *t_pShaderBlob) {
+K_Dx11CompiledShaderData::K_Dx11CompiledShaderData(K_ShaderType t_shaderType, std::string t_shaderName, ID3DBlob* t_pShaderBlob): K_CompiledShaderData(t_shaderName) {
     this->m_shaderType = t_shaderType;
     this->m_pShaderBlob = t_pShaderBlob;
 }
