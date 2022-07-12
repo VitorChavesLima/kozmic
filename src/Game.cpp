@@ -23,6 +23,7 @@ K_Game::K_Game() : K_Application()
 		this->m_window = Kozmic::Core::K_WindowManager::getInstance()->getWindow(this->m_nName);
 		this->m_graphics = this->m_window->getGraphicsController();
         auto shaderController = this->m_graphics->getShaderController();
+        shaderController->compileShader("test.shader", "AA", "BB");
 
 		this->m_window->show();
 

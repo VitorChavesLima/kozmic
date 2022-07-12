@@ -19,7 +19,14 @@ namespace Kozmic::Core::Graphics {
         [[maybe_unused]] unsigned int m_nOffset;
     };
 
+    class K_Shader {
+
+    };
+
     class K_ShaderController : public Utils::K_Controller {
+
+    //<editor-fold desc="Constructors and Destructors">
+
     public:
         explicit K_ShaderController(const std::string& t_loggerName) : Utils::K_Controller(t_loggerName + "_GRAPHICS_SHADER") {
             this->m_logger->info("Constructing Shader Controller");
@@ -29,7 +36,11 @@ namespace Kozmic::Core::Graphics {
             this->m_logger->info("Cleaning Shader Controller");
         }
 
+    //</editor-fold>
+
     public:
+        [[maybe_unused]] virtual std::shared_ptr<K_Shader> compileShader(std::string t_sSourceFile, std::string t_sEntryPoint, std::string t_sVersion) = 0;
+
         [[maybe_unused]] virtual std::shared_ptr<K_ShaderInputLayout> createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements) = 0;
     };
 }
