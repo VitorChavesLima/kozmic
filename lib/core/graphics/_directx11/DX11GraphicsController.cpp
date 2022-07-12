@@ -48,7 +48,7 @@ void K_Dx11GraphicsController::createSwapChain()
 	swapChainDesc.BufferDesc.Width = this->m_bufferSize.width;
 	swapChainDesc.BufferDesc.Height = this->m_bufferSize.height;
 	swapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
-	swapChainDesc.BufferDesc.RefreshRate.Numerator = 1;
+	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapChainDesc.SampleDesc.Count = 1;
 	swapChainDesc.SampleDesc.Quality = 0;
@@ -96,6 +96,7 @@ void K_Dx11GraphicsController::fetchDisplayModes(unsigned int t_nAdapterIndex, u
 
     for(unsigned int i = 0; i < nDisplayModeCount; i++) {
         K_Resolution resolution = { };
+        resolution.id = i;
         resolution.width = pModeDescriptions[i].Width;
         resolution.height = pModeDescriptions[i].Height;
         resolution.refreshRate = pModeDescriptions[i].RefreshRate.Numerator / pModeDescriptions[i].RefreshRate.Denominator;

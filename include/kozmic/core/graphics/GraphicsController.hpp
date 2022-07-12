@@ -23,6 +23,7 @@ namespace Kozmic::Core::Graphics {
     };
 
     struct K_Resolution {
+        [[maybe_unused]] unsigned int id;
         [[maybe_unused]] unsigned int width;
         [[maybe_unused]] unsigned int height;
         [[maybe_unused]] unsigned int refreshRate;
