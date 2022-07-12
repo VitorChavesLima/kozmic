@@ -17,6 +17,9 @@ namespace Kozmic::Core::Utils {
 
     protected:
         explicit K_Controller(std::string t_loggerName);
+
+    public:
+        K_Controller();
     };
 }
 
