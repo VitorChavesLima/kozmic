@@ -4,22 +4,40 @@
 
 namespace Kozmic::Core::Graphics {
 	struct K_ClearColor {
-		float red;
-		float green;
-		float blue;
-		float alpha;
+		[[maybe_unused]] float red;
+		[[maybe_unused]] float green;
+		[[maybe_unused]] float blue;
+		[[maybe_unused]] float alpha;
 	};
 
     struct K_BufferSize {
-        int width;
-        int height;
+        [[maybe_unused]] int width;
+        [[maybe_unused]] int height;
     };
 
     struct K_Viewport {
-        float left;
-        float top;
-        float right;
-        float bottom;
+        [[maybe_unused]] float left;
+        [[maybe_unused]] float top;
+        [[maybe_unused]] float right;
+        [[maybe_unused]] float bottom;
+    };
+
+    struct K_Resolution {
+        [[maybe_unused]] unsigned int width;
+        [[maybe_unused]] unsigned int height;
+        [[maybe_unused]] unsigned int refreshRate;
+    };
+
+    struct K_VideoOutput {
+        [[maybe_unused]] unsigned int id;
+        [[maybe_unused]] std::wstring name;
+        [[maybe_unused]] std::vector<K_Resolution> resolutionList;
+    };
+
+    struct K_VideoAdapter {
+        [[maybe_unused]] unsigned int id;
+        [[maybe_unused]] std::wstring name;
+        [[maybe_unused]] std::vector<K_VideoOutput> videoOutputList;
     };
 
     class K_GraphicsController : public Utils::K_Controller {
@@ -32,6 +50,8 @@ namespace Kozmic::Core::Graphics {
 
         bool m_bFullscreen;
         bool m_bVSync;
+
+        std::vector<K_VideoAdapter> m_videoAdapterData;
 
         //</editor-fold>
 
@@ -79,6 +99,8 @@ namespace Kozmic::Core::Graphics {
 
         [[maybe_unused]] [[nodiscard]] bool getFullscreenState() const { return this->m_bFullscreen; }
         [[maybe_unused]] [[nodiscard]] bool getVSyncState() const { return this->m_bVSync; }
+
+        [[maybe_unused]] [[nodiscard]] std::vector<K_VideoAdapter> getVideoAdapterData() const { return this->m_videoAdapterData; }
 
         //</editor-fold>
     };

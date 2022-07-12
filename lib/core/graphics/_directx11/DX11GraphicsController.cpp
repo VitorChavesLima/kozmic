@@ -3,6 +3,8 @@
 #define EXCEPT(message) throw Utils::K_Exception(__FILE__, __LINE__, __FUNCTION__, message)
 
 #include <kozmic/core/utils/Exception.hpp>
+#include <cstdio>
+#include <string>
 
 using namespace Kozmic::Core::Graphics;
 
@@ -10,6 +12,8 @@ using namespace Kozmic::Core::Graphics;
 
 void K_Dx11GraphicsController::createDevice()
 {
+    this->m_logger->info("Creating device");
+
 	HRESULT result;
 
 	unsigned int createDeviceFlags = 0;
@@ -17,7 +21,6 @@ void K_Dx11GraphicsController::createDevice()
 #ifdef _DEBUG
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif // _DEBUG
-
 
 	result = D3D11CreateDevice(
 		nullptr,
@@ -37,7 +40,9 @@ void K_Dx11GraphicsController::createDevice()
 
 void K_Dx11GraphicsController::createSwapChain()
 {
-	HRESULT result;
+    this->m_logger->info("Creating swap chain");
+
+    HRESULT result;
 	DXGI_SWAP_CHAIN_DESC swapChainDesc = { 0 };
 	
 	swapChainDesc.BufferDesc.Width = this->m_bufferSize.width;
@@ -54,36 +59,22 @@ void K_Dx11GraphicsController::createSwapChain()
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
-	IDXGIDevice* dxgiDevice = nullptr;
-	result = this->m_device->QueryInterface(__uuidof(IDXGIDevice), (void**) &dxgiDevice);
-	if (FAILED(result)) EXCEPT("Could not get DxgiDevice");
-
-	IDXGIAdapter* dxgiAdapter = nullptr;
-	result = dxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**) &dxgiAdapter);
-	if (FAILED(result)) EXCEPT("Could not get DxgiAdapter");
-
-	IDXGIFactory* dxgiFactory = nullptr;
-	result = dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**) &dxgiFactory);
-	if (FAILED(result)) EXCEPT("Could not get DxgiFactory");
-
-	result = dxgiFactory->MakeWindowAssociation(this->m_hWindow, DXGI_MWA_NO_ALT_ENTER);
+	result = this->m_dxgiFactory->MakeWindowAssociation(this->m_hWindow, DXGI_MWA_NO_ALT_ENTER);
 	if (FAILED(result)) EXCEPT("Could not make window association");
 
-	result = dxgiFactory->CreateSwapChain(
+	result = this->m_dxgiFactory->CreateSwapChain(
 		this->m_device,
 		&swapChainDesc,
 		&this->m_swapChain
 	);
 	if (FAILED(result)) EXCEPT("Could not create a Swap Chain");
-
-	dxgiDevice->Release();
-	dxgiAdapter->Release();
-	dxgiFactory->Release();
 }
 
 void K_Dx11GraphicsController::createRenderTargetView()
 {
-	HRESULT result;
+    this->m_logger->info("Creating render target view");
+
+    HRESULT result;
 	result = this->m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**) &m_backBuffer);
 	if (FAILED(result)) EXCEPT("Could not get the Back Buffer");
 
@@ -91,6 +82,68 @@ void K_Dx11GraphicsController::createRenderTargetView()
 	if (FAILED(result)) EXCEPT("Could not create the Render Target View");
 
 	this->m_context->OMSetRenderTargets(1, &this->m_renderTargetView, nullptr);
+}
+
+void K_Dx11GraphicsController::fetchDisplayModes(unsigned int t_nAdapterIndex, unsigned int t_nOutputIndex, IDXGIOutput* t_pOutput) {
+    UINT nDisplayModeCount = 0;
+    DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    UINT flags         = DXGI_ENUM_MODES_INTERLACED;
+
+    t_pOutput->GetDisplayModeList( format, flags, &nDisplayModeCount, nullptr);
+
+    auto * pModeDescriptions = new DXGI_MODE_DESC[nDisplayModeCount];
+    t_pOutput->GetDisplayModeList( format, flags, &nDisplayModeCount, pModeDescriptions);
+
+    for(unsigned int i = 0; i < nDisplayModeCount; i++) {
+        K_Resolution resolution = { };
+        resolution.width = pModeDescriptions[i].Width;
+        resolution.height = pModeDescriptions[i].Height;
+        resolution.refreshRate = pModeDescriptions[i].RefreshRate.Numerator / pModeDescriptions[i].RefreshRate.Denominator;
+
+        this->m_videoAdapterData[t_nAdapterIndex].videoOutputList[t_nOutputIndex].resolutionList.push_back(resolution);
+    }
+}
+
+void K_Dx11GraphicsController::fetchOutputs(unsigned int t_nAdapterIndex, IDXGIAdapter* t_pAdapter) {
+    UINT nOutputIndex = 0;
+    IDXGIOutput* pOutput;
+
+    while (t_pAdapter->EnumOutputs(nOutputIndex, &pOutput) != DXGI_ERROR_NOT_FOUND) {
+        DXGI_OUTPUT_DESC outputDescription;
+        pOutput->GetDesc(&outputDescription);
+
+        K_VideoOutput output;
+        output.id = nOutputIndex;
+        output.name = outputDescription.DeviceName;
+
+        this->m_videoAdapterData[t_nAdapterIndex].videoOutputList.push_back(output);
+        this->fetchDisplayModes(t_nAdapterIndex, nOutputIndex, pOutput);
+
+        ++nOutputIndex;
+    }
+}
+
+void K_Dx11GraphicsController::fetchAvailableVideoAdapterData() {
+
+    this->m_logger->info("Fetching available video adapter data");
+
+    UINT nAdapterIndex = 0;
+    IDXGIAdapter* pAdapter;
+
+    while(this->m_dxgiFactory->EnumAdapters(nAdapterIndex, &pAdapter) != DXGI_ERROR_NOT_FOUND)
+    {
+        DXGI_ADAPTER_DESC adapterDescription;
+        pAdapter->GetDesc(&adapterDescription);
+
+        K_VideoAdapter adapter;
+        adapter.id = nAdapterIndex;
+        adapter.name = std::wstring(adapterDescription.Description);
+
+        this->m_videoAdapterData.push_back(adapter);
+
+        fetchOutputs(nAdapterIndex, pAdapter);
+        ++nAdapterIndex;
+    }
 }
 
 //</editor-fold>
@@ -114,8 +167,25 @@ K_Dx11GraphicsController::K_Dx11GraphicsController(const std::string& t_sWindowN
     this->m_viewport = { 0.0f, 0.0f, (float) this->m_bufferSize.width, (float) this->m_bufferSize.height };
 
     this->createDevice();
+
+    HRESULT result;
+    result = this->m_device->QueryInterface(__uuidof(IDXGIDevice), (void**) &this->m_dxgiDevice);
+    if (FAILED(result)) EXCEPT("Could not get DxgiDevice");
+
+    result = this->m_dxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**) &this->m_dxgiAdapter);
+    if (FAILED(result)) EXCEPT("Could not get DxgiAdapter");
+
+    result = this->m_dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**) &this->m_dxgiFactory);
+    if (FAILED(result)) EXCEPT("Could not get DxgiFactory");
+
+    this->fetchAvailableVideoAdapterData();
+
     this->createSwapChain();
     this->createRenderTargetView();
+
+    this->m_dxgiFactory->Release();
+    this->m_dxgiAdapter->Release();
+    this->m_dxgiDevice->Release();
 }
 
 K_Dx11GraphicsController::~K_Dx11GraphicsController()
@@ -242,6 +312,6 @@ void K_Dx11GraphicsController::setFullscreen(bool t_bFullscreen)
 
 void K_Dx11GraphicsController::setVSync(bool t_bVSync) {
     this->m_bVSync = t_bVSync;
-};
+}
 
 //</editor-fold

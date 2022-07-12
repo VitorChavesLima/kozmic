@@ -1,5 +1,5 @@
 //
-// Created by vitor on 07/07/2022.
+// Created by Vitor Chaves on 07/07/2022.
 //
 
 #ifndef KOZMIC_APPLICATION_HPP

@@ -20,6 +20,9 @@ namespace Kozmic::Core::Graphics {
 		IDXGISwapChain* m_swapChain = {};
 		ID3D11Texture2D* m_backBuffer = {};
 		ID3D11RenderTargetView* m_renderTargetView = {};
+        IDXGIDevice* m_dxgiDevice = nullptr;
+        IDXGIAdapter* m_dxgiAdapter = nullptr;
+        IDXGIFactory* m_dxgiFactory = nullptr;
 
 		D3D_FEATURE_LEVEL m_featureLevel = {};
 
@@ -36,6 +39,10 @@ namespace Kozmic::Core::Graphics {
 		void createSwapChain();
 		void createRenderTargetView();
         void createViewport();
+
+        void fetchDisplayModes(unsigned int t_nAdapterIndex, unsigned int t_nOutputIndex, IDXGIOutput* t_pOutput);
+        void fetchOutputs(unsigned int t_nAdapterIndex, IDXGIAdapter* t_pAdapter);
+        void fetchAvailableVideoAdapterData();
 
         //</editor-fold>
 

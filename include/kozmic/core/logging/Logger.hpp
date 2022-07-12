@@ -45,6 +45,26 @@ namespace Kozmic::Core::Logging {
         void critical(spdlog::format_string_t<Args...> t_sMessage, Args &&... t_args) {
             this->m_logger->critical(t_sMessage, std::forward<Args>(t_args)...);
         }
+
+        template<typename... Args>
+        void info(spdlog::wformat_string_t<Args...> t_sMessage, Args &&... t_args) {
+            this->m_logger->info(t_sMessage, std::forward<Args>(t_args)...);
+        }
+
+        template<typename... Args>
+        void warning(spdlog::wformat_string_t<Args...> t_sMessage, Args &&... t_args) {
+            this->m_logger->warn(t_sMessage, std::forward<Args>(t_args)...);
+        }
+
+        template<typename... Args>
+        void error(spdlog::wformat_string_t<Args...> t_sMessage, Args &&... t_args) {
+            this->m_logger->error(t_sMessage, std::forward<Args>(t_args)...);
+        }
+
+        template<typename... Args>
+        void critical(spdlog::wformat_string_t<Args...> t_sMessage, Args &&... t_args) {
+            this->m_logger->critical(t_sMessage, std::forward<Args>(t_args)...);
+        }
     };
 }
 

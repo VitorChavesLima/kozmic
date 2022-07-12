@@ -23,6 +23,24 @@ K_Game::K_Game() : K_Application()
 		this->m_window = Kozmic::Core::K_WindowManager::getInstance()->getWindow(this->m_nName);
 		this->m_graphics = this->m_window->getGraphicsController();
 
+        std::vector<Kozmic::Core::Graphics::K_VideoAdapter> adapterList = this->m_graphics->getVideoAdapterData();
+
+        for(auto & i : adapterList) {
+            this->m_logger->info(L"-----");
+            this->m_logger->info(L"Adapter: {}", i.name);
+
+            for(auto & a : i.videoOutputList) {
+                this->m_logger->info("Display modes");
+                this->m_logger->info("Display mode count: {}", a.resolutionList.size());
+
+                for(auto & b : a.resolutionList) {
+                    this->m_logger->info("{} x {} - Refresh Rate: {}", b.width, b.height, b.refreshRate);
+                }
+            }
+
+            this->m_logger->info(L"-----");
+        }
+
 		this->m_window->show();
 
 		this->m_logger->info("Starting game loop");
