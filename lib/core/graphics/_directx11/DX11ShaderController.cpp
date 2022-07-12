@@ -5,6 +5,7 @@
 #define EXCEPT(message) throw Utils::K_Exception(__FILE__, __LINE__, __FUNCTION__, message)
 
 #include "DX11ShaderController.hpp"
+#include "DX11Shader.hpp"
 
 using namespace Kozmic::Core::Graphics;
 
@@ -28,7 +29,9 @@ K_Dx11ShaderController::~K_Dx11ShaderController() = default;
 //</editor-fold>
 
 std::shared_ptr<K_Shader> K_Dx11ShaderController::compileShader(std::string t_sSourceFile, std::string t_sEntryPoint, std::string t_sVersion) {
-    HRESULT result = 0;
+    this->m_logger->info("Compiling shader located at: {}", t_sSourceFile.c_str());
+
+    HRESULT result;
 
     DWORD shaderFlags = 0;
 #if defined(DEBUG) || defined(_DEBUG)
@@ -45,8 +48,8 @@ std::shared_ptr<K_Shader> K_Dx11ShaderController::compileShader(std::string t_sS
     if(FAILED(result) || pCompilationErrors != nullptr) EXCEPT((char*) pCompilationErrors->GetBufferPointer());
 
     pCompilationErrors->Release();
-    
-    return nullptr;
+
+    return std::make_shared<K_Dx11Shader>(pShader);
 }
 
 std::shared_ptr<K_ShaderInputLayout>
