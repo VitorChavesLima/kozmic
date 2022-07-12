@@ -19,6 +19,10 @@ namespace Kozmic::Core::Graphics {
         [[maybe_unused]] unsigned int m_nOffset;
     };
 
+    class K_CompiledShaderData {
+
+    };
+
     class K_Shader {
 
     };
@@ -39,7 +43,9 @@ namespace Kozmic::Core::Graphics {
     //</editor-fold>
 
     public:
-        [[maybe_unused]] virtual std::shared_ptr<K_Shader> compileShader(std::string t_sSourceFile, std::string t_sEntryPoint, std::string t_sVersion) = 0;
+        [[maybe_unused]] virtual std::shared_ptr<K_CompiledShaderData> compileShader(std::string t_sType, std::string t_sSourceFile, std::string t_sEntryPoint) = 0;
+        [[maybe_unused]] virtual std::shared_ptr<K_Shader> addShader(std::shared_ptr<K_CompiledShaderData> t_shader) = 0;
+        [[maybe_unused]] virtual void useShader(std::shared_ptr<K_CompiledShaderData> t_shader) = 0;
 
         [[maybe_unused]] virtual std::shared_ptr<K_ShaderInputLayout> createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements) = 0;
     };

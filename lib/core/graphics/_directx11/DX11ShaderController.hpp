@@ -21,6 +21,9 @@ namespace Kozmic::Core::Graphics {
 
         //<editor-fold desc="Internal methods">
 
+        ID3D11PixelShader* createPixelShader(ID3DBlob* t_shaderBlob);
+        ID3D11VertexShader* createVertexShader(ID3DBlob* t_shaderBlob);
+
         const D3D11_INPUT_ELEMENT_DESC* formatInputElements(const std::vector<std::shared_ptr<K_ShaderInputLayoutElement>>& t_elements);
 
         //</editor-fold>
@@ -34,7 +37,10 @@ namespace Kozmic::Core::Graphics {
         //</editor-fold>
 
     public:
-        std::shared_ptr<K_Shader> compileShader(std::string t_sSourceFile, std::string t_sEntryPoint, std::string t_sVersion) override;
+        std::shared_ptr<K_CompiledShaderData> compileShader(std::string t_sType, std::string t_sSourceFile, std::string t_sEntryPoint) override;
+        std::shared_ptr<K_Shader> addShader(std::shared_ptr<K_CompiledShaderData> t_compiledShaderData) override;
+        void useShader(std::shared_ptr<K_CompiledShaderData> t_shader) override;
+
         std::shared_ptr<K_ShaderInputLayout> createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements) override;
     };
 }

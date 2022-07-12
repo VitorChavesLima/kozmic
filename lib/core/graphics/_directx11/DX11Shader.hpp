@@ -8,20 +8,23 @@
 #include <d3d11.h>
 
 #include <kozmic/core/graphics/ShaderController.hpp>
+#include "DX11ShaderType.hpp"
 
 namespace Kozmic::Core::Graphics {
-    class K_Dx11Shader: public K_Shader {
+    class K_Dx11Shader : public K_Shader{
+
         //<editor-fold desc="Properties">
 
-        ID3DBlob* m_pShaderBlob;
+    private:
+        K_ShaderType m_shaderType;
+        ID3D11DeviceChild* m_shader;
 
         //</editor-fold>
 
         //<editor-fold desc="Constructors and Destructors">
 
     public:
-        explicit K_Dx11Shader(ID3DBlob* t_pShaderBlob);
-        ~K_Dx11Shader();
+        K_Dx11Shader(K_ShaderType t_shaderType, ID3D11DeviceChild* t_shader);
 
         //</editor-fold>
     };
