@@ -2,6 +2,8 @@
 
 #include "kozmic/core/utils/Controller.hpp"
 
+#include "kozmic/core/graphics/ShaderController.hpp"
+
 namespace Kozmic::Core::Graphics {
 	struct K_ClearColor {
 		[[maybe_unused]] float red;
@@ -54,6 +56,8 @@ namespace Kozmic::Core::Graphics {
 
         std::vector<K_VideoAdapter> m_videoAdapterData;
 
+        std::shared_ptr<K_ShaderController> m_shaderController;
+
         //</editor-fold>
 
         //<editor-fold desc="Constructors and Destructors">
@@ -74,6 +78,7 @@ namespace Kozmic::Core::Graphics {
         //<editor-fold desc="Available throughout the life cycle"
 
     public:
+
         [[maybe_unused]] virtual void clear() = 0;
         [[maybe_unused]] virtual void startDraw() = 0;
         [[maybe_unused]] virtual void finishDraw() = 0;
@@ -102,6 +107,8 @@ namespace Kozmic::Core::Graphics {
         [[maybe_unused]] [[nodiscard]] bool getVSyncState() const { return this->m_bVSync; }
 
         [[maybe_unused]] [[nodiscard]] std::vector<K_VideoAdapter> getVideoAdapterData() const { return this->m_videoAdapterData; }
+
+        [[maybe_unused]] [[nodiscard]] std::shared_ptr<K_ShaderController> getShaderController() { return this->m_shaderController; }
 
         //</editor-fold>
     };

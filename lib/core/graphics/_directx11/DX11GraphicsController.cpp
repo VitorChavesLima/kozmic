@@ -3,6 +3,8 @@
 #define EXCEPT(message) throw Utils::K_Exception(__FILE__, __LINE__, __FUNCTION__, message)
 
 #include <kozmic/core/utils/Exception.hpp>
+#include "DX11ShaderController.hpp"
+
 #include <cstdio>
 #include <string>
 
@@ -184,6 +186,8 @@ K_Dx11GraphicsController::K_Dx11GraphicsController(const std::string& t_sWindowN
     this->createSwapChain();
     this->createRenderTargetView();
 
+    this->m_shaderController = std::make_shared<K_Dx11ShaderController>(t_sWindowName, this->m_device);
+
     this->m_dxgiFactory->Release();
     this->m_dxgiAdapter->Release();
     this->m_dxgiDevice->Release();
@@ -191,6 +195,8 @@ K_Dx11GraphicsController::K_Dx11GraphicsController(const std::string& t_sWindowN
 
 K_Dx11GraphicsController::~K_Dx11GraphicsController()
 {
+    this->m_shaderController.reset();
+
     this->m_renderTargetView->Release();
     this->m_backBuffer->Release();
     this->m_swapChain->Release();

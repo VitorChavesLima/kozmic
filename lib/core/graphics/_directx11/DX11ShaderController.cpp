@@ -8,9 +8,11 @@ using namespace Kozmic::Core::Graphics;
 
 //<editor-fold desc="Constructors and Destructors">
 
-K_Dx11ShaderController::K_Dx11ShaderController(const std::string &t_loggerName, ID3D11Device* t_device) : K_ShaderController(t_loggerName) {
+K_Dx11ShaderController::K_Dx11ShaderController(const std::string &t_loggerName, ID3D11Device* t_device) : K_ShaderController(t_loggerName + "_DX11") {
     this->m_device = t_device;
 }
+
+K_Dx11ShaderController::~K_Dx11ShaderController() = default;
 
 //</editor-fold>
 

@@ -21,7 +21,13 @@ namespace Kozmic::Core::Graphics {
 
     class K_ShaderController : public Utils::K_Controller {
     public:
-        K_ShaderController(const std::string& t_loggerName) : Utils::K_Controller(t_loggerName + "_GRAPHICS_SHADER") { }
+        explicit K_ShaderController(const std::string& t_loggerName) : Utils::K_Controller(t_loggerName + "_GRAPHICS_SHADER") {
+            this->m_logger->info("Constructing Shader Controller");
+        }
+
+        virtual ~K_ShaderController() {
+            this->m_logger->info("Cleaning Shader Controller");
+        }
 
     public:
         [[maybe_unused]] virtual std::shared_ptr<K_ShaderInputLayout> createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements) = 0;

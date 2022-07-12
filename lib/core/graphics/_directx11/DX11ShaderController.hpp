@@ -21,6 +21,7 @@ namespace Kozmic::Core::Graphics {
 
     public:
         explicit K_Dx11ShaderController(const std::string& t_loggerName, ID3D11Device* t_device);
+        ~K_Dx11ShaderController() override;
 
         //</editor-fold>
 
