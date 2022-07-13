@@ -32,6 +32,20 @@ ID3D11VertexShader* K_Dx11ShaderController::createVertexShader(ID3DBlob *t_shade
     return vertexShader;
 }
 
+ID3D11PixelShader *K_Dx11ShaderController::covertToPixelShader(ID3D11DeviceChild *t_shader) {
+    ID3D11PixelShader* pixelShader;
+    HRESULT result = t_shader->QueryInterface(&pixelShader);
+    if (FAILED(result)) EXCEPT("Could not convert to pixel shader");
+    return pixelShader;
+}
+
+ID3D11VertexShader *K_Dx11ShaderController::convertToVertexShader(ID3D11DeviceChild *t_shader) {
+    ID3D11VertexShader* vertexShader;
+    HRESULT result = t_shader->QueryInterface(&vertexShader);
+    if (FAILED(result)) EXCEPT("Could not convert to vertex shader");
+    return vertexShader;
+}
+
 const D3D11_INPUT_ELEMENT_DESC* K_Dx11ShaderController::formatInputElements(const std::vector<std::shared_ptr<K_ShaderInputLayoutElement>>& t_elements) {
     return nullptr;
 }
@@ -40,8 +54,9 @@ const D3D11_INPUT_ELEMENT_DESC* K_Dx11ShaderController::formatInputElements(cons
 
 //<editor-fold desc="Constructors and Destructors">
 
-K_Dx11ShaderController::K_Dx11ShaderController(const std::string &t_loggerName, ID3D11Device* t_device) : K_ShaderController(t_loggerName + "_DX11") {
+K_Dx11ShaderController::K_Dx11ShaderController(const std::string &t_loggerName, ID3D11Device* t_device, ID3D11DeviceContext* t_context) : K_ShaderController(t_loggerName + "_DX11") {
     this->m_device = t_device;
+    this->m_context = t_context;
 }
 
 K_Dx11ShaderController::~K_Dx11ShaderController() = default;
@@ -91,8 +106,12 @@ std::shared_ptr<K_Shader> K_Dx11ShaderController::addShader(std::shared_ptr<K_Co
     return std::make_shared<K_Dx11Shader>(shaderType, shader);
 }
 
-void K_Dx11ShaderController::useShader(std::shared_ptr<K_CompiledShaderData> t_shader) {
+void K_Dx11ShaderController::useShader(std::shared_ptr<K_Shader> t_shader) {
+    auto shader = std::reinterpret_pointer_cast<K_Dx11Shader>(t_shader);
+    auto shaderType = shader->getShaderType();
 
+    if(shaderType == K_ShaderType::PIXEL_SHADER) this->m_context->PSSetShader(this->covertToPixelShader(shader->getShader()), nullptr, 0);
+    else if(shaderType == K_ShaderType::VERTEX_SHADER) this->m_context->VSSetShader(this->convertToVertexShader(shader->getShader()), nullptr, 0);
 }
 
 std::shared_ptr<K_ShaderInputLayout>

@@ -16,6 +16,7 @@ namespace Kozmic::Core::Graphics {
         //<editor-fold desc="Properties">
 
         ID3D11Device* m_device;
+        ID3D11DeviceContext* m_context;
 
         //</editor-fold>
 
@@ -24,6 +25,9 @@ namespace Kozmic::Core::Graphics {
         ID3D11PixelShader* createPixelShader(ID3DBlob* t_shaderBlob);
         ID3D11VertexShader* createVertexShader(ID3DBlob* t_shaderBlob);
 
+        ID3D11PixelShader* covertToPixelShader(ID3D11DeviceChild* t_shader);
+        ID3D11VertexShader* convertToVertexShader(ID3D11DeviceChild* t_shader);
+
         const D3D11_INPUT_ELEMENT_DESC* formatInputElements(const std::vector<std::shared_ptr<K_ShaderInputLayoutElement>>& t_elements);
 
         //</editor-fold>
@@ -31,7 +35,7 @@ namespace Kozmic::Core::Graphics {
         //<editor-fold desc="Constructors and Destructors">
 
     public:
-        explicit K_Dx11ShaderController(const std::string& t_loggerName, ID3D11Device* t_device);
+        explicit K_Dx11ShaderController(const std::string& t_loggerName, ID3D11Device* t_device, ID3D11DeviceContext* t_context);
         ~K_Dx11ShaderController() override;
 
         //</editor-fold>
@@ -39,7 +43,7 @@ namespace Kozmic::Core::Graphics {
     public:
         std::shared_ptr<K_CompiledShaderData> compileShader(std::string t_sType, std::string t_sName, std::string t_sSourceFile, std::string t_sEntryPoint) override;
         std::shared_ptr<K_Shader> addShader(std::shared_ptr<K_CompiledShaderData> t_compiledShaderData) override;
-        void useShader(std::shared_ptr<K_CompiledShaderData> t_shader) override;
+        void useShader(std::shared_ptr<K_Shader> t_shader) override;
 
         std::shared_ptr<K_ShaderInputLayout> createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements) override;
     };

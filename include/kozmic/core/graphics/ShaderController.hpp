@@ -31,7 +31,7 @@ namespace Kozmic::Core::Graphics {
         //<editor-fold desc="Constructors and Destructors">
 
     public:
-        K_CompiledShaderData(std::string t_sName) {
+        explicit K_CompiledShaderData(std::string t_sName) {
             this->m_sName = std::move(t_sName);
         }
 
@@ -62,8 +62,8 @@ namespace Kozmic::Core::Graphics {
 
     public:
         [[maybe_unused]] virtual std::shared_ptr<K_CompiledShaderData> compileShader(std::string t_sType, std::string t_sName, std::string t_sSourceFile, std::string t_sEntryPoint) = 0;
-        [[maybe_unused]] virtual std::shared_ptr<K_Shader> addShader(std::shared_ptr<K_CompiledShaderData> t_shader) = 0;
-        [[maybe_unused]] virtual void useShader(std::shared_ptr<K_CompiledShaderData> t_shader) = 0;
+        [[maybe_unused]] virtual std::shared_ptr<K_Shader> addShader(std::shared_ptr<K_CompiledShaderData> t_compiledShaderData) = 0;
+        [[maybe_unused]] virtual void useShader(std::shared_ptr<K_Shader> t_shader) = 0;
 
         [[maybe_unused]] virtual std::shared_ptr<K_ShaderInputLayout> createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements) = 0;
     };

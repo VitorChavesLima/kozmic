@@ -19,12 +19,21 @@ namespace Kozmic::Core::Graphics {
         K_ShaderType m_shaderType;
         ID3D11DeviceChild* m_shader;
 
+        friend class K_Dx11ShaderController;
+
         //</editor-fold>
 
         //<editor-fold desc="Constructors and Destructors">
 
     public:
         K_Dx11Shader(K_ShaderType t_shaderType, ID3D11DeviceChild* t_shader);
+
+        //</editor-fold>
+
+        //<editor-fold desc="Getters">
+    private:
+        K_ShaderType getShaderType() { return this->m_shaderType; }
+        ID3D11DeviceChild* getShader() { return this->m_shader; }
 
         //</editor-fold>
     };
