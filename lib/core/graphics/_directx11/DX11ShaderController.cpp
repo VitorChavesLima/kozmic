@@ -46,8 +46,36 @@ ID3D11VertexShader *K_Dx11ShaderController::convertToVertexShader(ID3D11DeviceCh
     return vertexShader;
 }
 
+DXGI_FORMAT K_Dx11ShaderController::convertInputLayoutElement(const std::string& t_sFormat) {
+    DXGI_FORMAT convertedFormat;
+
+    if(t_sFormat == "R32G32B32_FLOAT") convertedFormat = DXGI_FORMAT_R32G32B32_FLOAT;
+    else if (t_sFormat == "R32G32B32A32_FLOAT") convertedFormat = DXGI_FORMAT_R32G32B32A32_FLOAT;
+    else EXCEPT("Invalid input layout element format");
+
+    return convertedFormat;
+}
+
+
 const D3D11_INPUT_ELEMENT_DESC* K_Dx11ShaderController::formatInputElements(const std::vector<std::shared_ptr<K_ShaderInputLayoutElement>>& t_elements) {
-    return nullptr;
+
+    std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayoutElementDescriptionVector;
+
+    for(const auto & element : t_elements) {
+        D3D11_INPUT_ELEMENT_DESC inputLayoutElementDescription;
+        inputLayoutElementDescription.SemanticName = element->getName().c_str();
+        inputLayoutElementDescription.SemanticIndex = element->getIndex();
+        inputLayoutElementDescription.Format = convertInputLayoutElement(element->getFormat());
+        inputLayoutElementDescription.InputSlot = 0;
+        inputLayoutElementDescription.AlignedByteOffset = element->getOffset();
+        inputLayoutElementDescription.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+        inputLayoutElementDescription.InstanceDataStepRate = 0;
+
+        inputLayoutElementDescriptionVector.push_back(inputLayoutElementDescription);
+    }
+
+    D3D11_INPUT_ELEMENT_DESC* inputLayoutElementDescriptionArray = &inputLayoutElementDescriptionVector[0];
+    return inputLayoutElementDescriptionArray;
 }
 
 //</editor-fold>

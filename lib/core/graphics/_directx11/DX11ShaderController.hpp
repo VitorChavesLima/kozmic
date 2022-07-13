@@ -25,10 +25,11 @@ namespace Kozmic::Core::Graphics {
         ID3D11PixelShader* createPixelShader(ID3DBlob* t_shaderBlob);
         ID3D11VertexShader* createVertexShader(ID3DBlob* t_shaderBlob);
 
-        ID3D11PixelShader* covertToPixelShader(ID3D11DeviceChild* t_shader);
-        ID3D11VertexShader* convertToVertexShader(ID3D11DeviceChild* t_shader);
+        static ID3D11PixelShader* covertToPixelShader(ID3D11DeviceChild* t_shader);
+        static ID3D11VertexShader* convertToVertexShader(ID3D11DeviceChild* t_shader);
 
-        const D3D11_INPUT_ELEMENT_DESC* formatInputElements(const std::vector<std::shared_ptr<K_ShaderInputLayoutElement>>& t_elements);
+        static DXGI_FORMAT convertInputLayoutElement(const std::string& t_sFormat);
+        static const D3D11_INPUT_ELEMENT_DESC* formatInputElements(const std::vector<std::shared_ptr<K_ShaderInputLayoutElement>>& t_elements);
 
         //</editor-fold>
 

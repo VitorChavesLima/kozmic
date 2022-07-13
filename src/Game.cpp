@@ -32,6 +32,12 @@ K_Game::K_Game() : K_Application()
         auto pixelShaderData = shaderController->compileShader("PIXEL_SHADER", "TEST PIXEL SHADER", "test.shader", "PShader");
         auto pixelShader = shaderController->addShader(pixelShaderData);
 
+        auto positionData = std::make_shared<Kozmic::Core::Graphics::K_ShaderInputLayoutElement>("POSITION", 0, "R32G32B32_FLOAT", 0);
+        auto colorData = std::make_shared<Kozmic::Core::Graphics::K_ShaderInputLayoutElement>("COLOR", 0, "R32G32B32A32_FLOAT", 12);
+
+        std::vector<std::shared_ptr<Kozmic::Core::Graphics::K_ShaderInputLayoutElement>> inputLayoutElements { positionData, colorData };
+        auto inputLayoutData = shaderController->createInputLayout(inputLayoutElements);
+
 		this->m_window->show();
 
 		this->m_logger->info("Starting game loop");

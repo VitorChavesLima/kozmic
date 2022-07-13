@@ -14,10 +14,39 @@ namespace Kozmic::Core::Graphics {
     };
 
     class K_ShaderInputLayoutElement {
+
+        //<editor-fold desc="Properties">
+
+    private:
         [[maybe_unused]] std::string m_sName;
         [[maybe_unused]] unsigned int m_nIndex;
         [[maybe_unused]] std::string m_sFormat;
         [[maybe_unused]] unsigned int m_nOffset;
+
+        //</editor-fold>
+
+        //<editor-fold desc="Constructors and Destructors">
+
+    public:
+        K_ShaderInputLayoutElement(std::string t_sName, unsigned int t_nIndex, std::string t_sFormat, unsigned int t_nOffset) {
+            this->m_sName = std::move(t_sName);
+            this->m_nIndex = t_nIndex;
+            this->m_sFormat = std::move(t_sFormat);
+            this->m_nOffset = t_nOffset;
+        }
+
+        //</editor-fold>
+
+        //<editor-fold desc="Getters">
+
+    public:
+        std::string getName() { return this->m_sName; }
+        [[nodiscard]] unsigned int getIndex() const { return this->m_nIndex; }
+        std::string getFormat() { return this->m_sFormat; }
+        [[nodiscard]] unsigned int getOffset() const { return this->m_nOffset; }
+
+        //</editor-fold>
+
     };
 
     class K_CompiledShaderData {
