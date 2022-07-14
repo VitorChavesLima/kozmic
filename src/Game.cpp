@@ -77,6 +77,8 @@ K_Game::K_Game() : K_Application()
                 shaderController->useShader(vertexShader);
                 shaderController->useShader(pixelShader);
 
+                meshController->drawStaticMesh(mesh);
+
                 this->m_graphics->clear();
                 this->m_graphics->startDraw();
                 this->m_graphics->finishDraw();

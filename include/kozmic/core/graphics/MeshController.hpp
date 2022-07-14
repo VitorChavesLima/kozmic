@@ -48,6 +48,7 @@ namespace Kozmic::Core::Graphics {
 
     public:
         virtual std::shared_ptr<K_StaticMesh> createStaticMesh(std::vector<K_Vertex> t_vertices) = 0;
+        virtual void drawStaticMesh(std::shared_ptr<K_StaticMesh> t_pStaticMesh) = 0;
     };
 }
 

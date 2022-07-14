@@ -17,6 +17,9 @@ namespace Kozmic::Core::Graphics {
         ID3D11Buffer* m_pVertexBuffer;
         UINT m_nStride;
         UINT m_nOffset;
+        UINT m_nVertexCount;
+
+        friend class K_Dx11MeshController;
 
         //</editor-fold>
 
@@ -24,6 +27,16 @@ namespace Kozmic::Core::Graphics {
 
     public:
         explicit K_Dx11StaticMesh(ID3D11Buffer* t_pVertexBuffer, UINT t_nStride, UINT t_nOffset);
+
+        //</editor-fold>
+
+        //<editor-fold desc="Getters">
+
+    private:
+        ID3D11Buffer* getVertexBuffer() { return this->m_pVertexBuffer; }
+        [[nodiscard]] UINT getStride() const { return this->m_nStride; }
+        [[nodiscard]] UINT getOffset() const { return this->m_nOffset; }
+        [[nodiscard]] UINT getVertexCount() const { return this->m_nVertexCount; }
 
         //</editor-fold>
     };

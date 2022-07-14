@@ -15,18 +15,21 @@ namespace Kozmic::Core::Graphics {
 
     private:
         ID3D11Device* m_pDevice;
+        ID3D11DeviceContext* m_pContext;
 
         //</editor-fold>
 
         //<editor-fold desc="Constructors and Destructors">
 
     public:
-        explicit K_Dx11MeshController(const std::string& t_loggerName, ID3D11Device* t_pDevice);
+        explicit K_Dx11MeshController(const std::string& t_loggerName, ID3D11Device* t_pDevice, ID3D11DeviceContext* t_pContext);
 
         //</editor-fold>
 
     public:
         std::shared_ptr<K_StaticMesh> createStaticMesh(std::vector<K_Vertex> t_vertices) override;
+        void drawStaticMesh(std::shared_ptr<K_StaticMesh> t_pStaticMesh) override;
+
     };
 }
 

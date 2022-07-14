@@ -147,7 +147,10 @@ std::shared_ptr<K_ShaderInputLayout>
 K_Dx11ShaderController::createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements, std::shared_ptr<K_CompiledShaderData> t_compiledShaderData) {
     this->m_logger->info("Creating input layout for shader: {}", t_compiledShaderData->getShaderName());
 
-    const D3D11_INPUT_ELEMENT_DESC* elements = formatInputElements(t_elements);
+    D3D11_INPUT_ELEMENT_DESC elements[] = {
+            {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+    };
+
     auto compiledShaderData = std::reinterpret_pointer_cast<K_Dx11CompiledShaderData>(t_compiledShaderData);
 
     ID3D11InputLayout* pInputLayout;
@@ -159,6 +162,8 @@ K_Dx11ShaderController::createInputLayout(std::vector<std::shared_ptr<K_ShaderIn
     compiledShaderData->getShaderBlob()->GetBufferSize(),
     &pInputLayout
     );
+
+    this->m_context->IASetInputLayout( pInputLayout );
 
     return std::make_shared<K_Dx11ShaderInputLayout>(pInputLayout);
 }
