@@ -5,11 +5,27 @@
 #ifndef KOZMIC_DX11STATICMESH_HPP
 #define KOZMIC_DX11STATICMESH_HPP
 
+#include <d3d11.h>
+
 #include <kozmic/core/graphics/MeshController.hpp>
 
 namespace Kozmic::Core::Graphics {
-    class K_Dx11StaticMesh : public K_StaticMesh{
+    class K_Dx11StaticMesh : public K_StaticMesh {
+        //<editor-fold desc="Properties">
 
+    private:
+        ID3D11Buffer* m_pVertexBuffer;
+        UINT m_nStride;
+        UINT m_nOffset;
+
+        //</editor-fold>
+
+        //<editor-fold desc="Constructors and Destructors">
+
+    public:
+        explicit K_Dx11StaticMesh(ID3D11Buffer* t_pVertexBuffer, UINT t_nStride, UINT t_nOffset);
+
+        //</editor-fold>
     };
 }
 

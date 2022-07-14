@@ -188,7 +188,7 @@ K_Dx11GraphicsController::K_Dx11GraphicsController(const std::string& t_sWindowN
     this->createRenderTargetView();
 
     this->m_shaderController = std::make_shared<K_Dx11ShaderController>(t_sWindowName, this->m_device, this->m_context);
-    this->m_meshController = std::make_shared<K_Dx11MeshController>(t_sWindowName, this->m_context);
+    this->m_meshController = std::make_shared<K_Dx11MeshController>(t_sWindowName, this->m_device);
 
     this->m_dxgiFactory->Release();
     this->m_dxgiAdapter->Release();

@@ -11,8 +11,21 @@
 #include <kozmic/core/utils/Controller.hpp>
 
 namespace Kozmic::Core::Graphics {
-    class K_Vertex {
+    struct K_Vertex
+    {
+        K_Vertex(){
+           this->pos[0] = 0.0f;
+           this->pos[1] = 0.0f;
+           this->pos[2] = 0.0f;
+        }
 
+        K_Vertex(float t_nX, float t_nY, float t_nZ){
+            this->pos[0] = t_nX;
+            this->pos[1] = t_nY;
+            this->pos[2] = t_nZ;
+        }
+
+        float pos[3] = {0.0f, 0.0f, 0.0f};
     };
 
     class K_StaticMesh {
@@ -34,7 +47,7 @@ namespace Kozmic::Core::Graphics {
         //</editor-fold>
 
     public:
-        virtual std::shared_ptr<K_StaticMesh> createStaticMesh(std::vector<std::shared_ptr<K_Vertex>> t_vertices) = 0;
+        virtual std::shared_ptr<K_StaticMesh> createStaticMesh(std::vector<K_Vertex> t_vertices) = 0;
     };
 }
 
