@@ -7,6 +7,7 @@
 #include "DX11ShaderController.hpp"
 #include "DX11CompiledShaderData.hpp"
 #include "DX11Shader.hpp"
+#include "DX11ShaderInputLayout.hpp"
 
 using namespace Kozmic::Core::Graphics;
 
@@ -159,5 +160,5 @@ K_Dx11ShaderController::createInputLayout(std::vector<std::shared_ptr<K_ShaderIn
     &pInputLayout
     );
 
-    return nullptr;
+    return std::make_shared<K_Dx11ShaderInputLayout>(pInputLayout);
 }
