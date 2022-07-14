@@ -7,7 +7,7 @@
 
 #include <d3d11.h>
 
-#include <kozmic/core/graphics/ShaderController.hpp>
+#include "kozmic/core/graphics/ShaderController.hpp"
 
 namespace Kozmic::Core::Graphics {
     class K_Dx11ShaderInputLayout : public K_ShaderInputLayout {

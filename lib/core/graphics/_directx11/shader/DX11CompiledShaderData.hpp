@@ -7,7 +7,7 @@
 
 #include <d3d11.h>
 
-#include <kozmic/core/graphics/ShaderController.hpp>
+#include "kozmic/core/graphics/ShaderController.hpp"
 #include "DX11ShaderType.hpp"
 
 namespace Kozmic::Core::Graphics {

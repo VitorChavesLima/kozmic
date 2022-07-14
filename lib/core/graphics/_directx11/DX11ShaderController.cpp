@@ -5,9 +5,9 @@
 #define EXCEPT(message) throw Utils::K_Exception(__FILE__, __LINE__, __FUNCTION__, message)
 
 #include "DX11ShaderController.hpp"
-#include "DX11CompiledShaderData.hpp"
-#include "DX11Shader.hpp"
-#include "DX11ShaderInputLayout.hpp"
+#include "core/graphics/_directx11/shader/DX11CompiledShaderData.hpp"
+#include "core/graphics/_directx11/shader/DX11Shader.hpp"
+#include "core/graphics/_directx11/shader/DX11ShaderInputLayout.hpp"
 
 using namespace Kozmic::Core::Graphics;
 
