@@ -8,8 +8,9 @@
 #include <memory>
 #include <vector>
 
-namespace Kozmic::Core::Graphics {
+#include <kozmic/core/utils/Controller.hpp>
 
+namespace Kozmic::Core::Graphics {
     class K_Vertex {
 
     };
@@ -18,9 +19,22 @@ namespace Kozmic::Core::Graphics {
 
     };
 
-    class K_MeshController {
+    class K_MeshController : public Utils::K_Controller {
+        //<editor-fold desc="Constructors and Destructors">
+
     public:
-        std::shared_ptr<K_StaticMesh> createStaticMesh(std::vector<std::shared_ptr<K_Vertex>> t_vertices);
+        explicit K_MeshController(const std::string& t_loggerName) : Utils::K_Controller(t_loggerName + "_GRAPHICS_MESH") {
+            this->m_logger->info("Constructing Mesh Controller");
+        }
+
+        virtual ~K_MeshController() {
+            this->m_logger->info("Cleaning Mesh Controller");
+        }
+
+        //</editor-fold>
+
+    public:
+        virtual std::shared_ptr<K_StaticMesh> createStaticMesh(std::vector<std::shared_ptr<K_Vertex>> t_vertices) = 0;
     };
 }
 

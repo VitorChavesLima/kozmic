@@ -25,6 +25,7 @@ K_Game::K_Game() : K_Application()
         this->m_graphics->setVSync(true);
 
         auto shaderController = this->m_graphics->getShaderController();
+        auto meshController = this->m_graphics->getMeshController();
 
         auto vertexShaderData = shaderController->compileShader("VERTEX_SHADER", "TEST VERTEX SHADER", "test.shader", "VShader");
         auto vertexShader = shaderController->addShader(vertexShaderData);

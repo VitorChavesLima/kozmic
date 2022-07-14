@@ -3,6 +3,7 @@
 #include "kozmic/core/utils/Controller.hpp"
 
 #include "kozmic/core/graphics/ShaderController.hpp"
+#include "kozmic/core/graphics/MeshController.hpp"
 
 namespace Kozmic::Core::Graphics {
 	struct K_ClearColor {
@@ -57,6 +58,7 @@ namespace Kozmic::Core::Graphics {
         std::vector<K_VideoAdapter> m_videoAdapterData;
 
         std::shared_ptr<K_ShaderController> m_shaderController;
+        std::shared_ptr<K_MeshController> m_meshController;
 
         //</editor-fold>
 
@@ -109,6 +111,7 @@ namespace Kozmic::Core::Graphics {
         [[maybe_unused]] [[nodiscard]] std::vector<K_VideoAdapter> getVideoAdapterData() const { return this->m_videoAdapterData; }
 
         [[maybe_unused]] [[nodiscard]] std::shared_ptr<K_ShaderController> getShaderController() { return this->m_shaderController; }
+        [[maybe_unused]] [[nodiscard]] std::shared_ptr<K_MeshController> getMeshController() { return this->m_meshController; }
 
         //</editor-fold>
     };
