@@ -94,7 +94,7 @@ namespace Kozmic::Core::Graphics {
         [[maybe_unused]] virtual std::shared_ptr<K_Shader> addShader(std::shared_ptr<K_CompiledShaderData> t_compiledShaderData) = 0;
         [[maybe_unused]] virtual void useShader(std::shared_ptr<K_Shader> t_shader) = 0;
 
-        [[maybe_unused]] virtual std::shared_ptr<K_ShaderInputLayout> createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements) = 0;
+        [[maybe_unused]] virtual std::shared_ptr<K_ShaderInputLayout> createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements, std::shared_ptr<K_CompiledShaderData> t_compiledShaderData) = 0;
     };
 }
 

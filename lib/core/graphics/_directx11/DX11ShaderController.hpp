@@ -46,7 +46,7 @@ namespace Kozmic::Core::Graphics {
         std::shared_ptr<K_Shader> addShader(std::shared_ptr<K_CompiledShaderData> t_compiledShaderData) override;
         void useShader(std::shared_ptr<K_Shader> t_shader) override;
 
-        std::shared_ptr<K_ShaderInputLayout> createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements) override;
+        std::shared_ptr<K_ShaderInputLayout> createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements, std::shared_ptr<K_CompiledShaderData> t_compiledShaderData ) override;
     };
 }
 

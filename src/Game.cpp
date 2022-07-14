@@ -36,7 +36,7 @@ K_Game::K_Game() : K_Application()
         auto colorData = std::make_shared<Kozmic::Core::Graphics::K_ShaderInputLayoutElement>("COLOR", 0, "R32G32B32A32_FLOAT", 12);
 
         std::vector<std::shared_ptr<Kozmic::Core::Graphics::K_ShaderInputLayoutElement>> inputLayoutElements { positionData, colorData };
-        auto inputLayoutData = shaderController->createInputLayout(inputLayoutElements);
+        auto inputLayoutData = shaderController->createInputLayout(inputLayoutElements, vertexShaderData);
 
 		this->m_window->show();
 

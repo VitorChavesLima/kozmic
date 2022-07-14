@@ -143,14 +143,21 @@ void K_Dx11ShaderController::useShader(std::shared_ptr<K_Shader> t_shader) {
 }
 
 std::shared_ptr<K_ShaderInputLayout>
-K_Dx11ShaderController::createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements) {
-    auto elements = formatInputElements(t_elements);
+K_Dx11ShaderController::createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements, std::shared_ptr<K_CompiledShaderData> t_compiledShaderData) {
+    this->m_logger->info("Creating input layout for shader: {}", t_compiledShaderData->getShaderName());
 
-    /*this->m_device->CreateInputLayout(
+    const D3D11_INPUT_ELEMENT_DESC* elements = formatInputElements(t_elements);
+    auto compiledShaderData = std::reinterpret_pointer_cast<K_Dx11CompiledShaderData>(t_compiledShaderData);
+
+    ID3D11InputLayout* pInputLayout;
+
+    this->m_device->CreateInputLayout(
     elements,
-    sizeof(elements),
-
-            );*/
+    sizeof(elements) / sizeof(elements[0]),
+    compiledShaderData->getShaderBlob()->GetBufferPointer(),
+    compiledShaderData->getShaderBlob()->GetBufferSize(),
+    &pInputLayout
+    );
 
     return nullptr;
 }
