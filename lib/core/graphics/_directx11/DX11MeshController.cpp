@@ -21,11 +21,13 @@ std::shared_ptr<K_StaticMesh>
 K_Dx11MeshController::createStaticMesh(std::vector<K_Vertex> t_vertices) {
     this->m_logger->info("Creating a static mesh");
 
+    HRESULT result;
+
     D3D11_BUFFER_DESC vertexBufferDescription;
     ZeroMemory( &vertexBufferDescription, sizeof(vertexBufferDescription) );
 
     vertexBufferDescription.Usage = D3D11_USAGE_DEFAULT;
-    vertexBufferDescription.ByteWidth = sizeof( t_vertices[0] ) * t_vertices.size();
+    vertexBufferDescription.ByteWidth = sizeof( t_vertices[0] ) * static_cast<unsigned int>(t_vertices.size());
     vertexBufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vertexBufferDescription.CPUAccessFlags = 0;
     vertexBufferDescription.MiscFlags = 0;
@@ -38,9 +40,9 @@ K_Dx11MeshController::createStaticMesh(std::vector<K_Vertex> t_vertices) {
 
     ZeroMemory( &vertexBufferData, sizeof(vertexBufferData) );
     vertexBufferData.pSysMem = &t_vertices[0];
-    this->m_pDevice->CreateBuffer( &vertexBufferDescription, &vertexBufferData, &vertexBuffer);
+    result = this->m_pDevice->CreateBuffer( &vertexBufferDescription, &vertexBufferData, &vertexBuffer);
 
-    return std::make_shared<K_Dx11StaticMesh>(vertexBuffer, stride, offset);
+    return std::make_shared<K_Dx11StaticMesh>(vertexBuffer, stride, offset, t_vertices.size());
 }
 
 void K_Dx11MeshController::drawStaticMesh(std::shared_ptr<K_StaticMesh> t_pStaticMesh) {

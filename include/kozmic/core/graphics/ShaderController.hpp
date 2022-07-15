@@ -18,10 +18,10 @@ namespace Kozmic::Core::Graphics {
         //<editor-fold desc="Properties">
 
     private:
-        [[maybe_unused]] std::string m_sName;
-        [[maybe_unused]] unsigned int m_nIndex;
-        [[maybe_unused]] std::string m_sFormat;
-        [[maybe_unused]] unsigned int m_nOffset;
+        std::string m_sName;
+        unsigned int m_nIndex;
+        std::string m_sFormat;
+        unsigned int m_nOffset;
 
         //</editor-fold>
 
@@ -40,7 +40,7 @@ namespace Kozmic::Core::Graphics {
         //<editor-fold desc="Getters">
 
     public:
-        std::string getName() { return this->m_sName; }
+        const char* getName() { return this->m_sName.c_str(); }
         [[nodiscard]] unsigned int getIndex() const { return this->m_nIndex; }
         std::string getFormat() { return this->m_sFormat; }
         [[nodiscard]] unsigned int getOffset() const { return this->m_nOffset; }

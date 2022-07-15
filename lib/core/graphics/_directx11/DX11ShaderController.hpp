@@ -29,7 +29,7 @@ namespace Kozmic::Core::Graphics {
         static ID3D11VertexShader* convertToVertexShader(ID3D11DeviceChild* t_shader);
 
         static DXGI_FORMAT convertInputLayoutElement(const std::string& t_sFormat);
-        static const D3D11_INPUT_ELEMENT_DESC* formatInputElements(const std::vector<std::shared_ptr<K_ShaderInputLayoutElement>>& t_elements);
+        std::vector<D3D11_INPUT_ELEMENT_DESC> formatInputElements(const std::vector<std::shared_ptr<K_ShaderInputLayoutElement>>& t_elements);
 
         //</editor-fold>
 

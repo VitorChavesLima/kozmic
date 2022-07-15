@@ -26,7 +26,7 @@ namespace Kozmic::Core::Graphics {
         //<editor-fold desc="Constructors and Destructors">
 
     public:
-        explicit K_Dx11StaticMesh(ID3D11Buffer* t_pVertexBuffer, UINT t_nStride, UINT t_nOffset);
+        explicit K_Dx11StaticMesh(ID3D11Buffer* t_pVertexBuffer, UINT t_nStride, UINT t_nOffset, UINT t_nVertexCount);
 
         //</editor-fold>
 

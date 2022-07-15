@@ -58,13 +58,14 @@ DXGI_FORMAT K_Dx11ShaderController::convertInputLayoutElement(const std::string&
 }
 
 
-const D3D11_INPUT_ELEMENT_DESC* K_Dx11ShaderController::formatInputElements(const std::vector<std::shared_ptr<K_ShaderInputLayoutElement>>& t_elements) {
+std::vector<D3D11_INPUT_ELEMENT_DESC> K_Dx11ShaderController::formatInputElements(const std::vector<std::shared_ptr<K_ShaderInputLayoutElement>>& t_elements) {
 
     std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayoutElementDescriptionVector;
 
     for(const auto & element : t_elements) {
         D3D11_INPUT_ELEMENT_DESC inputLayoutElementDescription;
-        inputLayoutElementDescription.SemanticName = element->getName().c_str();
+
+        inputLayoutElementDescription.SemanticName = element->getName();
         inputLayoutElementDescription.SemanticIndex = element->getIndex();
         inputLayoutElementDescription.Format = convertInputLayoutElement(element->getFormat());
         inputLayoutElementDescription.InputSlot = 0;
@@ -75,8 +76,7 @@ const D3D11_INPUT_ELEMENT_DESC* K_Dx11ShaderController::formatInputElements(cons
         inputLayoutElementDescriptionVector.push_back(inputLayoutElementDescription);
     }
 
-    D3D11_INPUT_ELEMENT_DESC* inputLayoutElementDescriptionArray = &inputLayoutElementDescriptionVector[0];
-    return inputLayoutElementDescriptionArray;
+    return inputLayoutElementDescriptionVector;
 }
 
 //</editor-fold>
@@ -147,17 +147,12 @@ std::shared_ptr<K_ShaderInputLayout>
 K_Dx11ShaderController::createInputLayout(std::vector<std::shared_ptr<K_ShaderInputLayoutElement>> t_elements, std::shared_ptr<K_CompiledShaderData> t_compiledShaderData) {
     this->m_logger->info("Creating input layout for shader: {}", t_compiledShaderData->getShaderName());
 
-    D3D11_INPUT_ELEMENT_DESC elements[] = {
-            {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-    };
-
     auto compiledShaderData = std::reinterpret_pointer_cast<K_Dx11CompiledShaderData>(t_compiledShaderData);
 
     ID3D11InputLayout* pInputLayout;
 
-    this->m_device->CreateInputLayout(
-    elements,
-    sizeof(elements) / sizeof(elements[0]),
+    this->m_device->CreateInputLayout(formatInputElements(t_elements).data(),
+    t_elements.size(),
     compiledShaderData->getShaderBlob()->GetBufferPointer(),
     compiledShaderData->getShaderBlob()->GetBufferSize(),
     &pInputLayout

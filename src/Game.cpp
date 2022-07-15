@@ -41,7 +41,7 @@ K_Game::K_Game() : K_Application()
         auto vertices = {
                 Kozmic::Core::Graphics::K_Vertex( 0.0f, 0.5f, 0.5f ),
                 Kozmic::Core::Graphics::K_Vertex( 0.5f, -0.5f, 0.5f ),
-                Kozmic::Core::Graphics::K_Vertex( -0.5f, -0.5f, 0.5f )
+                Kozmic::Core::Graphics::K_Vertex( -0.5f, -0.5f, 0.5f ),
         };
 
         auto mesh = meshController->createStaticMesh(vertices);
@@ -77,10 +77,9 @@ K_Game::K_Game() : K_Application()
                 shaderController->useShader(vertexShader);
                 shaderController->useShader(pixelShader);
 
-                meshController->drawStaticMesh(mesh);
-
                 this->m_graphics->clear();
                 this->m_graphics->startDraw();
+                meshController->drawStaticMesh(mesh);
                 this->m_graphics->finishDraw();
                 this->m_graphics->show();
 
