@@ -152,7 +152,7 @@ K_Dx11ShaderController::createInputLayout(std::vector<std::shared_ptr<K_ShaderIn
     ID3D11InputLayout* pInputLayout;
 
     this->m_device->CreateInputLayout(formatInputElements(t_elements).data(),
-    t_elements.size(),
+                                      (UINT) t_elements.size(),
     compiledShaderData->getShaderBlob()->GetBufferPointer(),
     compiledShaderData->getShaderBlob()->GetBufferSize(),
     &pInputLayout

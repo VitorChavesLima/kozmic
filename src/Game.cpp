@@ -79,6 +79,7 @@ K_Game::K_Game() : K_Application()
 
                 this->m_graphics->clear();
                 this->m_graphics->startDraw();
+                meshController->setRenderStyle("TRIANGLES");
                 meshController->drawStaticMesh(mesh);
                 this->m_graphics->finishDraw();
                 this->m_graphics->show();

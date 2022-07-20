@@ -2,6 +2,8 @@
 // Created by Vitor Chaves on 14/07/2022.
 //
 
+#define EXCEPT(message) throw Utils::K_Exception(__FILE__, __LINE__, __FUNCTION__, message)
+
 #include "mesh/DX11StaticMesh.hpp"
 
 #include "DX11MeshController.hpp"
@@ -16,6 +18,12 @@ K_Dx11MeshController::K_Dx11MeshController(const std::string& t_loggerName, ID3D
 }
 
 //</editor-fold>
+
+void K_Dx11MeshController::setRenderStyle(std::string t_sRenderStyle) {
+    if(t_sRenderStyle == "POINTS") this->m_pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+    else if(t_sRenderStyle == "LINES") this->m_pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+    else if(t_sRenderStyle == "TRIANGLES") this->m_pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
 
 std::shared_ptr<K_StaticMesh>
 K_Dx11MeshController::createStaticMesh(std::vector<K_Vertex> t_vertices) {
@@ -41,8 +49,11 @@ K_Dx11MeshController::createStaticMesh(std::vector<K_Vertex> t_vertices) {
     ZeroMemory( &vertexBufferData, sizeof(vertexBufferData) );
     vertexBufferData.pSysMem = &t_vertices[0];
     result = this->m_pDevice->CreateBuffer( &vertexBufferDescription, &vertexBufferData, &vertexBuffer);
+    if(FAILED(result)) EXCEPT("Could not create buffer");
 
-    return std::make_shared<K_Dx11StaticMesh>(vertexBuffer, stride, offset, t_vertices.size());
+    this->m_pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+    return std::make_shared<K_Dx11StaticMesh>(vertexBuffer, stride, offset, (UINT) t_vertices.size());
 }
 
 void K_Dx11MeshController::drawStaticMesh(std::shared_ptr<K_StaticMesh> t_pStaticMesh) {
@@ -52,7 +63,6 @@ void K_Dx11MeshController::drawStaticMesh(std::shared_ptr<K_StaticMesh> t_pStati
     UINT offset = staticMesh->getOffset();
     UINT vertexCount = staticMesh->getVertexCount();
 
-    this->m_pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
     this->m_pContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
     this->m_pContext->Draw(vertexCount, 0);
 }

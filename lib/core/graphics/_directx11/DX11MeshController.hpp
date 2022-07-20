@@ -7,6 +7,7 @@
 
 #include <d3d11.h>
 
+#include "kozmic/core/utils/Exception.hpp"
 #include <kozmic/core/graphics/MeshController.hpp>
 
 namespace Kozmic::Core::Graphics {
@@ -27,9 +28,10 @@ namespace Kozmic::Core::Graphics {
         //</editor-fold>
 
     public:
+        void setRenderStyle(std::string t_sRenderStyle) override;
+
         std::shared_ptr<K_StaticMesh> createStaticMesh(std::vector<K_Vertex> t_vertices) override;
         void drawStaticMesh(std::shared_ptr<K_StaticMesh> t_pStaticMesh) override;
-
     };
 }
 
